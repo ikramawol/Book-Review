@@ -42,13 +42,14 @@ p{
 
 
 /*  */
-
+section.Genre,
 section.latest{
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     font-family: Arial, Helvetica, sans-serif;
+    padding: 0 var(--main-padding);
 }
 
 .sectionTitle{
@@ -59,16 +60,54 @@ section.latest{
     font-size: 36px;
 }
 .more {
+    margin-left: 25px;
     color: var(--clr-300);
 }
 
+section.Genre .display,
 section.latest .display{
     display: flex;
-    width: 100vw;
-
+    gap: 2vw;
+    /* justify-content: space-between; */
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+.genreThumbnail:hover,
+.bookThumbnail:hover{
+    cursor: pointer;
+}
+.bookThumbnail {
+    width: 200px;
 }
 .bookThumbnail img{
     aspect-ratio: 18/24;
     object-fit: cover;
-    width: 200px;
+    width: 100%;
+}
+.thumbnailName{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+
+}
+.thumbnailAuthor{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+
+/* genre list */
+
+
+.imgGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.genreThumbnail img{
+    width: 100px;
 }

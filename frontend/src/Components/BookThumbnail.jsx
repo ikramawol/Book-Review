@@ -9,8 +9,8 @@ const BookThumbnail = ({book}) => {
     <div className='bookThumbnail'>
         {/* 18 x 24 , 24 x 36 */}
         <img src={book.poster} alt={book.name} />
-        <p>{book.name}</p>
-        <p>by  {book.author}</p>
+        <p className='thumbnailName'>{book.name}</p>
+        <p className='thumbnailAuthor'>by  {book.author}</p>
         <p>{stars(book.rating)}</p>
     </div>
   )
