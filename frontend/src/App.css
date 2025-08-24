@@ -1,0 +1,17 @@
+:root{
+    --clr-100: white;
+    --clr-300: #C9AA71;
+    --clr-900: #1a1a1a;
+
+    --main-padding: 30px;
+}
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: white;
+
+}
+body{
+    background-color: var(--clr-900);
+}
