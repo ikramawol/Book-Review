@@ -30,11 +30,11 @@ const Navbar = () => {
 
   return (
     <div ref={navRef} className='nav'>
-        <h2>Book Review</h2>
+        <h2> <Link to="/"> Book Review</Link></h2>
 
         <div className="navList">
             <p><Link to="/books" > Books</Link></p>
-            <p><Link to="/genres" > Genre</Link></p>
+            {/* <p><Link to="/genres" > Genre</Link></p> */}
             <p><Link to="/about" > About</Link></p>
 
             <div className="profilePic">

@@ -6,6 +6,7 @@ import '../styles/searchbar.css'
 import BookThumbnail from './BookThumbnail';
 import GenreThumbnail from './GenreThumbnail';
 import Footer from './Footer';
+import Searchbar from './searchbar';
 
 const HomePage = () => {
 
@@ -32,14 +33,31 @@ useEffect(() => {
     };
   };
 
-  const cleanup1 = addScrollListener(scrollRef.current);
-  const cleanup2 = addScrollListener(scrollRef2.current);
+  let cleanup1, cleanup2;
+
+  const applyListeners = () => {
+    if (cleanup1) cleanup1();
+    if (cleanup2) cleanup2();
+
+    if (scrollRef.current && scrollRef.current.scrollWidth > scrollRef.current.clientWidth) {
+      cleanup1 = addScrollListener(scrollRef.current);
+    }
+    if (scrollRef2.current && scrollRef2.current.scrollWidth > scrollRef2.current.clientWidth) {
+      cleanup2 = addScrollListener(scrollRef2.current);
+    }
+  };
+
+  applyListeners();
+
+  window.addEventListener("resize", applyListeners);
 
   return () => {
     if (cleanup1) cleanup1();
     if (cleanup2) cleanup2();
+    window.removeEventListener("resize", applyListeners);
   };
 }, []);
+
 
   let latest = [
     {
@@ -170,18 +188,8 @@ useEffect(() => {
         <div className="filter"></div>
       </section>
 
-      <section className="lookup">  
-        {/* show 5 results if they want more they can press enter or the search button to send them to the books page with the full search list */}
-        <h3>Look up</h3>
-        <div className="searchBar">
-          <select name="searchType" id="searchType">
-            <option value="Book">Book</option>
-            <option value="Author">Author</option>
-          </select>
-          <input type="text" placeholder='name' />
-          <div className='shearchicon'></div>
-        </div>
-      </section>
+
+      <Searchbar/>
       
       <section className="latest">
         <div className="sectionTitle">
