@@ -57,6 +57,7 @@ Rate limiter
 **other tools:**
 JWT authentication
 Git & GitHub for version control
+Prisma ORM
 
 **👥 Team Members and Contributions**
 [Samuel Tadesse] – Frontend Developer (UI design, React components)
