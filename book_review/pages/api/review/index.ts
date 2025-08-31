@@ -3,17 +3,15 @@ import prisma from '@/lib/prisma';
 import { authMiddleware, AuthenticatedRequest } from '@/middlewares/auth.middleware';
 import { z } from 'zod';
 
-// Zod schema for review validation
+// Zod schema for review validation (removed bookId since it comes from query)
 const reviewSchema = z.object({
-  content: z.string().min(1, 'Content is required'),
-  rating: z.int(),
-  bookId: z.string(),
+  content: z.string().min(10, 'Content must be at least 10 characters').max(1000, 'Content must be less than 1000 characters'),
+  rating: z.number().min(1, 'Rating must be at least 1').max(5, 'Rating must be at most 5'),
 });
 
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  const { bookId } = req.query;
-  
-  // Require bookId to get reviews for a specific book
+  const { bookId, page = "1", limit = "12" } = req.query;
+
   if (!bookId) {
     return res.status(400).json({ 
       success: false, 
@@ -21,45 +19,62 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  const bookIdNum = parseInt(bookId as string, 10);
-  if (isNaN(bookIdNum)) {
-    return res.status(400).json({ 
-      success: false, 
-      error: 'Invalid bookId' 
-    });
-  }
+  const pageNum = parseInt(page as string, 10);
+  const limitNum = parseInt(limit as string, 10);
+  const skip = (pageNum - 1) * limitNum;
 
   try {
-    // Verify the book exists
     const book = await prisma.book.findUnique({
-      where: { id: bookIdNum.toString() }
+      where: { id: bookId as string }
     });
 
     if (!book) {
       return res.status(404).json({ 
         success: false, 
-        error: 'book not found' 
+        error: 'Book not found' 
       });
     }
 
-    // Get reviews for the specific book
     const reviews = await prisma.review.findMany({
-      where: { bookId: bookIdNum.toString() },
+      where: { bookId: bookId as string },
       include: { 
-        book: { select: { id: true, title: true , author: true } }
+        user: { select: { id: true, name: true, email: true } },
+        book: { select: { id: true, title: true, author: true } }
       },
       orderBy: { createdAt: 'desc' },
+      skip,
+      take: limitNum,
+    });
+
+    // Get total count for pagination
+    const total = await prisma.review.count({
+      where: { bookId: bookId as string }
+    });
+
+    // Get average rating
+    const averageRating = await prisma.review.aggregate({
+      where: { bookId: bookId as string },
+      _avg: { rating: true },
+      _count: { rating: true },
     });
 
     return res.status(200).json({ 
       success: true, 
       data: reviews,
+      total,
+      page: pageNum,
+      limit: limitNum,
       book: {
         id: book.id,
-        title: book.title
+        title: book.title,
+        author: book.author,
+        totalReviews: total,
+        averageRating: averageRating._avg.rating || 0,
+        ratingCount: averageRating._count.rating,
       }
     });
   } catch (error) {
+    console.error('Fetch reviews error:', error);
     return res.status(500).json({ 
       success: false, 
       error: 'Failed to fetch reviews' 
@@ -70,22 +85,36 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 async function handlePOST(req: AuthenticatedRequest, res: NextApiResponse) {
   // Create a new review
   try {
+    const { bookId } = req.query;
+
+    // Validate bookId from query parameters
+    if (!bookId) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'bookId is required in query parameters' 
+      });
+    }
+
+    // Validate request body
     const parsed = reviewSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ success: false, error: parsed.error.issues });
+      return res.status(400).json({ 
+        success: false, 
+        error: parsed.error.issues 
+      });
     }
     
-    const { content, bookId } = parsed.data;
+    const { content, rating } = parsed.data;
     
     // Verify the book exists
     const book = await prisma.book.findUnique({
-      where: { id: bookId }
+      where: { id: bookId as string }
     });
 
     if (!book) {
       return res.status(404).json({ 
         success: false, 
-        error: 'book not found' 
+        error: 'Book not found' 
       });
     }
 
@@ -97,19 +126,39 @@ async function handlePOST(req: AuthenticatedRequest, res: NextApiResponse) {
       });
     }
 
+    // Check if user already reviewed this book
+    const existingReview = await prisma.review.findFirst({
+      where: {
+        userId: req.user.id,
+        bookId: bookId as string,
+      },
+    });
+
+    if (existingReview) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'You have already reviewed this book' 
+      });
+    }
+
     const review = await prisma.review.create({
       data: {
         content,
-        rating: parsed.data.rating,
-        bookId,
+        rating,
+        bookId: bookId as string,
         userId: req.user.id,
       },
       include: {
-        book: true
+        user: { select: { id: true, name: true, email: true } },
+        book: { select: { id: true, title: true, author: true } }
       }
     });
     
-    return res.status(201).json({ success: true, data: review });
+    return res.status(201).json({ 
+      success: true, 
+      data: review,
+      message: 'Review created successfully'
+    });
   } catch (error) {
     console.error('Create review error:', error);
     return res.status(500).json({ 
@@ -132,4 +181,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   return res.status(405).json({ success: false, error: 'Method not allowed' });
 }
 
-  

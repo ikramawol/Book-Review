@@ -5,6 +5,7 @@ export interface AuthenticatedRequest extends NextApiRequest {
   user?: {
     id: string;
     email: string;
+    role: string;
   };
 }
 
@@ -48,7 +49,8 @@ export function authMiddleware(handler: (req: AuthenticatedRequest, res: NextApi
       // Attach user to request
       req.user = {
         id: payload.id,
-        email: payload.email
+        email: payload.email,
+        role: payload.role ?? 'USER'
       };
 
       // Call the original handler
