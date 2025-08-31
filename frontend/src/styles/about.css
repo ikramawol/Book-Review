@@ -1,0 +1,147 @@
+@font-face {
+    font-family: val;
+    src: url(../assets/LeckerliOne-Regular.ttf);
+}
+
+.about-page {
+    min-height: 100vh;
+    background-color: var(--clr-900);
+    color: var(--clr-100);
+}
+
+.about-content {
+    padding-top: 80px;
+}
+
+.about-hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: rgba(201, 170, 113, 0.1);
+}
+
+.about-hero h1 {
+    font-family: val;
+    font-size: 4rem;
+    font-weight: 200;
+    margin-bottom: 20px;
+    color: var(--clr-100);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--clr-300);
+}
+
+.about-sections {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about-sections section {
+    margin: 80px 0;
+    padding: 40px;
+    background: rgba(201, 170, 113, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(201, 170, 113, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-sections section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.about-sections h2 {
+    font-family: val;
+    font-size: 2.5rem;
+    font-weight: 200;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--clr-100);
+}
+
+.about-sections p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--clr-100);
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(201, 170, 113, 0.3);
+}
+
+.cta-section p {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    color: var(--clr-300);
+}
+
+.cta-login {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--clr-300);
+    color: var(--clr-900);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-login:hover {
+    background: var(--clr-100);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 170, 113, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .about-sections section {
+        padding: 30px 20px;
+        margin: 40px 0;
+    }
+    
+    .about-sections h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero {
+        padding: 60px 15px 40px;
+    }
+    
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .about-sections {
+        padding: 0 15px;
+    }
+    
+    .about-sections section {
+        padding: 25px 15px;
+    }
+}

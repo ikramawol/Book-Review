@@ -1,0 +1,68 @@
+.navgap{
+    height: 10vh;
+}
+
+.booksGrid{
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+}
+
+.filters{
+    border-right: 1px solid white;
+    height: fit-content;
+    padding: var(--main-padding);
+    padding-top: 0;
+}
+.filters p{
+    color: #A1A1A1;
+
+}
+.filters select{
+    margin: 10px 0;
+    background-color: #4A4A4A;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.filters input{
+    margin: 10px 0;
+    background-color: #4A4A4A;
+    border: none;
+    font-size: 24px;
+    width: 50px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.filters .filterYear input{
+    width: 85px;
+}
+.filters .filterBtn:hover{
+    background-color: var(--clr-300);
+    color: var(--clr-900);
+    cursor: pointer;
+}
+.filters .filterBtn{
+    background-color: var(--clr-900);
+    color: var(--clr-300);
+    font-size: 21px;
+    height: fit-content;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 10px;
+    border: 2px solid var(--clr-300);
+}
+.inputFlex{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.booksList{
+    padding: var(--main-padding);
+    padding-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}

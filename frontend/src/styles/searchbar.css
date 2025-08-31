@@ -1,0 +1,71 @@
+.lookup {
+    padding: var(--main-padding);    
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 64px;
+    position: relative;
+}
+.lookup h3{
+    font-size: 32px;
+    margin-bottom: 32px;
+}
+.lookup .shearchicon{
+    background-image: url(../assets/search.svg);
+    background-size: cover;
+    width: 55px;
+    height: 55px;
+}
+
+.searchBar{
+    display: flex;
+    align-self: center;
+    background-color: transparent;
+    border: 2px solid var(--clr-300);
+    border-radius: 40px;
+    width: fit-content;
+    padding: 10px 30px;
+    gap: 20px;
+}
+.searchBar select,
+.searchBar input{
+    background-color: var(--clr-900);
+    border: none;
+    font-size: 21px;
+}
+.searchBar select:focus,
+.searchBar input:focus{
+    outline: none;
+}
+.searchBar input{
+    width: 60vw;
+    /* border-bottom: 1px solid white; */
+}
+
+.suggestions {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+    width: 80%;
+    max-width: 700px;
+    background: var(--clr-900);
+    border: 1px solid var(--clr-300);
+    border-radius: 10px;
+    font-size: 18px;
+    z-index: 10;
+  }
+  
+  .suggestions li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .suggestions li:hover {
+    background: var(--clr-300);
+    color: var(--clr-900);
+  }
+  
