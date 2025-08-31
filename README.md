@@ -1,81 +1,172 @@
-# 📚 Book Review Platform  
+# 📚 Book Review Platform
 
-## 📖 Project Overview and Objectives  
-The **Book Review Platform** is a full-stack web application that allows users to:  
-- Browse books and read reviews.  
-- Add their own book reviews and ratings.  
-- View community feedback on different books.  
-- Search and filter books for easy discovery.  
+A modern full-stack web application for discovering, reviewing, and sharing opinions about books.
 
-**Objectives:**  
-- Provide a user-friendly interface for discovering and reviewing books.  
-- Encourage readers to share opinions and connect over literature.  
-- Practice building and deploying a full-stack application using modern technologies.  
+---
 
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Setup](#environment-setup)
+  - [Running the App](#running-the-app)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Team](#team)
+- [Known Issues](#known-issues)
+- [Future Enhancements](#future-enhancements)
+- [License](#license)
 
+---
 
-## 🚀 Instructions for Running  
+## Overview
 
-### Prerequisites  
-Make sure you have installed:  
-- **Node.js** (v16 or above)  
-- **npm** or **yarn**  
-- **Database** (e.g., MongoDB/MySQL/PostgreSQL depending on what you used)  
+The **Book Review Platform** allows users to:
+- Browse books and read community reviews.
+- Submit their own reviews and ratings.
+- Search and filter books for easy discovery.
+- View feedback from other readers.
 
-### Steps to Run Locally  
-1. **Clone the repository:**  
-   ```bash
-   git clone https://github.com/your-username/book-review-platform.git
-   cd book-review-platform
-2.**Install dependencies:**
-   npm install
+**Project Objectives:**
+- Build an intuitive interface for discovering and reviewing books.
+- Connect readers and foster literary discussion.
+- Practice deploying a modern full-stack application.
 
-3.**Set up enviroment variables:**
-Create a .env file in the root directory and add:
-DATABASE_URL=your_database_connection_string
-PORT=5000
-JWT_SECRET=your_jwt_secret
-4.**Run the development server:**
-npm run dev
-5.**Open your browser at:**
-http://localhost:3000
+---
 
-🛠Technologies and Tools Used
+## Features
+
+- 🔍 **Book Search & Filtering:** Quickly find books by title, author, or genre.
+- ⭐ **Ratings & Reviews:** Add and read book reviews with ratings.
+- 🛡️ **Authentication:** Secure login and registration (OAuth & JWT).
+- 🖼️ **Image Uploads:** Add book covers using Cloudinary.
+- ⏳ **Rate Limiting:** Protect API endpoints from abuse.
+- 🛠️ **Role-Based Access Control:** Admin/moderator features.
+- 🧩 **Responsive Design:** Works across devices (planned).
+- 🌐 **Internationalization:** Multi-language support (planned).
+
+---
+
+## Tech Stack
+
 **Front-end:**
-React for framework
-VS-code :for editor
-Figma:for design
+- React
+- Next.js
+- Figma (Design)
+- VS Code (Editor)
+
 **Back-end:**
-Postgress database on Neon database
-Next.js 
-Cloudinary for image upload
-OAuth( google) 
-Role-based access control
-Zod for error handling
-Bcrypt for password hashing
-Rate limiter
-**other tools:**
-JWT authentication
-Git & GitHub for version control
-Prisma ORM
+- Node.js
+- Prisma ORM
+- PostgreSQL (Neon database)
+- Cloudinary (image upload)
+- OAuth (Google)
+- JWT Authentication
+- Bcrypt (password hashing)
+- Zod (validation/error handling)
+- Rate Limiter
 
-**👥 Team Members and Contributions**
-[Samuel Tadesse] – Frontend Developer (UI design, React components)
-[Ikram Awol ] – Backend Developer (API design, authentication, database integration)
-[Ashenafi Tesfaye] – Documentation,Frontend  & Testing (README, test cases)
+**DevOps & Other Tools:**
+- Git & GitHub (version control)
 
-**📝 Additional Notes**
-Known Issues:
-Search may return limited results for some queries.
-Review moderation is not yet implemented.
+---
 
-Future Enhancements:
-Add social features (likes, comments, sharing).
-Implement recommendation system for personalized book suggestions.
-Improve mobile responsiveness and accessibility.
-Add support for multiple languages.
+## Getting Started
 
+### Prerequisites
 
+- **Node.js** (v16+)
+- **npm** or **yarn**
+- **Database**: PostgreSQL (Neon or local)
 
+### Installation
 
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ikramawol/Book-Review.git
+   cd Book-Review
+   ```
 
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+### Environment Setup
+
+1. **Create a `.env` file in the root directory:**
+   ```
+   DATABASE_URL=your_database_connection_string
+   PORT=5000
+   JWT_SECRET=your_jwt_secret
+   ```
+
+### Running the App
+
+1. **Start the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+2. **Open your browser at:**
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## Usage
+
+- Register or log in using Google OAuth or email/password.
+- Browse the book catalog.
+- Add reviews and ratings.
+- Search/filter books.
+- (Admins) Moderate content (planned).
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+1. Fork the repo & create your branch (`git checkout -b feature/fooBar`)
+2. Commit your changes (`git commit -am 'Add some fooBar'`)
+3. Push to the branch (`git push origin feature/fooBar`)
+4. Open a Pull Request
+
+---
+
+## Team
+
+- **Samuel Tadesse** – Frontend Developer (UI design, React components)
+- **Ikram Awol** – Backend Developer (API design, authentication, database integration)
+- **Ashenafi Tesfaye** – Documentation, Frontend & Testing (README, test cases)
+
+---
+
+## Known Issues
+
+- Search may return limited results.
+- Review moderation not yet implemented.
+
+---
+
+## Future Enhancements
+
+- Social features (likes, comments, sharing)
+- Recommendation system for personalized book suggestions
+- Improved mobile responsiveness and accessibility
+- Multi-language support
+
+---
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
