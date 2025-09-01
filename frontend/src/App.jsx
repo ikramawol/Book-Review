@@ -7,6 +7,8 @@ import GenrePage from './Components/GenrePage';
 import LoginPage from './Components/LoginPage';
 import ProfilePage from './Components/ProfilePage';
 import AboutPage from './Components/AboutPage';
+import Admin from './Components/Admin';
+import AdminBookView from './Components/AdminBookView';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
           <li><Link to="/login">Login</Link></li>
         </ul>
       </nav> */}
+      {/* <Admin/> */}
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -29,6 +32,8 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/reviews/:id" element={<AdminBookView />} />
       </Routes>
     </Router>
   );

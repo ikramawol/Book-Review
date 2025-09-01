@@ -1,0 +1,457 @@
+:root{
+    --clr-100: white;
+    --clr-300: #C9AA71;
+    --clr-900: #1a1a1a;
+
+    --main-padding: 30px;
+}
+
+.adminPage{
+    display: flex;
+    padding: 100px var(--main-padding);
+    height: calc(100vh - 200px);
+}
+.sidebar{
+    width: 15vw;
+    border-right: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-padding);
+    padding: var(--main-padding) 0 ;
+}
+.sidebar p:hover{
+    cursor: pointer;
+}
+.sidebar p.active{
+    color: var(--clr-900);
+}
+.sidebar p.active::after{
+    left: 0;
+}
+.sidebar p::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 100%;
+    background-color: var(--clr-300);
+    z-index: -1;
+    transition: left 200ms;
+}
+.sidebar p{
+    position: relative;
+    padding: 10px;
+    border-radius: 5px 0 0 5px;
+    overflow: hidden;
+    font-weight: 600;
+}
+.mainDisplay{
+    flex-grow: 1;
+    height: fit-content;
+}
+
+
+
+/* dashboard */
+.dashboard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 30px;
+    gap: 50px;
+}
+
+.highlights{
+    
+}
+.GenresPichart, .ReviewsGraph {
+    background: var(--clr-900);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* manage books */
+.bookManage {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.bookoption {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.bookoption button {
+    background-color: #1f1f1f;
+    border: none;
+    color: var(--clr-300);
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.bookoption button.active {
+    background-color: var(--clr-300);
+    color: #1f1f1f;
+}
+
+.searchbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.searchbar select,
+.searchbar input,
+.searchbar button {
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.bookForm {
+    display: flex;
+    gap: 30px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+}
+
+.inputrow {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputrow p {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: var(--clr-300);
+}
+
+.inputrow input,
+.inputrow select,
+.inputrow textarea {
+    padding: 8px;
+    background: #444;
+    border: 1px solid #555;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.inputrow textarea {
+    height: 80px;
+    resize: none;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bookThumbnail {
+    background: #222;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.bookThumbnail img {
+    width: 180px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.thumbnailName {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.thumbnailAuthor {
+    color: #bbb;
+    margin-bottom: 5px;
+}
+
+.submitBtn {
+    background-color: var(--clr-300);
+    color: #1f1f1f;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+.submitBtn:hover {
+    background-color: #f5d76e;
+}
+
+
+
+
+/* manage Genres */
+
+.manageGenres {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #121212;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    gap: 40px;
+}
+
+.currentGenreList, .addGenre {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #555;
+    padding: 10px;
+    width: 250px;
+    border-radius: 6px;
+}
+
+.genreItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #888;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: default;
+}
+
+.genreItem span {
+    cursor: pointer;
+}
+
+.addGenre input {
+    padding: 10px;
+    width: 250px;
+    background-color: #444;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.addGenre input:focus {
+    outline: none;
+}
+
+.addGenre button {
+    padding: 10px;
+    width: 250px;
+    background-color: transparent;
+    border: 1px solid var(--clr-300);
+    color: var(--clr-300);
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.addGenre button:hover {
+    background-color: var(--clr-300);
+    color: #121212;
+}
+
+
+/* Admin REviews */
+
+.admin-reviews {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .reviews-table th,
+  .reviews-table td {
+    text-align: left;
+    padding: 15px;
+  }
+  
+  .reviews-table tbody tr {
+    background-color: #3a3a3a;
+    cursor: pointer;
+  }
+  
+  .reviews-table tbody tr:nth-child(even) {
+    background-color: #2b2b2b;
+  }
+  
+  .reviews-table tbody tr:hover {
+    background-color: #505050;
+  }
+  
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+  
+
+/*  */
+
+.admin-flags, .admin-requests {
+    padding: 20px;
+    color: #fff;
+    background: #121212;
+  }
+  
+  .flags-list, .request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .flag-card, .request-card {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+  }
+  
+  .flag-actions, .request-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .remove-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .ignore-btn {
+    background: #444;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .approve-btn {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .reject-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  h2 {
+    margin-bottom: 15px;
+    color: #ffcc66;
+  }
+  
+
+
+  /*  */
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .pagination span {
+    color: #fff;
+    padding: 8px 12px;
+    background: #2b2b2b;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .pagination span:hover {
+    background: #505050;
+  }
+  
+  .pagination .active-page {
+    background: var(--clr-300);
+    color: #1f1f1f;
+    font-weight: bold;
+  }
+
+  .pagination button {
+    background: #2b2b2b;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background: #444;
+    cursor: not-allowed;
+  }
+  
+
+.returnBtn:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.returnBtn{
+    align-self: flex-start;
+    margin-bottom: var(--main-padding);
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+}
