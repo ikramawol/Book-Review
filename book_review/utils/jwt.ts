@@ -6,6 +6,7 @@ import { NextRequest } from 'next/server';
 export type JwtPayload = {
     id: string;
     email: string;
+    role?: string; 
 };
 
 // Parse token from cookies
@@ -26,19 +27,19 @@ export const getTokenFromRequest = (request: NextRequest) => {
 
 // Generate JWT Token
 export function generateJwt(payload: JwtPayload): string {
-    const secret = process.env.JWT_SECRET;
+    const secret = process.env.JWT_ACCESS_SECRET;
     if (!secret) {
-        throw new Error('JWT_SECRET is not configured');
+        throw new Error('JWT_ACCESS_SECRET is not configured');
     }
-    return jwt.sign(payload, secret, { expiresIn: '7d' });
+    return jwt.sign(payload, secret, { expiresIn: '24h' });
 }
 
 // Verify JWT Token
 export function verifyJwt(token: string): JwtPayload | null {
     try {
-        const secret = process.env.JWT_SECRET;
+        const secret = process.env.JWT_ACCESS_SECRET;
         if (!secret) {
-            console.error('JWT_SECRET is not configured');
+            console.error('JWT_ACCESS_SECRET is not configured');
             return null;
         }
         return jwt.verify(token, secret) as JwtPayload;

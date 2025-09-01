@@ -24,7 +24,9 @@ model User{
   reviews   Review[]
   accounts  Account[] 
   sessions  Session[]
+  reports   Report[]
   isDeleted Boolean @default(false)
+  suspended Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -35,6 +37,8 @@ model Book{
   description String
   author    String
   image     String
+  views     Int @default(0)
+  publishedDate DateTime
   reviews   Review[]
   categories Category[] @relation("CategoryBooks")
 }
@@ -49,6 +53,7 @@ model Review{
   bookId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  reports   Report[]
 }
 
 model Category{
@@ -60,6 +65,25 @@ model Category{
 enum Role {
   USER
   ADMIN
+}
+
+model Report {
+  id           String   @id @default(cuid())
+  reason       String
+  status       ReportStatus @default(PENDING)
+  actionTaken  String?
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  review       Review   @relation(fields: [reviewId], references: [id])
+  reviewId     String
+  createdAt    DateTime @default(now())
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REMOVED
 }
 
 model Account {

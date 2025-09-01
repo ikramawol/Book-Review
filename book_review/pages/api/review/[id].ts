@@ -12,13 +12,6 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 const { id } = req.query;
 const reviewId = Array.isArray(id) ? id[0] : id;
 
-//   if (isNaN(Number(reviewId))) {
-//     return res.status(400).json({
-//       success: false,
-//       error: 'Invalid review Id'
-//     });
-//   }
-
 try {
   const review = await prisma.review.findUnique({
     where: { id: reviewId },

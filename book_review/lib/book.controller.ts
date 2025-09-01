@@ -6,7 +6,8 @@ export async function createBook(
   title: string,
   image: string,
   author: string,
-  description: string
+  description: string,
+  publishedDate?: Date
 ) {
   try {
     const book = await prisma.book.create({
@@ -15,6 +16,7 @@ export async function createBook(
         image,
         author,
         description,
+        publishedDate: publishedDate || new Date(),
       },
     });
     return {
@@ -30,24 +32,339 @@ export async function createBook(
   }
 }
 
-//GetAll
-
+//GetAll with enhanced filtering and search
 export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
   const skip = (page - 1) * limit;
+  
+  // Search parameters
+  const search = req.query.search as string;
+  const category = req.query.category as string;
+  const author = req.query.author as string;
+  const sortBy = req.query.sortBy as string || 'publishedDate';
+  const sortOrder = req.query.sortOrder as string || 'desc';
 
   try {
-    const books = await prisma.book.findMany({
-      skip,
-      take: limit,
-    });
+    // Build where clause for filtering
+    const where: any = {};
+    
+    // Search functionality
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { author: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Category filter
+    if (category) {
+      where.categories = {
+        some: {
+          name: { equals: category, mode: 'insensitive' }
+        }
+      };
+    }
+
+    // Author filter
+    if (author) {
+      where.author = { contains: author, mode: 'insensitive' };
+    }
+
+    // Build order by clause
+    const orderBy: any = {};
+    if (sortBy === 'views') {
+      orderBy.views = sortOrder;
+    } else if (sortBy === 'title') {
+      orderBy.title = sortOrder;
+    } else if (sortBy === 'author') {
+      orderBy.author = sortOrder;
+    } else if (sortBy === 'publishedDate') {
+      orderBy.publishedDate = sortOrder;
+    } else {
+      // Default to publishedDate since Book model doesn't have createdAt
+      orderBy.publishedDate = sortOrder;
+    }
+
+    // Get books with pagination and filtering
+    const [books, totalBooks] = await Promise.all([
+      prisma.book.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy,
+        include: {
+          categories: true,
+          reviews: true,
+          _count: {
+            select: {
+              reviews: true,
+            },
+          },
+        },
+      }),
+      prisma.book.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(totalBooks / limit);
+
     return res.status(200).json({
       success: true,
       data: books,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalBooks,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
     });
   } catch (error) {
     console.error("Error fetching books:", error);
+    return res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}
+
+// Search books with advanced filtering
+export async function searchBooks(req: NextApiRequest, res: NextApiResponse) {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const skip = (page - 1) * limit;
+  
+  const query = req.query.q as string;
+  const category = req.query.category as string;
+  const author = req.query.author as string;
+  const minRating = parseFloat(req.query.minRating as string);
+  const maxRating = parseFloat(req.query.maxRating as string);
+  const sortBy = req.query.sortBy as string || 'relevance';
+
+  if (!query) {
+    return res.status(400).json({
+      success: false,
+      error: "Search query is required",
+    });
+  }
+
+  try {
+    // Build where clause for search
+    const where: any = {
+      OR: [
+        { title: { contains: query, mode: 'insensitive' } },
+        { description: { contains: query, mode: 'insensitive' } },
+        { author: { contains: query, mode: 'insensitive' } },
+      ],
+    };
+
+    // Category filter
+    if (category) {
+      where.categories = {
+        some: {
+          name: { equals: category, mode: 'insensitive' }
+        }
+      };
+    }
+
+    // Author filter
+    if (author) {
+      where.author = { contains: author, mode: 'insensitive' };
+    }
+
+    // Rating filter
+    if (minRating || maxRating) {
+      where.reviews = {
+        some: {
+          rating: {
+            ...(minRating && { gte: minRating }),
+            ...(maxRating && { lte: maxRating }),
+          },
+        },
+      };
+    }
+
+    // Build order by clause
+    const orderBy: any = {};
+    if (sortBy === 'rating') {
+      orderBy.reviews = {
+        _avg: {
+          rating: 'desc',
+        },
+      };
+    } else if (sortBy === 'views') {
+      orderBy.views = 'desc';
+    } else if (sortBy === 'title') {
+      orderBy.title = 'asc';
+    } else if (sortBy === 'author') {
+      orderBy.author = 'asc';
+    } else {
+      // Default relevance sorting (by views and recent)
+      orderBy.views = 'desc';
+    }
+
+    // Get search results
+    const [books, totalBooks] = await Promise.all([
+      prisma.book.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy,
+        include: {
+          categories: true,
+          reviews: {
+            select: {
+              rating: true,
+            },
+          },
+          _count: {
+            select: {
+              reviews: true,
+            },
+          },
+        },
+      }),
+      prisma.book.count({ where }),
+    ]);
+
+    // Calculate average ratings
+    const booksWithAvgRating = books.map(book => {
+      const avgRating = book.reviews.length > 0
+        ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / book.reviews.length
+        : 0;
+      
+      return {
+        ...book,
+        averageRating: Math.round(avgRating * 10) / 10,
+        reviews: undefined, // Remove individual reviews from response
+      };
+    });
+
+    const totalPages = Math.ceil(totalBooks / limit);
+
+    return res.status(200).json({
+      success: true,
+      data: booksWithAvgRating,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalBooks,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+      searchInfo: {
+        query,
+        category,
+        author,
+        minRating,
+        maxRating,
+        sortBy,
+      },
+    });
+  } catch (error) {
+    console.error("Error searching books:", error);
+    return res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}
+
+// Get trending books
+export async function getTrendingBooks(req: NextApiRequest, res: NextApiResponse) {
+  const limit = parseInt(req.query.limit as string) || 12;
+  const period = req.query.period as string || 'week'; // week, month, all
+
+  try {
+    let dateFilter: any = {};
+    
+    // Apply date filter based on period
+    if (period === 'week') {
+      dateFilter.gte = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    } else if (period === 'month') {
+      dateFilter.gte = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    }
+
+    const books = await prisma.book.findMany({
+      take: limit,
+      orderBy: [
+        { views: 'desc' },
+        { publishedDate: 'desc' }, // Use publishedDate instead of createdAt
+      ],
+      where: {
+        ...(period !== 'all' && { publishedDate: dateFilter }), // Use publishedDate instead of createdAt
+      },
+      include: {
+        categories: true,
+        reviews: {
+          select: {
+            rating: true,
+          },
+        },
+        _count: {
+          select: {
+            reviews: true,
+          },
+        },
+      },
+    });
+
+    // Calculate average ratings and add trending score
+    const booksWithTrendingData = books.map((book, index) => {
+      const avgRating = book.reviews.length > 0
+        ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / book.reviews.length
+        : 0;
+      
+      // Simple trending score based on views and recency
+      const trendingScore = book.views + (book._count.reviews * 10);
+      
+      return {
+        ...book,
+        averageRating: Math.round(avgRating * 10) / 10,
+        trendingScore,
+        trendingRank: index + 1,
+        reviews: undefined, // Remove individual reviews from response
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: booksWithTrendingData,
+      period,
+      limit,
+    });
+  } catch (error) {
+    console.error("Error fetching trending books:", error);
+    return res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}
+
+// Get book categories for filtering
+export async function getBookCategories(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const categories = await prisma.category.findMany({
+      include: {
+        _count: {
+          select: {
+            books: true,
+          },
+        },
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: categories,
+    });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
     return res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -62,6 +379,7 @@ export async function getbookById(bookId: string) {
       where: { id: bookId },
       include: {
         reviews: true,
+        categories: true,
       },
     });
     return {

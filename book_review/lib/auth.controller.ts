@@ -2,6 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../lib/prisma";
 import jwt from "jsonwebtoken";
 import { comparePassword, hashPassword } from "@/utils/jwt";
+import { email } from "zod";
+import { v4 as uuidv4 } from 'uuid';
+
 // import { Role } from "@prisma/client";
 
 //CreateUser
@@ -35,7 +38,7 @@ export async function createUser(
 
 export async function getAllUsers(req: NextApiRequest, res: NextApiResponse) {
   const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
+  const limit = parseInt(req.query.limit as string) || 12;
   const skip = (page - 1) * limit;
 
   try {
@@ -81,7 +84,7 @@ export async function getUserById(userId: string) {
 //UpdateUser
 export async function updateUser(
   id: string,
-  data: { email: string; password: string; name?: string }
+  data: { email: string; hash: string; name?: string }
 ) {
   try {
     const user = await prisma.user.update({
@@ -116,7 +119,10 @@ export async function deleteUser(req: NextApiRequest, res: NextApiResponse) {
 
     const user = await prisma.user.update({
       where: { id: typeof id === "string" ? id : Array.isArray(id) ? id[0] : "" },
-      data: { isDeleted: true },
+      data: { 
+        isDeleted: true, 
+        email: email + `_${uuidv4()}`,
+       },
     });
 
     return res.status(200).json({ message: "User deleted succesfully!", user });
@@ -155,23 +161,3 @@ export async function refreshToken(refreshToken: string) {
     return { error: "Invalid or expired refresh token", status: 403 };
   }
 }
-
-// export async function changeRole(userId: string, newRole: Role) {
-//   try {
-
-//     const user = await prisma.user.update({
-//       where: { id: userId },
-//       data: { role: newRole },
-//     });
-//     return {
-//       success: true,
-//       data: user,
-//     };
-//   } catch (error) {
-//     console.error("Error changing user role:", error);
-//     return {
-//       success: false,
-//       error: error instanceof Error ? error.message : "Unknown error",
-//     };
-//   }
-// }

@@ -1,15 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { refreshToken } from "../../../lib/auth.controller";
+import { refreshToken } from "@/lib/auth.controller";
 
-export default async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const rfToken = req.cookies.refreshToken;
-  const result = await refreshToken(rfToken ? rfToken : "");
+export async function refresh(req: NextApiRequest, res: NextApiResponse) {
 
-  if (result.error) {
-    return res.status(result.status).json({ message: result.error });
+  const { refreshToken: token } = req.body;
+  const result = await refreshToken(token);
+
+  if (result.error) return res.status(result.status).json({ error: result.error });
+  return res.json({ 
+    accessToken: result.accessToken, 
+    refreshToken: result.newRefreshToken 
+  });
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    return refresh(req, res);
   }
-
-  res.setHeader("Set-Cookie", 
-    `refreshToken=${result.newRefreshToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}`);
-  return res.status(result.status).json({ accessToken: result.accessToken });
 }

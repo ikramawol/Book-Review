@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getAllUsers } from "@/lib/auth.controller";
 
-export default async function handleGET(
+export async function handleGET(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 12;
     if (isNaN(page) || isNaN(limit)) {
       return res
         .status(400)
@@ -21,5 +21,14 @@ export default async function handleGET(
     return res
       .status(500)
       .json({ success: false, error: "Internal Server Error" });
+  }
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "GET") {
+    return handleGET(req, res);
   }
 }
