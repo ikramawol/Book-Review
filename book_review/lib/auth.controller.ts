@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../lib/prisma";
 import jwt from "jsonwebtoken";
 import { comparePassword, hashPassword } from "@/utils/jwt";
-import { email } from "zod";
 import { v4 as uuidv4 } from 'uuid';
 
 // import { Role } from "@prisma/client";
@@ -91,6 +90,10 @@ export async function updateUser(
       where: { id },
       data,
     });
+    return {
+      success: true,
+      data: user,
+    };
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
@@ -121,7 +124,7 @@ export async function deleteUser(req: NextApiRequest, res: NextApiResponse) {
       where: { id: typeof id === "string" ? id : Array.isArray(id) ? id[0] : "" },
       data: { 
         isDeleted: true, 
-        email: email + `_${uuidv4()}`,
+        email: `${req.body.email}_${uuidv4()}`,
        },
     });
 
