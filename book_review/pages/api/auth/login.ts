@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma'
 import jwt from 'jsonwebtoken'
 import { rateLimiter } from "@/middlewares/rateLimiter";
 
-// 10 attempts per 15 minutes
+
 export const login = rateLimiter({ windowMs: 15 * 60 * 1000, max: 5 }, "login")(
   async function login(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -57,7 +57,6 @@ export const login = rateLimiter({ windowMs: 15 * 60 * 1000, max: 5 }, "login")(
         data: {
           user: { id: user.id, email: user.email, name: user.name },
           accessToken,
-          refreshToken
         },
         message: 'Login successful'
       });
