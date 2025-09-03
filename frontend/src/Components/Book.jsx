@@ -20,6 +20,12 @@ const Book = () => {
 
     let bookReviews = ["lorem", "asdf", "qwer", "zxcv"]
 
+    // FIX THIS LATER
+    // get list of reviews from backend
+    // make the review submit work
+    // make the review flag work
+    // add a confirmation for the review flag
+
     useEffect(() => {
         const handleClick = (e) => {
             const children = Array.from(starsList.current.children)

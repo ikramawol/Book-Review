@@ -1,9 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/admin.css';
 
 const AdminGenres = () => {
-  const [genreList, setGenreList] = useState(["Fiction", "Mystery", "Horror", "Action", "Detective"]);
+
+  // FIX THIS LATER
+  // clean up the ui a bit
+
+
+  const [genreList, setGenreList] = useState([
+    {name: "Fiction",id: 83}, 
+    {name: "Mystery",id: 81}, 
+    {name: "Horror",id: 84}, 
+    {name: "Action",id: 85}, 
+    {name: "Detective",id: 87}, 
+  ]);
   const [newGenre, setNewGenre] = useState("");
+
+
+  const getGenres = async  () => {
+    try {
+      // const response = await fetch(`http://localhost:3000/api/book/categories`)
+      const response = await fetch(`/api/book/categories`)
+      response.json().then(data=>{
+        console.log(data.data)
+        setGenreList(data.data)
+      })
+    } catch (error) {
+      
+    }
+  }
+  
+  useEffect(() => {
+    getGenres();
+  }, []);
 
   const removeGenre = (genre) => {
     setGenreList(genreList.filter(g => g !== genre));
@@ -23,8 +52,8 @@ const AdminGenres = () => {
         <div className="list">
           {genreList.map((str, idx) => (
             <div className="genreItem" key={idx}>
-              <p>{str}</p>
-              <span onClick={() => removeGenre(str)}>❌</span>
+              <p>{str.name}</p>
+              <span onClick={() => removeGenre(str.id)}>❌</span>
             </div>
           ))}
         </div>

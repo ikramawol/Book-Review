@@ -7,6 +7,10 @@ import Comment from './Comment'
 
 const AdminBookView = () => {
 
+  // FIX THIS LATER
+  // fix the ui
+  // handle the suspend user and remove comment functions
+
   const starsList = useRef(null)
 
   const navigate = useNavigate();

@@ -10,6 +10,12 @@ const flaggedReviews = Array.from({ length: 48 }, (_, i) => ({
 }));
 
 const AdminFlags = () => {
+
+    // FIX THIS LATER
+  // get the list of requests from the backend
+  // handle the approve and reject functions
+
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 

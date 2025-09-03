@@ -1,121 +1,161 @@
-import React, { useState } from 'react'
-import '../App.css'
-import '../styles/books.css'
-import Navbar from './Navbar'
-import Searchbar from './searchbar'
-import BookThumbnail from './BookThumbnail'
-import Footer from './Footer'
+import React, { useEffect, useState } from 'react';
+import '../App.css';
+import '../styles/books.css';
+import Navbar from './Navbar';
+import Searchbar from './searchbar';
+import BookThumbnail from './BookThumbnail';
+import Footer from './Footer';
 
 const BooksPage = () => {
-
-  let latest = [
-    {
-      name: "Just for the summer",
-      author: " Abby Jimenez",
-      rating: 4,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg"
-    },
-    {
-      name: "Atomic Habits",
-      author: " James Clear",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
-    },
-    {
-      name: "ONYX Storm",
-      author: "Rebecca Yarros",
-      rating: 3,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg"
-    },
-    {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
-    },
-    {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
-    },
-    {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
-    },
-    {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
-    },
-    {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
-    },
-  ]
+  const [currentPage, setCurrentPage] = useState(1);
+  const [booksList, setBooksList] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const [filter, setFilter] = useState({
-    sortby: "date",
-    genre: "romance",
+    sortby: 'date', // 'date', 'alpha', 'rating'
+    genre: '', // empty means all
     rating: [1, 5],
-    year: [1950, 2015]
-  })
+    year: [1900, 2025],
+  });
 
-  // Handle select changes for sortby and genre
+  const itemsPerPage = 15;
+
+  // Fetch books from API based on current page and filters
+  // FIX THIS LATER 
+  // figure out how the query parameters are bing used its not working rn
+    // make the search by name or author work
+  // add a filter button so its not calling on every input change
+  const getListPageOfBooks = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams({
+        page: currentPage,
+        limit: itemsPerPage,
+        sort: filter.sortby,
+        genre: filter.genre,
+        ratingMin: filter.rating[0],
+        ratingMax: filter.rating[1],
+        yearMin: filter.year[0],
+        yearMax: filter.year[1],
+      });
+
+      const response = await fetch(`/api/book`);
+      // const text = await response.text();
+      // console.log('Raw response:', text);
+      const result = await response.json();
+
+      if (result.success) {
+        console.log(result)
+        setBooksList(result.data);
+        setTotalPages(result.pagination.totalPages);
+      } else {
+        console.log("problem")
+        setBooksList([]);
+        setTotalPages(1);
+      }
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getListPageOfBooks();
+  }, [currentPage, filter]);
+
   const handleSelectChange = (field, value) => {
     setFilter((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
+    setCurrentPage(1); // reset to first page when filter changes
   };
 
-  // Handle rating change (array)
   const handleRatingChange = (index, value) => {
     setFilter((prev) => {
       const newRating = [...prev.rating];
       newRating[index] = Number(value);
       return { ...prev, rating: newRating };
     });
+    setCurrentPage(1);
   };
 
-  // Handle year change (array)
   const handleYearChange = (index, value) => {
     setFilter((prev) => {
       const newYear = [...prev.year];
       newYear[index] = Number(value);
       return { ...prev, year: newYear };
     });
+    setCurrentPage(1);
   };
 
-  const requsetFilteredBooks = () => {
-    console.log((filter))
-  }
+  const renderPagination = () => {
+    const pages = [];
+
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push('...');
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (currentPage < totalPages - 2) pages.push('...');
+      pages.push(totalPages);
+    }
+
+    return (
+      <>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
+
+        {pages.map((page, index) =>
+          page === '...' ? (
+            <span key={index}>...</span>
+          ) : (
+            <span
+              key={index}
+              className={currentPage === page ? 'active-page' : ''}
+              onClick={() => setCurrentPage(page)}
+              style={{ cursor: 'pointer' }}
+            >
+              {page}
+            </span>
+          )
+        )}
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
+      </>
+    );
+  };
 
   return (
-    <div className='bookspage'>
+    <div className="bookspage">
       <Navbar />
-
       <div className="navgap"></div>
-
       <Searchbar />
 
       <div className="booksGrid">
-
+        {/* Filters */}
         <div className="filters">
-
-          {/* Sort By */}
           <div className="sortby">
             <p>Sort by</p>
             <select
-              name="sort"
-              id="sortBy"
               value={filter.sortby}
-              onChange={(e) => handleSelectChange("sortby", e.target.value)}
+              onChange={(e) => handleSelectChange('sortby', e.target.value)}
             >
               <option value="date">Date</option>
               <option value="alpha">A-Z</option>
@@ -123,22 +163,19 @@ const BooksPage = () => {
             </select>
           </div>
 
-          {/* Genre */}
           <div className="filterGenre">
             <p>Genre</p>
             <select
-              name="sortgenre"
-              id="filterGenre"
               value={filter.genre}
-              onChange={(e) => handleSelectChange("genre", e.target.value)}
+              onChange={(e) => handleSelectChange('genre', e.target.value)}
             >
-              <option value="romance">Romance</option>
-              <option value="mystery">Mystery</option>
-              <option value="horror">Horror</option>
+              <option value="">All</option>
+              <option value="Romance">Romance</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Horror">Horror</option>
             </select>
           </div>
 
-          {/* Rating */}
           <div className="filterRating">
             <p>Rating</p>
             <div className="inputFlex">
@@ -160,7 +197,6 @@ const BooksPage = () => {
             </div>
           </div>
 
-          {/* Year */}
           <div className="filterYear">
             <p>Year</p>
             <div className="inputFlex">
@@ -177,21 +213,43 @@ const BooksPage = () => {
               />
             </div>
           </div>
-
-          <button className='filterBtn' onClick={requsetFilteredBooks}>Filter</button>
-
         </div>
+
+        {/* Books List */}
         <div className="booksList">
-          {latest.map((book) => (
-            <BookThumbnail book={book} />
-          ))}
+          {loading ? (
+            <p>Loading...</p>
+          ) : booksList.length > 0 ? (
+            booksList.map((book) => (
+              <BookThumbnail
+                key={book.id}
+                book={{
+                  id: book.id,
+                  name: book.title,
+                  author: book.author,
+                  poster: book.image,
+                  rating: book.reviews.length
+                    ? (
+                        book.reviews.reduce((acc, r) => acc + r.rating, 0) /
+                        book.reviews.length
+                      ).toFixed(1)
+                    : 'N/A',
+                }}
+              />
+            ))
+          ) : (
+            <p>No books available</p>
+          )}
         </div>
+
+        <div className="lazyGap"></div>
+
+        <div className="pagination">{renderPagination()}</div>
       </div>
 
       <Footer />
-
     </div>
-  )
-}
+  );
+};
 
-export default BooksPage
+export default BooksPage;

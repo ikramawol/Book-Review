@@ -11,102 +11,102 @@ import Searchbar from './searchbar';
 const HomePage = () => {
 
   const scrollRef = useRef(null);
-const scrollRef2 = useRef(null);
+  const scrollRef2 = useRef(null);
 
-useEffect(() => {
-  const addScrollListener = (element) => {
-    if (!element) return;
+  useEffect(() => {
+    const addScrollListener = (element) => {
+      if (!element) return;
 
-    const handleWheel = (e) => {
-      if (e.deltaY === 0) return;
-      e.preventDefault();
-      element.scrollBy({
-        left: e.deltaY,
-        behavior: "smooth",
-      });
+      const handleWheel = (e) => {
+        if (e.deltaY === 0) return;
+        e.preventDefault();
+        element.scrollBy({
+          left: e.deltaY,
+          behavior: "smooth",
+        });
+      };
+
+      element.addEventListener("wheel", handleWheel, { passive: false });
+
+      return () => {
+        element.removeEventListener("wheel", handleWheel);
+      };
     };
 
-    element.addEventListener("wheel", handleWheel, { passive: false });
+    let cleanup1, cleanup2;
+
+    const applyListeners = () => {
+      if (cleanup1) cleanup1();
+      if (cleanup2) cleanup2();
+
+      if (scrollRef.current && scrollRef.current.scrollWidth > scrollRef.current.clientWidth) {
+        cleanup1 = addScrollListener(scrollRef.current);
+      }
+      if (scrollRef2.current && scrollRef2.current.scrollWidth > scrollRef2.current.clientWidth) {
+        cleanup2 = addScrollListener(scrollRef2.current);
+      }
+    };
+
+    applyListeners();
+
+    window.addEventListener("resize", applyListeners);
 
     return () => {
-      element.removeEventListener("wheel", handleWheel);
+      if (cleanup1) cleanup1();
+      if (cleanup2) cleanup2();
+      window.removeEventListener("resize", applyListeners);
     };
-  };
-
-  let cleanup1, cleanup2;
-
-  const applyListeners = () => {
-    if (cleanup1) cleanup1();
-    if (cleanup2) cleanup2();
-
-    if (scrollRef.current && scrollRef.current.scrollWidth > scrollRef.current.clientWidth) {
-      cleanup1 = addScrollListener(scrollRef.current);
-    }
-    if (scrollRef2.current && scrollRef2.current.scrollWidth > scrollRef2.current.clientWidth) {
-      cleanup2 = addScrollListener(scrollRef2.current);
-    }
-  };
-
-  applyListeners();
-
-  window.addEventListener("resize", applyListeners);
-
-  return () => {
-    if (cleanup1) cleanup1();
-    if (cleanup2) cleanup2();
-    window.removeEventListener("resize", applyListeners);
-  };
-}, []);
+  }, []);
 
 
   let latest = [
     {
-      name : "Just for the summer",
-      author : " Abby Jimenez",
+      name: "Just for the summer",
+      author: " Abby Jimenez",
       rating: 4,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg"
     },
     {
-      name : "Atomic Habits",
-      author : " James Clear",
+      name: "Atomic Habits",
+      author: " James Clear",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
     },
     {
-      name : "ONYX Storm",
-      author : "Rebecca Yarros",
+      name: "ONYX Storm",
+      author: "Rebecca Yarros",
       rating: 3,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg"
     },
     {
-      name : "A Court of Thorns and Roses",
-      author : "Sarah J. Maas",
+      name: "A Court of Thorns and Roses",
+      author: "Sarah J. Maas",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
     },
     {
-      name : "A Court of Thorns and Roses",
-      author : "Sarah J. Maas",
+      name: "A Court of Thorns and Roses",
+      author: "Sarah J. Maas",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
     },
     {
-      name : "A Court of Thorns and Roses",
-      author : "Sarah J. Maas",
+      name: "A Court of Thorns and Roses",
+      author: "Sarah J. Maas",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
     },
     {
-      name : "A Court of Thorns and Roses",
-      author : "Sarah J. Maas",
+      name: "A Court of Thorns and Roses",
+      author: "Sarah J. Maas",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
     },
     {
-      name : "A Court of Thorns and Roses",
-      author : "Sarah J. Maas",
+      name: "A Court of Thorns and Roses",
+      author: "Sarah J. Maas",
       rating: 5,
-      poster : "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
     },
   ]
 
@@ -176,9 +176,36 @@ useEffect(() => {
     },
   ]
 
+
+  // FIX THIS LATER
+  // get list of books and genres from backend
+  // make the genre selection take to the books page filtered to the selected genre
+
+
+
+  // const getLatestBooks = async () => {
+  //   const response = await fetch(`/api/book`);
+  //   const data = await response.json();
+  //   setLatestBooks(data.data);
+  // }
+  // const getGenre = async () => {
+  //   const response = await fetch(`/api/book/categories`);
+  //   const data = await response.json();
+  //   setGenre(data.data);
+  // }
+
+  // const [latestBooks, setLatestBooks] = useState([]);
+  // const [genre, setGenre] = useState([]);
+  // useEffect(() => {
+  //   getLatestBooks();
+  //   getGenre();
+  // }, []);
+
+
+
   return (
     <div>
-      <Navbar/>
+      <Navbar />
 
       <section className="heroSection">
         <div className="hwrap">
@@ -189,37 +216,37 @@ useEffect(() => {
       </section>
 
 
-      <Searchbar/>
-      
+      <Searchbar />
+
       <section className="latest">
         <div className="sectionTitle">
           <h3>Latest</h3>
-           <Link to="/books" ><p className='more'>more</p> </Link>
+          <Link to="/books" ><p className='more'>more</p> </Link>
         </div>
         <div className="display" ref={scrollRef}>
-          {latest.map((book)=>(
-            <BookThumbnail book={book}/>
-          ))}
-        </div>
-        <div></div>
-      </section>
-      
-      
-      <section className="Genre">
-        <div className="sectionTitle">
-          <h3>Genre</h3>
-           <Link to="/books" ><p className='more'>more</p> </Link>
-        </div>
-        <div className="display" ref={scrollRef2}>
-          {genre.map((gen)=>(
-            
-            <GenreThumbnail genre={gen}/>
+          {latest.map((book) => (
+            <BookThumbnail book={book} />
           ))}
         </div>
         <div></div>
       </section>
 
-      <Footer/>
+
+      <section className="Genre">
+        <div className="sectionTitle">
+          <h3>Genre</h3>
+          <Link to="/books" ><p className='more'>more</p> </Link>
+        </div>
+        <div className="display" ref={scrollRef2}>
+          {genre.map((gen) => (
+
+            <GenreThumbnail genre={gen} />
+          ))}
+        </div>
+        <div></div>
+      </section>
+
+      <Footer />
 
     </div>
   )

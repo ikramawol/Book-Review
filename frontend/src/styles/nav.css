@@ -40,3 +40,41 @@ h2{
     border-radius: 60px;
     backdrop-filter: blur(5px);
 }
+
+.navList .profilePic{
+    position: relative;
+}
+
+.navList .profilePic.active .userOptions{
+    opacity: 1;
+    top: 130%;
+    pointer-events: all;
+}
+.navList .profilePic .userOptions{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    opacity: 0;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: var(--clr-900);
+    border: 2px solid var(--clr-300);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: opacity 200ms, top 200ms;
+    pointer-events: none;
+}
+.navList .profilePic .userOptions p:hover{
+    color: var(--clr-900);
+    background-color: var(--clr-300);
+}
+.navList .profilePic .userOptions p{
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+    /* color: var(--clr-300); */
+    color: white;
+    background-color: var(--clr-900);
+    transition: color 200ms, background-color 200ms;
+}

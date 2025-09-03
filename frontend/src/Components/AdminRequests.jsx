@@ -9,6 +9,13 @@ const unsuspensionRequests = Array.from({ length: 35 }, (_, i) => ({
 }));
 
 const AdminRequests = () => {
+
+
+  // FIX THIS LATER
+  // get the list of requests from the backend
+  // handle the approve and reject functions
+
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 

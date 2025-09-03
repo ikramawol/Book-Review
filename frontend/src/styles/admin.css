@@ -174,9 +174,12 @@
 }
 
 .bookThumbnail img {
+    aspect-ratio: 18/24;
+    object-fit: contain;
+    /* width: 100%; */
     width: 180px;
-    height: 240px;
-    object-fit: cover;
+    /* height: 240px; */
+    /* object-fit: cover; */
     border-radius: 4px;
     margin-bottom: 10px;
 }

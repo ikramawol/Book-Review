@@ -9,6 +9,7 @@ import ProfilePage from './Components/ProfilePage';
 import AboutPage from './Components/AboutPage';
 import Admin from './Components/Admin';
 import AdminBookView from './Components/AdminBookView';
+import UserSettings from './Components/UserSettings';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/genres" element={<GenrePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/userSettings" element={<UserSettings/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/reviews/:id" element={<AdminBookView />} />

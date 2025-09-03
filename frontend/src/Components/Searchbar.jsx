@@ -5,6 +5,9 @@ const Searchbar = () => {
   const [searchType, setSearchType] = useState('Book');
 
   // Example data (replace with API results later)
+  // FIX THIS LATER
+  // get the api from the backend on key input after the 5th letter
+  // make the suggestion link to the book page
   const items = [
     'Pride and Prejudice',
     'The Great Gatsby',

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line, XAxis, YAxis, CartesianGrid
 } from 'recharts';
 
 const AdminDashboard = () => {
+
+  // FIX THIS LATER
+  // fix the ui for users and books numbers and get them from the backend
+
+
   let sampleData = {
     users: 300,
     books: 1200,
@@ -24,8 +30,46 @@ const AdminDashboard = () => {
       { date: "Nov W1", no: 15 }
     ]
   };
+  let COLORS = ["#C9AA71", "#8E6C3A", "#F5D49C", "#A07C4A", "#D3B88C", "#7C5A30"];
 
-  const COLORS = ["#C9AA71", "#8E6C3A", "#F5D49C", "#A07C4A", "#D3B88C", "#7C5A30"];
+  const [genreList, setGenreList] = useState([
+    { name: "Romance", count: 120 },
+      { name: "Horror", count: 80 },
+      { name: "Action", count: 200 },
+      { name: "Mystery", count: 95 },
+      { name: "History", count: 50 },
+      { name: "Fantasy", count: 150 } 
+  ]);
+
+  const getGenres = async  () => {
+    try {
+      // const response = await fetch(`http://localhost:3000/api/book/categories`)
+      const response = await fetch(`/api/book/categories`)
+      response.json().then(data=>{
+        let structuredGenre = data.data.map(gen =>{ return{name: gen.name, count: gen._count.books + 1}})
+        console.log(structuredGenre)
+        COLORS = createRandomColors(structuredGenre.length)
+        setGenreList(structuredGenre)
+      })
+    } catch (error) {
+      
+    }
+  }
+
+  useEffect(() => {
+    getGenres();
+  }, []);
+
+  function createRandomColors(numColors) {
+    let newColors = [];
+    for (let i = 0; i < numColors; i++) {
+      const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+      newColors.push(randomColor);
+    }
+    return newColors;
+  }
+
+  
 
   return (
     <div className="dashboard">
@@ -43,7 +87,7 @@ const AdminDashboard = () => {
           <ResponsiveContainer>
             <PieChart>
               <Pie
-                data={sampleData.genres}
+                data={genreList}
                 dataKey="count"
                 nameKey="name"
                 cx="50%"
@@ -51,11 +95,11 @@ const AdminDashboard = () => {
                 outerRadius={80}
                 label
               >
-                {sampleData.genres.map((entry, index) => (
+                {genreList.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip />
+              {/* <Tooltip /> */}
               <Legend />
             </PieChart>
           </ResponsiveContainer>

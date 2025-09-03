@@ -12,6 +12,11 @@ const AdminReviews = ({pageswitch}) => {
   const [query, setQuery] = useState('');
 
   // Fetch books (Mock for now, replace with API)
+
+  // FIX THIS LATER
+  // get the list of boooks from the backend
+  // send the book info to the admin book view page
+
   useEffect(() => {
     const fetchBooks = async () => {
       const mockBooks = Array.from({ length: 120 }, (_, i) => ({
