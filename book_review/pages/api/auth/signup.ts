@@ -63,10 +63,8 @@ export const signup = rateLimiter({ windowMs: 60 * 60 * 1000, max: 5 }, "signup"
             id: result.data.id,
             email: result.data.email,
             name: result.data.name,
-            hashedRt: hashedRt
           },
           accessToken,
-          refreshToken
         },
         message: 'User registered successfully'
       })
