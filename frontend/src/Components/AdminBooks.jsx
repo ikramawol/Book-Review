@@ -1,31 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/admin.css';
 
 const AdminBooks = ({ genres = ["horror", "romance"] }) => {
-
-
-    // FIX THIS LATER
-    // make the search button interactive
-    // make the suggestion list show as "..." till it finds books
-    // fix the ui for the suggestions
-
 
     const [onUpdate, setOnUpdate] = useState(false);
     const [form, setForm] = useState({
         id: null,
         title: '',
         author: '',
-        genre: '',
+        genres: [], // Changed from single genre to array of genres
         date: '',
-        imageUrl: '',
+        image: null, // Changed from imageUrl to image, initialized to null
         description: '',
     });
+    const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [genresList, setGenresList] = useState(genres);
+    const genreDropdownRef = useRef(null);
 
     useEffect(() => {
         fetchGenres();
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (genreDropdownRef.current && !genreDropdownRef.current.contains(event.target)) {
+                setIsGenreDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const fetchGenres = async () => {
@@ -48,6 +56,26 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handleFileChange = (e) => {
+        setForm({ ...form, image: e.target.files[0] });
+    };
+
+    const handleGenreToggle = (genre) => {
+        setForm(prev => ({
+            ...prev,
+            genres: prev.genres.includes(genre)
+                ? prev.genres.filter(g => g !== genre)
+                : [...prev.genres, genre]
+        }));
+    };
+
+    const getSelectedGenresText = () => {
+        if (form.genres.length === 0) return 'Select Genres';
+        if (form.genres.length === 1) return form.genres[0];
+        if (form.genres.length <= 3) return form.genres.join(', ');
+        return `${form.genres.length} genres selected`;
+    };
+
     const handleSearch = async (e) => {
         e.preventDefault();
         if (!searchQuery) {
@@ -56,7 +84,11 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
         }
 
         try {
-            const res = await fetch(`/api/book/search?q=${searchQuery}`);
+            
+            let encodedQuery = encodeURIComponent(searchQuery)
+            let uri = `/api/book/search?q=${encodedQuery}`
+            console.log(uri)
+            const res = await fetch(uri);
             const data = await res.json();
             if (data.success) {
                 setSearchResults(data.data);
@@ -72,9 +104,9 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             id: book.id,
             title: book.title,
             author: book.author,
-            genre: book.categories[0]?.name || '',
+            genres: book.categories?.map(cat => cat.name) || [], // Map all categories to genres array
             date: book.publishedDate.split('T')[0],
-            imageUrl: book.image,
+            image: book.image, // The selected book will have a URL here, not a File object
             description: book.description,
         });
         setSearchResults([]); // Clear search results after selection
@@ -82,52 +114,80 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const bookData = {
-            title: form.title,
-            author: form.author,
-            description: form.description,
-            image: form.imageUrl,
-            publishedDate: form.date,
-        };
+
+        // Use FormData to handle the file upload
+        const formData = new FormData();
+        formData.append('title', form.title);
+        formData.append('author', form.author);
+        formData.append('description', form.description);
+        formData.append('publishedDate', form.date);
+        
+        // Append genres as JSON string
+        formData.append('genres', JSON.stringify(form.genres));
+        
+        // Append the image file if it exists
+        if (form.image instanceof File) {
+            formData.append('image', form.image);
+        } else if (typeof form.image === 'string') {
+            // If it's a string, it's an existing URL for an update,
+            // so we send it as a separate field or not at all depending on the backend API
+            // For this example, we'll assume the backend handles both cases
+            formData.append('imageUrl', form.image);
+        }
 
         try {
-            if (onUpdate) {
-                // API call to update book
-                const res = await fetch(`/api/book/update?id=${form.id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(bookData),
-                });
-                const data = await res.json();
-                if (data.success) {
-                    console.log('Book updated successfully!');
-                    // Reset form
-                    setForm({ id: null, title: '', author: '', genre: '', date: '', imageUrl: '', description: '' });
-                }
-            } else {
-                // API call to add book
-                const res = await fetch('/api/book/create', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(bookData),
-                });
-                const data = await res.json();
-                if (data.success) {
-                    console.log('Book added successfully!');
-                    // Reset form
-                    setForm({ id: null, title: '', author: '', genre: '', date: '', imageUrl: '', description: '' });
-                }
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                console.error('No access token found. Please log in.');
+                return;
             }
+            
+            let res;
+            if (onUpdate) {
+                res = await fetch(`/api/book?id=${form.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                        // 'Content-Type': 'application/json' is NOT set here.
+                        // The browser automatically sets it to 'multipart/form-data'
+                        // when using FormData.
+                    },
+                    body: formData,
+                });
+            } else {
+                res = await fetch('/api/book', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData,
+                });
+            }
+            const data = await res.json();
+                         if (data.success) {
+                 console.log('Book submitted successfully!');
+                 setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' });
+             }
         } catch (error) {
             console.error('Submission failed:', error);
         }
     };
 
+    // Helper function to create a preview URL for the selected file
+    const getPreviewUrl = () => {
+        if (form.image instanceof File) {
+            return URL.createObjectURL(form.image);
+        } else if (typeof form.image === 'string') {
+            return form.image;
+        }
+        return './pfp.png';
+    };
+
     return (
         <div className="bookManage">
             <div className="bookoption">
-                <button className={!onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(false); setForm({ id: null, title: '', author: '', genre: '', date: '', imageUrl: '', description: '' }); }}>ADD</button>
-                <button className={onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(true); setForm({ id: null, title: '', author: '', genre: '', date: '', imageUrl: '', description: '' }); }}>UPDATE</button>
+                <button className={!onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(false); setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' }); }}>ADD</button>
+                <button className={onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(true); setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' }); }}>UPDATE</button>
             </div>
 
             {onUpdate && (
@@ -166,21 +226,38 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
                         <input type="text" name="author" value={form.author} onChange={handleChange} required />
                     </div>
                     <div className="inputrow">
-                        <p>Genre</p>
-                        <select name="genre" value={form.genre} onChange={handleChange} required>
-                            <option value="">Select Genre</option>
-                            {genresList.map((g, index) => (
-                                <option key={index} value={g}>{g}</option>
-                            ))}
-                        </select>
+                        <p>Genres</p>
+                        <div className="genreDropdown" ref={genreDropdownRef}>
+                            <div 
+                                className="genreDropdownTrigger" 
+                                onClick={() => setIsGenreDropdownOpen(!isGenreDropdownOpen)}
+                            >
+                                <span>{getSelectedGenresText()}</span>
+                                <span className="dropdownArrow">{isGenreDropdownOpen ? '▲' : '▼'}</span>
+                            </div>
+                            {isGenreDropdownOpen && (
+                                <div className="genreDropdownContent">
+                                    {genresList.map((genre, index) => (
+                                        <label key={index} className="genreOption">
+                                            <input
+                                                type="checkbox"
+                                                checked={form.genres.includes(genre)}
+                                                onChange={() => handleGenreToggle(genre)}
+                                            />
+                                            <span>{genre}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="inputrow">
                         <p>Date</p>
                         <input type="date" name="date" value={form.date} onChange={handleChange} required />
                     </div>
                     <div className="inputrow">
-                        <p>Image URL</p>
-                        <input type="text" name="imageUrl" value={form.imageUrl} onChange={handleChange} />
+                        <p>Image</p>
+                        <input type="file" name="image" onChange={handleFileChange} />
                     </div>
                     <div className="inputrow">
                         <p>Description</p>
@@ -194,10 +271,9 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
 
                 <div className="preview">
                     <div className="bookThumbnail">
-                        <img src={form.imageUrl || './pfp.png'} alt="Book" />
+                        <img src={getPreviewUrl()} alt="Book" />
                         <p className="thumbnailName">{form.title || 'Book Title'}</p>
                         <p className="thumbnailAuthor">by {form.author || 'Author'}</p>
-                        {/* Assuming a default or placeholder star rating */}
                         <p>✰✰✰✰✰</p>
                     </div>
                 </div>

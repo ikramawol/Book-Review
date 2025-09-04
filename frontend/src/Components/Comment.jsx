@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Comment = (review) => {
-    
+const Comment = ({review}) => {
+    console.log("reviwe",review)
     function stars(n) {
         return '★★★★★'.slice(0, n) + '✰✰✰✰✰'.slice(n, 5);
     }
@@ -10,10 +10,10 @@ const Comment = (review) => {
     <div className='commentWrapper'>
         <div className="avatar">
             <img src="./pfp.png" alt="" srcset="" />
-            <p>{stars(3)}</p>
+            <p>{stars(review.rating)}</p>
         </div>
         <div className="commentWrap">
-            <p>{review.review}</p>
+            <p>{review.content}</p>
             <i>🚩</i>
         </div>
     </div>

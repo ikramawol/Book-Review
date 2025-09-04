@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import '../styles/books.css';
 import Navbar from './Navbar';
-import Searchbar from './searchbar';
+import Searchbar from './Searchbar';
 import BookThumbnail from './BookThumbnail';
 import Footer from './Footer';
+import { useLocation } from 'react-router-dom';
 
 const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,14 +13,21 @@ const BooksPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const location = useLocation();
+  const { genreSelected } = location.genreSelected || {};
+  console.log("genre selected empity if nothing is selected",genreSelected)
+
+
   const [filter, setFilter] = useState({
     sortby: 'date', // 'date', 'alpha', 'rating'
-    genre: '', // empty means all
+    genre: genreSelected || '', // empty means all
     rating: [1, 5],
     year: [1900, 2025],
   });
 
   const itemsPerPage = 15;
+
+
 
   // Fetch books from API based on current page and filters
   // FIX THIS LATER 
@@ -30,23 +38,24 @@ const BooksPage = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
-        page: currentPage,
-        limit: itemsPerPage,
-        sort: filter.sortby,
-        genre: filter.genre,
-        ratingMin: filter.rating[0],
-        ratingMax: filter.rating[1],
-        yearMin: filter.year[0],
-        yearMax: filter.year[1],
+        // page: currentPage,
+        // limit: itemsPerPage,
+        // sort: filter.sortby,
+        // genre: filter.genre,
+        minRating: filter.rating[0],
+        maxRating: filter.rating[1],
+        yearMin: `${filter.year[0]}-01-01`,
+        yearMax: `${filter.year[1]}-12-31`,
       });
+      console.log(params)
 
-      const response = await fetch(`/api/book`);
+      const response = await fetch(`/api/book?${params}`);
       // const text = await response.text();
       // console.log('Raw response:', text);
       const result = await response.json();
 
       if (result.success) {
-        console.log(result)
+        console.log( "fetch results for books with params",result)
         setBooksList(result.data);
         setTotalPages(result.pagination.totalPages);
       } else {
@@ -227,13 +236,9 @@ const BooksPage = () => {
                   id: book.id,
                   name: book.title,
                   author: book.author,
-                  poster: book.image,
-                  rating: book.reviews.length
-                    ? (
-                        book.reviews.reduce((acc, r) => acc + r.rating, 0) /
-                        book.reviews.length
-                      ).toFixed(1)
-                    : 'N/A',
+                  image: book.image,
+                  description: book.description,
+                  rating: book.averageRating
                 }}
               />
             ))

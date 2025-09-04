@@ -7,9 +7,11 @@ import AdminReviews from './AdminReviews'
 import AdminFlags from './AdminFlags'
 import { useRef } from 'react'
 import AdminRequests from './AdminRequests'
+import { useNavigate } from 'react-router-dom'
 
 const Admin = () => {
     const [page,setPage] = useState(<AdminDashboard/>)
+    const navigate = useNavigate()
 
     const sidebarContainer = useRef(null)
 
@@ -52,6 +54,31 @@ const Admin = () => {
         }
     }
 
+    const handleLogout = async () => {
+        try {
+            // Call logout API to clear server-side refresh token
+            const token = localStorage.getItem('accessToken')
+            if (token) {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            }
+        } catch (error) {
+            console.error('Logout API call failed:', error)
+        } finally {
+            // Always clear localStorage and navigate, even if API call fails
+            try {
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('user')
+            } catch {}
+            navigate('/')
+        }
+    }
+
   return (
     <div className='adminPage'>
         <div className="sidebar" ref={sidebarContainer}>
@@ -61,6 +88,7 @@ const Admin = () => {
             <p onClick={(e)=> handlePage(e,4)} pageswitch={pageSwitch}>Reviews</p>
             <p onClick={(e)=> handlePage(e,5)}>Flags</p>
             <p onClick={(e)=> handlePage(e,6)}>Requests</p>
+            <button className="logoutBtn" onClick={handleLogout}>Logout</button>
         </div>
         <div className="mainDisplay">
             {page}

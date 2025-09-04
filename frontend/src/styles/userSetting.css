@@ -52,7 +52,7 @@
   }
   
   .avatar.selected {
-    border-color: #00bcd4;
+    border-color: var(--clr-300);
   }
   
   .selected-text {
@@ -88,13 +88,13 @@
   }
   
   .input-group input:focus {
-    border: 2px solid #00bcd4;
+    border: 2px solid var(--clr-300);
   }
   
   .update-btn {
     padding: 12px;
     font-size: 16px;
-    background: #00bcd4;
+    background: var(--clr-300);
     color: #000;
     font-weight: bold;
     border: none;

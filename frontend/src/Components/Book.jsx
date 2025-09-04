@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../styles/book.css'
 import Navbar from './Navbar';
 import BookThumbnail from './BookThumbnail';
@@ -7,10 +7,17 @@ import Comment from './Comment'
 
 const Book = () => {
 
+
+    const [reviews,setReviews] = useState([])
+    const [message,setMessage] = useState("")
+    const [myrating,setMyrating] = useState(1)
+
     const starsList = useRef(null)
 
     const location = useLocation();
     const { book } = location.state || {}; // Handle case if no state passed
+
+    // console.log(book)
 
     if (!book) {
         return <p>No book data found.</p>; // Fallback
@@ -18,7 +25,7 @@ const Book = () => {
 
     let onStar = "★", offStar = "✰"
 
-    let bookReviews = ["lorem", "asdf", "qwer", "zxcv"]
+    // let bookReviews = ["lorem", "asdf", "qwer", "zxcv"]
 
     // FIX THIS LATER
     // get list of reviews from backend
@@ -27,6 +34,7 @@ const Book = () => {
     // add a confirmation for the review flag
 
     useEffect(() => {
+        getReivews()
         const handleClick = (e) => {
             const children = Array.from(starsList.current.children)
             const index = children.indexOf(e.target)
@@ -55,6 +63,66 @@ const Book = () => {
         };
     }, []);
 
+    const goToAmazon = (title) => {
+        let urltitle = encodeURIComponent(title)
+        let url = `https://www.amazon.com/s?k=${urltitle}&i=stripbooks`
+        window.open(url,'_blank','noopener=yes,noreferrer=yes')
+    }
+
+    const getReivews = async () => {
+        try {
+            const reviewR = await fetch(`/api/review?bookId=${book.id}`)
+            const data = await reviewR.json()
+            console.log(data)
+            if (data.success) {
+                console.log(data.data)
+                setReviews(data.data)
+            }
+        } catch (error) {
+            console.error('Failed to fetch reviews:', error)
+        }
+    }
+
+
+    const sendReview = async () => {
+        try {
+            const token = localStorage.getItem('accessToken')
+            if (!token) {
+                console.error('No access token found. Please log in.')
+                return
+            }
+
+            const reviewR = await fetch(`/api/review?bookId=${book.id}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    content: message,
+                    rating: myrating
+                })
+            })
+            
+            if (!reviewR.ok) {
+                const errorData = await reviewR.json()
+                console.error('Review submission failed:', errorData)
+                return
+            }
+            
+            const data = await reviewR.json()
+            console.log('Review submitted successfully:', data)
+            
+            // Clear the form and refresh reviews
+            setMessage("")
+            setMyrating(1)
+            getReivews() // Refresh the reviews list
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className='BookWrapper'>
             <Navbar />
@@ -64,9 +132,9 @@ const Book = () => {
             <div className="BookReviewDisplay">
 
                 <div className="top-section">
-                    <BookThumbnail book={book} stopOnclick={true} />
+                    <BookThumbnail book={book} stopOnclick={true} goToAmazon={goToAmazon}/>
                     <div className="description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo corrupti iure accusamus dolore excepturi dolorum, quibusdam molestiae sunt, omnis fugiat ex delectus tempora unde quasi soluta? Dignissimos autem possimus ullam.
+                        {book.description || "description not found"}
                     </div>
                 </div>
 
@@ -74,20 +142,20 @@ const Book = () => {
                     <p>Leave a Review</p>
                     <div className="commentInput">
                         <div className="starsRating" ref={starsList}>
-                            <p>✰</p>
-                            <p>✰</p>
-                            <p>✰</p>
-                            <p>✰</p>
-                            <p>✰</p>
+                            <p onClick={()=>{setMyrating(1)}}>✰</p>
+                            <p onClick={()=>{setMyrating(2)}}>✰</p>
+                            <p onClick={()=>{setMyrating(3)}}>✰</p>
+                            <p onClick={()=>{setMyrating(4)}}>✰</p>
+                            <p onClick={()=>{setMyrating(5)}}>✰</p>
                         </div>
-                        <textarea></textarea>
-                        <button>submit</button>
+                        <textarea onChange={(e)=>{setMessage(e.target.value)}} value={message}></textarea>
+                        <button onClick={sendReview}>submit</button>
                     </div>
                 </div>
 
                 <div className="comments">
-                    {bookReviews.map((s) => (
-                        <Comment key={s.id} review={s} />
+                    {reviews.map((s,idx) => (
+                        <Comment key={idx} review={s} />
                     ))}
                 </div>
             </div>
