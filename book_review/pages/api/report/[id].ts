@@ -76,11 +76,24 @@ async function handleAdminAction(
         data: { suspended: true },
       });
       break;
+    case "REMOVE_SUSPENSION":
+      status = "APPROVED";
+      actionTaken = "User suspension removed.";
+      await prisma.user.update({
+        where: { id: report.userId },
+        data: { suspended: false },
+      });
+      break;
     case "REMOVE":
       status = "REMOVED";
       actionTaken = "Review removed.";
       try {
+        // First, delete all reports referencing this review
+        await prisma.report.deleteMany({ where: { reviewId: report.reviewId } });
+        // Then, delete the review itself
         await prisma.review.delete({ where: { id: report.reviewId } });
+        return res.status(200).json({ success: true, status, actionTaken });
+        
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
