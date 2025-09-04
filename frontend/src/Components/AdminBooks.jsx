@@ -91,7 +91,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             const res = await fetch(uri);
             const data = await res.json();
             if (data.success) {
-                setSearchResults(data.data);
+                // setSearchResults(data.data);
             }
         } catch (error) {
             console.error('Search failed:', error);
