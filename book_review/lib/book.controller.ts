@@ -95,9 +95,32 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
       prisma.book.count({ where }),
     ]);
 
+    // Add averageRating to each book
+    const minRating = req.query.minRating ? parseFloat(req.query.minRating as string) : null;
+    const maxRating = req.query.maxRating ? parseFloat(req.query.maxRating as string) : null;
+    let booksWithAvgRating = books.map(book => {
+      const avgRating = book.reviews.length > 0
+        ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / book.reviews.length
+        : 1;
+      return {
+        ...book,
+        averageRating: Math.round(avgRating * 10) / 10,
+        reviews: undefined,
+      };
+    });
+
+    // Filter by averageRating if minRating or maxRating is provided
+    if (minRating !== null || maxRating !== null) {
+      booksWithAvgRating = booksWithAvgRating.filter(book => {
+        if (minRating !== null && book.averageRating < minRating) return false;
+        if (maxRating !== null && book.averageRating > maxRating) return false;
+        return true;
+      });
+    }
+
     return res.status(200).json({
       success: true,
-      data: books,
+      data: booksWithAvgRating,
       pagination: {
         currentPage: page,
         totalPages: Math.ceil(totalBooks / limit),
@@ -105,7 +128,7 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
         hasNextPage: page * limit < totalBooks,
         hasPrevPage: page > 1,
       },
-      filters: { search, category, author, publishedFrom, publishedTo },
+      filters: { search, category, author, publishedFrom, publishedTo, minRating, maxRating },
     });
   } catch (error) {
     console.error("Error fetching books:", error);
@@ -208,7 +231,7 @@ export async function searchBooks(req: NextApiRequest, res: NextApiResponse) {
       const avgRating =
         book.reviews.length > 0
           ? book.reviews.reduce((sum, r) => sum + r.rating, 0) / book.reviews.length
-          : 0;
+          : 1;
 
       return {
         ...book,
@@ -266,7 +289,7 @@ export async function getTrendingBooks(req: NextApiRequest, res: NextApiResponse
       const avgRating =
         book.reviews.length > 0
           ? book.reviews.reduce((sum, r) => sum + r.rating, 0) / book.reviews.length
-          : 0;
+          : 1;
 
       const trendingScore = book.views + book._count.reviews * 10;
 

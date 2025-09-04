@@ -121,9 +121,6 @@ async function handlePOST(req: AuthenticatedRequest, res: NextApiResponse) {
       const uploadResult = await uploadImageToCloudinary(tempFilePath, {
         folder: "books",
         transformation: {
-          width: 800,
-          height: 600,
-          crop: "fill",
           quality: "auto",
         },
       });
