@@ -1,67 +1,76 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { verifyJwt, parseAuthCookie } from '@/utils/jwt';
+// middlewares/withAuth.ts
+import { NextApiRequest, NextApiResponse } from "next";
+import { getToken } from "next-auth/jwt";
+import { verifyJwt, parseAuthCookie } from "@/utils/jwt";
+import { Role } from ".prisma/client/default.js";
 
-export interface AuthenticatedRequest extends NextApiRequest {
-  user?: {
-    id: string;
-    email: string;
-    role: string;
-  };
-}
+export interface AuthenticatedRequest extends NextApiRequest { 
+  user?: { 
+    id: string; 
+    email: string; 
+    role?: Role;
+  }; 
+  }
 
-export type AuthMiddleware = (
-  req: AuthenticatedRequest,
-  res: NextApiResponse,
-  next: () => void
-) => void;
-
-export function authMiddleware(handler: (req: AuthenticatedRequest, res: NextApiResponse) => Promise<void>) {
+export function authMiddleware(
+  handler: (req: AuthenticatedRequest, res: NextApiResponse) => Promise<void>
+) {
   return async (req: AuthenticatedRequest, res: NextApiResponse) => {
     try {
-      // Check for token in Authorization header
-      const authHeader = req.headers.authorization;
-      let token: string | null = null;
+      let user: any = null;
 
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        token = authHeader.substring(7);
-      } else {
-        // Fallback to cookie if no Authorization header
-        const cookieHeader = req.headers.cookie;
-        token = parseAuthCookie(cookieHeader);
+      // Try NextAuth token first
+      const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+      if (nextAuthToken) {
+        user = {
+          id: nextAuthToken.sub as string,
+          email: nextAuthToken.email as string,
+          role: "USER",
+          provider: "oauth",
+        };
       }
 
-      if (!token) {
-        return res.status(401).json({ 
-          success: false, 
-          error: 'Authentication required' 
+      // If no NextAuth token, fall back to custom JWT
+      if (!user) {
+        let token: string | null = null;
+        const authHeader = req.headers.authorization;
+        if (authHeader?.startsWith("Bearer ")) {
+          token = authHeader.substring(7);
+        } else {
+          token = parseAuthCookie(req.headers.cookie);
+        }
+
+        if (token) {
+          const payload = verifyJwt(token);
+          if (payload) {
+            user = {
+              id: payload.id,
+              email: payload.email,
+              role: payload.role ?? "USER",
+              provider: "custom",
+            };
+          }
+        }
+      }
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          error: "Authentication required",
         });
       }
 
-      // Verify the token
-      const payload = verifyJwt(token);
-      if (!payload) {
-        return res.status(401).json({ 
-          success: false, 
-          error: 'Invalid or expired token' 
-        });
-      }
+      req.user = user;
 
-      // Attach user to request
-      req.user = {
-        id: payload.id,
-        email: payload.email,
-        role: payload.role ?? 'USER'
-      };
-
-      // Call the original handler
       return handler(req, res);
-    } catch (error) {
-      console.error('Auth middleware error:', error);
-      return res.status(500).json({ 
-        success: false, 
-        error: 'Authentication failed' 
-      });
+    } catch (e) {
+      console.error("Auth error:", e);
+      return res.status(500).json({ success: false, error: "Authentication failed" });
     }
   };
 }
 
+export const jwtOptions = {
+  encryption: false,
+  secret: process.env.NEXTAUTH_SECRET,
+};

@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,93 +7,82 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id        String   @id @default(cuid())
-  role      Role     @default(USER)
-  email     String   @unique
+model User {
+  id        String    @id @default(cuid())
+  role      Role      @default(USER)
+  email     String    @unique
   name      String?
-  hash      String
+  image     String? 
+  emailVerified DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  isDeleted Boolean   @default(false)
+  hash      String?
   hashedRt  String?
-  reviews   Review[]
-  accounts  Account[] 
-  sessions  Session[]
+  suspended Boolean   @default(false)
+  accounts  Account[]
   reports   Report[]
-  isDeleted Boolean @default(false)
-  suspended Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Book{
-  id        String   @id @default(cuid())
-  title     String
-  description String
-  author    String
-  image     String
-  views     Int @default(0)
-  publishedDate DateTime
   reviews   Review[]
-  categories Category[] @relation("CategoryBooks")
+  sessions  Session[]
 }
 
-model Review{
+model Book {
+  id            String     @id @default(cuid())
+  title         String
+  description   String
+  author        String
+  image         String
+  publishedDate DateTime
+  views         Int        @default(0)
+  reviews       Review[]
+  categories    Category[] @relation("CategoryBooks")
+}
+
+model Review {
   id        String   @id @default(cuid())
   content   String
-  rating    Int @default(1)
-  user      User     @relation(fields: [userId], references: [id])
+  rating    Int      @default(1)
   userId    String
-  book      Book     @relation(fields: [bookId], references: [id])
   bookId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   reports   Report[]
+  book      Book     @relation(fields: [bookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
-model Category{
-  id Int @id @default(autoincrement())
-  name String
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
   books Book[] @relation("CategoryBooks")
-
-}
-enum Role {
-  USER
-  ADMIN
 }
 
 model Report {
-  id           String   @id @default(cuid())
-  reason       String
-  status       ReportStatus @default(PENDING)
-  actionTaken  String?
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
-  review       Review   @relation(fields: [reviewId], references: [id])
-  reviewId     String
-  createdAt    DateTime @default(now())
-}
-
-enum ReportStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  REMOVED
+  id          String       @id @default(cuid())
+  userId      String
+  reviewId    String
+  reason      String
+  createdAt   DateTime     @default(now())
+  actionTaken String?
+  status      ReportStatus @default(PENDING)
+  review      Review       @relation(fields: [reviewId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
 }
 
 model Account {
-  id                 String @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -110,8 +92,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -120,4 +101,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REMOVED
 }
