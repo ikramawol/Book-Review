@@ -84,7 +84,7 @@ const Admin = () => {
         <div className="sidebar" ref={sidebarContainer}>
             <p className="active" onClick={(e)=> handlePage(e,1)}>Dashboard</p>
             <p onClick={(e)=> handlePage(e,2)}>Books</p>
-            {/* <p onClick={(e)=> handlePage(e,3)}>Genres</p> */}
+            <p onClick={(e)=> handlePage(e,3)}>Genres</p>
             <p onClick={(e)=> handlePage(e,4)} pageswitch={pageSwitch}>Reviews</p>
             <p onClick={(e)=> handlePage(e,5)}>Flags</p>
             {/* <p onClick={(e)=> handlePage(e,6)}>Requests</p> */}

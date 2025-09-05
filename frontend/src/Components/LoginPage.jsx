@@ -95,11 +95,11 @@ const LoginPage = () => {
           </div>
 
           <button type="submit" className="update-btn">Login</button>
-
+{/* 
           <button type="button" className="google-btn" onClick={googleAuth}>
             <span className="google-icon" aria-hidden>G</span>
             <span>Continue with Google</span>
-          </button>
+          </button> */}
         </form>
         <p className="authSwitch">Don't have an account? <Link to="/signup">Sign up</Link></p>
       </div>

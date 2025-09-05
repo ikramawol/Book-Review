@@ -49,26 +49,25 @@ const AdminFlags = () => {
     }
   }
   
-  const removeFlag = async (review) => {
+  const removeFlag = async (review,action) => {
     const token = localStorage.getItem('accessToken')
     if (!token) {
       console.error('No access token found. Please log in.')
       return
     }
-    const response = await fetch(`/api/report/${review.id}`, {
-      method: 'DELETE',
+    
+    const res = await fetch(`/api/report?id=${review.id}`, {
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         'Authorization': `Bearer ${token}`
       },
-      // body: JSON.stringify({
-      //     content: message,
-      //     rating: myrating
-      // })
-    })
-    response.json().then(data=>{
-      console.log(data)
-    })
+      body: JSON.stringify({ action }),
+    });
+
+    const data = await res.json();
+    console.log(data)
+    
   }
 
   const ignoreFlag = async () => {
@@ -78,11 +77,12 @@ const AdminFlags = () => {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleRemove = (id) => {
-    const confirmRemove = window.confirm("Are you sure you want to remove this review?");
+  
+  const handleRemove = (id,action) => {
+    const confirmRemove = window.confirm(`Are you sure you want to ${action.toLowerCase()} this review?`);
     if (confirmRemove) {
       console.log(`Removed review ID: ${id}`);
-      removeFlag(id)
+      removeFlag(id,action)
     }
   };
 
@@ -149,8 +149,8 @@ const AdminFlags = () => {
             <p><strong>Comment:</strong> {review.review.content}</p>
             <p><strong>Reason:</strong> {review.reason}</p>
             <div className="flag-actions">
-              <button onClick={() => handleRemove(review)} className="remove-btn">Remove Review</button>
-              <button onClick={() => handleIgnore(review)} className="ignore-btn">Ignore</button>
+              <button onClick={() => handleRemove(review,'REMOVE')} className="remove-btn">Remove Review</button>
+              <button onClick={() => handleRemove(review,'IGNORE')} className="ignore-btn">Ignore</button>
             </div>
           </div>
         ))}

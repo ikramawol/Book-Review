@@ -148,14 +148,10 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             
             let res;
             if (onUpdate) {
-                console.log("form",form,"formdata",formData)
-                res = await fetch(`/api/book?id=${form.id}`, {
+                res = await fetch(`/api/book/${form.id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
-                        // 'Content-Type': 'application/json' is NOT set here.
-                        // The browser automatically sets it to 'multipart/form-data'
-                        // when using FormData.
                     },
                     body: formData,
                 });

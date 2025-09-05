@@ -34,15 +34,26 @@ const AdminGenres = () => {
     getGenres();
   }, []);
 
-  const removeGenre = (genre) => {
-    setGenreList(genreList.filter(g => g !== genre));
+  const removeGenre = async (genreId) => {
+    res = await fetch(`/api/book/catagory?${genreId}`, {
+      method: 'DELETE',
+      headers: {
+          'Authorization': `Bearer ${token}`
+      },
+    });
   };
 
-  const addGenre = () => {
-    if (newGenre.trim() !== "" && !genreList.includes(newGenre)) {
-      setGenreList([...genreList, newGenre]);
-      setNewGenre("");
-    }
+  const addGenre =  async () => {
+    res = await fetch(`/api/book/catagory`, {
+      method: 'POST',
+      headers: {
+          'Authorization': `Bearer ${token}`
+      },
+      body: {
+        name: newGenre,
+        id: genreList.length * 2
+      }
+    });
   };
 
   return (
