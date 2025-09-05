@@ -12,6 +12,7 @@ const BooksPage = () => {
   const [booksList, setBooksList] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const location = useLocation();
   const { genreSelected } = location.genreSelected || {};
@@ -19,14 +20,14 @@ const BooksPage = () => {
 
 
   const [filter, setFilter] = useState({
-    sortby: 'date', // 'date', 'alpha', 'rating'
-    genre: genreSelected || '', // empty means all
+    sortby: 'date',
+    genre: genreSelected || '',
     rating: [1, 5],
     year: [1900, 2025],
+    search: '', // <-- add this
   });
 
-  const itemsPerPage = 15;
-
+  const itemsPerPage = 12;
 
 
   // Fetch books from API based on current page and filters
@@ -38,14 +39,16 @@ const BooksPage = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
-        // page: currentPage,
-        // limit: itemsPerPage,
-        // sort: filter.sortby,
-        // genre: filter.genre,
+        page: currentPage,
+        limit: itemsPerPage,
+        sortby: filter.sortby,
+        category: filter.genre,
         minRating: filter.rating[0],
         maxRating: filter.rating[1],
         yearMin: `${filter.year[0]}-01-01`,
         yearMax: `${filter.year[1]}-12-31`,
+        search: filter.search,
+
       });
       console.log(params)
 
@@ -74,6 +77,22 @@ const BooksPage = () => {
     getListPageOfBooks();
   }, [currentPage, filter]);
 
+  useEffect(() => {
+    // Fetch categories from backend
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/category');
+        const data = await res.json();
+        if (data.success) {
+          setCategories(data.categories); // Adjust if your response shape is different
+        }
+      } catch (err) {
+        setCategories([]);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const handleSelectChange = (field, value) => {
     setFilter((prev) => ({
       ...prev,
@@ -97,6 +116,11 @@ const BooksPage = () => {
       newYear[index] = Number(value);
       return { ...prev, year: newYear };
     });
+    setCurrentPage(1);
+  };
+
+  const handleSearch = (query) => {
+    setFilter(prev => ({ ...prev, search: query }));
     setCurrentPage(1);
   };
 
@@ -155,7 +179,7 @@ const BooksPage = () => {
     <div className="bookspage">
       <Navbar />
       <div className="navgap"></div>
-      <Searchbar />
+      <Searchbar onSearch={handleSearch} />
 
       <div className="booksGrid">
         {/* Filters */}
@@ -179,9 +203,11 @@ const BooksPage = () => {
               onChange={(e) => handleSelectChange('genre', e.target.value)}
             >
               <option value="">All</option>
-              <option value="Romance">Romance</option>
-              <option value="Mystery">Mystery</option>
-              <option value="Horror">Horror</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -258,3 +284,5 @@ const BooksPage = () => {
 };
 
 export default BooksPage;
+
+

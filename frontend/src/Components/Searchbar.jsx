@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 
-const Searchbar = () => {
+const Searchbar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [searchType, setSearchType] = useState('Book');
+  const [suggestions, setSuggestions] = useState([]);
 
-  // Example data (replace with API results later)
-  // FIX THIS LATER
-  // get the api from the backend on key input after the 5th letter
-  // make the suggestion link to the book page
-  const items = [
-    'Pride and Prejudice',
-    'The Great Gatsby',
-    'To Kill a Mockingbird',
-    'Moby Dick',
-    'The Catcher in the Rye',
-    'Great Expectations',
-    'The Hobbit',
-    'War and Peace'
-  ];
+  const fetchSuggestions = async () => {
+    if (query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/book/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      setSuggestions(data.results.slice(0, 5));
+    } catch (err) {
+      setSuggestions([]);
+    }
+  };
 
-  // Filtered list (show max 5)
-  const filteredItems = items
-    .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
-    .slice(0, 5);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchSuggestions();
+      onSearch(query); // Call the onSearch prop with the current query
+    }
+  };
 
   return (
     <section className="lookup">
@@ -39,18 +41,20 @@ const Searchbar = () => {
         </select>
         <input
           type="text"
-          placeholder="name"
+          placeholder="name, author, or description"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div className="shearchicon"></div>
       </div>
 
-      {/* Suggestions Dropdown */}
-      {query && filteredItems.length > 0 && (
+      {query && suggestions.length > 0 && (
         <ul className="suggestions">
-          {filteredItems.map((item, index) => (
-            <li key={index}>{item}</li>
+          {suggestions.map((item) => (
+            <li key={item.id}>
+              <a href={`/books/${item.id}`}>{item.title || item.name}</a>
+            </li>
           ))}
         </ul>
       )}
