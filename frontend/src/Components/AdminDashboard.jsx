@@ -40,6 +40,7 @@ const AdminDashboard = () => {
       { name: "History", count: 50 },
       { name: "Fantasy", count: 150 } 
   ]);
+  const [colors, setColors] = useState([]);
 
   const getGenres = async  () => {
     try {
@@ -48,7 +49,7 @@ const AdminDashboard = () => {
       response.json().then(data=>{
         let structuredGenre = data.data.map(gen =>{ return{name: gen.name, count: gen._count.books + 1}})
         console.log(structuredGenre)
-        COLORS = createRandomColors(structuredGenre.length)
+        setColors(createRandomColors(structuredGenre.length))
         setGenreList(structuredGenre)
       })
     } catch (error) {
@@ -56,7 +57,40 @@ const AdminDashboard = () => {
     }
   }
 
+  const [totalBooks, setTotalBooks] = useState(0);
+const [totalReviews, setTotalReviews] = useState(0);
+const [totalUsers, setTotalUsers] = useState(0);
+
+const getStats = async () => {
+  try {
+
+    // const response = await fetch(`/api/book`)
+    //   response.json().then(data => {
+    //     console.log(data.data)
+    //     setBooks(data.data)
+    //   })
+
+    const booksRes = await fetch("/api/book");
+    const booksData = await booksRes.json();
+    setTotalBooks(booksData.pagination.totalBooks)
+    // setTotalBooks(booksData.data?.length || 0);
+
+    // const reviewsRes = await fetch("/api/review");
+    // const reviewsData = await reviewsRes.json();
+    // console.log(reviewsData)
+    // setTotalReviews(reviewsData.data?.length || 0);
+
+    // const usersRes = await fetch("/api/user");
+    // const usersData = await usersRes.json();
+    // console.log(usersData)
+    // setTotalUsers(usersData.data?.length || 0);
+  } catch (error) {
+    console.error("Error fetching stats:", error);
+  }
+};
+
   useEffect(() => {
+    getStats();
     getGenres();
   }, []);
 
@@ -75,7 +109,7 @@ const AdminDashboard = () => {
     <div className="dashboard">
       <div className="highlights">
         <p>Books</p>
-        <p>{sampleData.books.toLocaleString()}</p>
+        <p>{totalBooks}</p>
       </div>
       <div className="highlights">
         <p>Users</p>
@@ -92,11 +126,11 @@ const AdminDashboard = () => {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius="70%"
                 label
               >
                 {genreList.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${index}`} fill={colors[index % COLORS.length]} />
                 ))}
               </Pie>
               {/* <Tooltip /> */}

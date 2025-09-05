@@ -1,19 +1,23 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from './Navbar';
 import '../styles/home.css'
 import '../styles/searchbar.css'
 import BookThumbnail from './BookThumbnail';
 import GenreThumbnail from './GenreThumbnail';
 import Footer from './Footer';
-import Searchbar from './searchbar';
+import Searchbar from './Searchbar';
 
 const HomePage = () => {
 
   const scrollRef = useRef(null);
   const scrollRef2 = useRef(null);
 
+  let applyListeners
+
   useEffect(() => {
+    getBooks();
+    getGenres();
     const addScrollListener = (element) => {
       if (!element) return;
 
@@ -35,7 +39,7 @@ const HomePage = () => {
 
     let cleanup1, cleanup2;
 
-    const applyListeners = () => {
+    applyListeners = () => {
       if (cleanup1) cleanup1();
       if (cleanup2) cleanup2();
 
@@ -59,126 +63,192 @@ const HomePage = () => {
   }, []);
 
 
+
   let latest = [
     {
-      name: "Just for the summer",
+      title: "Just for the summer",
       author: " Abby Jimenez",
       rating: 4,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg"
+      image: "/samplePoster.png"
     },
     {
       name: "Atomic Habits",
       author: " James Clear",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "ONYX Storm",
       author: "Rebecca Yarros",
       rating: 3,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "A Court of Thorns and Roses",
       author: "Sarah J. Maas",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "A Court of Thorns and Roses",
       author: "Sarah J. Maas",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "A Court of Thorns and Roses",
       author: "Sarah J. Maas",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "A Court of Thorns and Roses",
       author: "Sarah J. Maas",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "/samplePoster.png"
     },
     {
       name: "A Court of Thorns and Roses",
       author: "Sarah J. Maas",
       rating: 5,
-      poster: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg"
+      poster: "/samplePoster.png"
     },
   ]
+
+  const [books, setBooks] = useState([])
+  const [genres, setGenres] = useState([])
 
   let genre = [
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
     {
       name: "fiction",
       posters: [
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1742475239i/195820807.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1720446357i/209439446.jpg",
-        "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1620324329i/50659467.jpg",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
+        "/samplePoster.png",
       ]
     },
   ]
 
 
+  const getGenres = async () => {
+    try {
+      // const response = await fetch(`http://localhost:3000/api/book/categories`)
+      const response = await fetch('/api/book/categories?page=1&limit=8');
+      const data = await response.json();
+      const categories = data.data.slice(0,8);
+
+      // STEP 1: Set initial state with placeholders
+      const structuredGenres = categories.map(category => ({
+        name: category.name,
+        // Provide an array of placeholders or a generic loading image URL
+        posters: ["/samplePoster.png", "/samplePoster.png", "/samplePoster.png", "/samplePoster.png"]
+      }));
+
+      setGenres(structuredGenres); // This will update the UI with placeholders immediately
+
+      // STEP 2: Fetch the actual posters and update the state
+      const updatedGenres = await Promise.all(
+        categories.map(async (category, index) => {
+          const bookResponse = await fetch(`/api/book?category=${category.name}&page=1&limit=4`);
+          const bookData = await bookResponse.json();
+          const posters = bookData.data.map(book => book.image);
+          // console.log(bookData)
+          // Merge the new posters with the existing genre object
+          return {
+            ...structuredGenres[index],
+            posters: posters.concat(
+              // Fill the rest of the array with placeholders if not enough posters are returned
+              new Array(4 - posters.length).fill("/samplePoster.png")
+            )
+          };
+        })
+      );
+
+      setGenres(updatedGenres); // This will re-render the UI with the actual posters
+
+    } catch (error) {
+
+    }
+  }
+
+  const getBooks = async () => {
+    try {
+      // works but only one book here
+      // const response = await fetch(`/api/book/trending?page=1&limit=8`)
+      const response = await fetch(`/api/book?page=1&limit=8`)
+      response.json().then(data => {
+        console.log(data.data)
+        setBooks(data.data)
+      })
+
+      const reviewR = await fetch(`/api/review?bookId=cmf5c0wnv0000f1d4rglqqbs7`)
+      reviewR.json().then(data=>{
+        console.log(data)
+      })
+
+      applyListeners()
+    } catch (error) {
+
+    }
+  }
+
+
   // FIX THIS LATER
-  // get list of books and genres from backend
   // make the genre selection take to the books page filtered to the selected genre
 
 
@@ -224,9 +294,15 @@ const HomePage = () => {
           <Link to="/books" ><p className='more'>more</p> </Link>
         </div>
         <div className="display" ref={scrollRef}>
-          {latest.map((book) => (
-            <BookThumbnail book={book} />
-          ))}
+          {
+            books.length == 0 ?
+              latest.map((book, idx) => (
+                <BookThumbnail book={book} key={idx} />
+              )) :
+              books.map((book, idx) => (
+                <BookThumbnail book={book} key={idx} />
+              ))
+          }
         </div>
         <div></div>
       </section>
@@ -238,10 +314,18 @@ const HomePage = () => {
           <Link to="/books" ><p className='more'>more</p> </Link>
         </div>
         <div className="display" ref={scrollRef2}>
-          {genre.map((gen) => (
+          {
+            genres.length == 0
+              ? genre.map((gen, idx) => (
 
-            <GenreThumbnail genre={gen} />
-          ))}
+                <GenreThumbnail genre={gen} key={idx} />
+              ))
+              : genres.map((gen, idx) => (
+
+                <GenreThumbnail genre={gen} key={idx} />
+              ))
+
+          }
         </div>
         <div></div>
       </section>

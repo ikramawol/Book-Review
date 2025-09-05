@@ -10,6 +10,7 @@ import AboutPage from './Components/AboutPage';
 import Admin from './Components/Admin';
 import AdminBookView from './Components/AdminBookView';
 import UserSettings from './Components/UserSettings';
+import Signup from './Components/Signup';
 
 function App() {
   return (
@@ -34,8 +35,9 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/userSettings" element={<UserSettings/>} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/reviews/:id" element={<AdminBookView />} />
+        <Route path="/admin/reviews" element={<AdminBookView />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/admin.css";
+import { data } from "react-router-dom";
 
 const flaggedReviews = Array.from({ length: 48 }, (_, i) => ({
   id: i + 1,
@@ -11,10 +12,68 @@ const flaggedReviews = Array.from({ length: 48 }, (_, i) => ({
 
 const AdminFlags = () => {
 
-    // FIX THIS LATER
+  // FIX THIS LATER
   // get the list of requests from the backend
   // handle the approve and reject functions
 
+  const [flagList,setFlagList] = useState([])
+
+  useEffect(() => {
+    getFlags();
+  }, []);
+
+  const getFlags = async () => {
+
+    try {
+      const token = localStorage.getItem('accessToken')
+      if (!token) {
+        console.error('No access token found. Please log in.')
+        return
+      }
+      const response = await fetch(`/api/report/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        // body: JSON.stringify({
+        //     content: message,
+        //     rating: myrating
+        // })
+      })
+      const result = await response.json();
+      setFlagList(result.data)
+      console.log("admin flag page review list", result);
+    } catch (error) {
+
+    }
+  }
+  
+  const removeFlag = async (review) => {
+    const token = localStorage.getItem('accessToken')
+    if (!token) {
+      console.error('No access token found. Please log in.')
+      return
+    }
+    const response = await fetch(`/api/report/${review.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      // body: JSON.stringify({
+      //     content: message,
+      //     rating: myrating
+      // })
+    })
+    response.json().then(data=>{
+      console.log(data)
+    })
+  }
+
+  const ignoreFlag = async () => {
+    
+  }
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +82,7 @@ const AdminFlags = () => {
     const confirmRemove = window.confirm("Are you sure you want to remove this review?");
     if (confirmRemove) {
       console.log(`Removed review ID: ${id}`);
+      removeFlag(id)
     }
   };
 
@@ -33,7 +93,7 @@ const AdminFlags = () => {
     }
   };
 
-  const totalPages = Math.ceil(flaggedReviews.length / itemsPerPage);
+  const totalPages = Math.ceil(flagList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentFlags = flaggedReviews.slice(startIndex, startIndex + itemsPerPage);
 
@@ -80,17 +140,17 @@ const AdminFlags = () => {
 
   return (
     <div className="admin-flags">
-      <h2>Flagged Reviews ({flaggedReviews.length})</h2>
+      <h2>Flagged Reviews ({flagList.length})</h2>
       <div className="flags-list">
-        {currentFlags.map((review) => (
+        {flagList.length > 0 && flagList.map((review) => (
           <div className="flag-card" key={review.id}>
-            <p><strong>User:</strong> {review.user}</p>
-            <p><strong>Book:</strong> {review.book}</p>
-            <p><strong>Comment:</strong> {review.comment}</p>
+            <p><strong>User:</strong> {review.user.name }</p>
+            {/* <p><strong>Book:</strong> {review.book}</p> */}
+            <p><strong>Comment:</strong> {review.review.content}</p>
             <p><strong>Reason:</strong> {review.reason}</p>
             <div className="flag-actions">
-              <button onClick={() => handleRemove(review.id)} className="remove-btn">Remove Review</button>
-              <button onClick={() => handleIgnore(review.id)} className="ignore-btn">Ignore</button>
+              <button onClick={() => handleRemove(review)} className="remove-btn">Remove Review</button>
+              <button onClick={() => handleIgnore(review)} className="ignore-btn">Ignore</button>
             </div>
           </div>
         ))}

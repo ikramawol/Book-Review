@@ -82,8 +82,11 @@ section.latest .display{
 }
 .bookThumbnail img{
     aspect-ratio: 18/24;
-    object-fit: cover;
+    object-fit: contain;
+    /* background-size: contain; */
+    
     width: 100%;
+    width: 180px;
 }
 .thumbnailName{
     white-space: nowrap;
