@@ -159,10 +159,10 @@ const Signup = () => {
 
           <button type="submit" className="update-btn">Create account</button>
 
-          <button type="button" className="google-btn" onClick={googleAuth}>
+          {/* <button type="button" className="google-btn" onClick={googleAuth}>
             <span className="google-icon" aria-hidden>G</span>
             <span>Continue with Google</span>
-          </button>
+          </button> */}
         </form>
         <p className="authSwitch">Already have an account? <Link to="/login">Log in</Link></p>
       </div>

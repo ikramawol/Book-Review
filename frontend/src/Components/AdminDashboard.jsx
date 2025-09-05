@@ -111,10 +111,10 @@ const getStats = async () => {
         <p>Books</p>
         <p>{totalBooks}</p>
       </div>
-      <div className="highlights">
+      {/* <div className="highlights">
         <p>Users</p>
         <p>{sampleData.users}</p>
-      </div>
+      </div> */}
       <div className="highlights">
         <p>Genres</p>
         <div className="GenresPichart" style={{ width: "100%", height: 250 }}>
