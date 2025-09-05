@@ -14,8 +14,10 @@
 
 .BookReviewDisplay > .top-section {
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+    gap: 2rem;
+    padding: 10px 0;
+    /* align-items: flex-start; */
+    align-items: center;
 }
 
 .BookReviewDisplay .top-section > .description {
@@ -23,7 +25,8 @@
     flex-shrink: 1; /* Allow shrinking on small screens */
     min-width: 0; /* Prevent overflow issues */
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 21px;
+    font-size: 25px;
+    
 }
 
 .BookReviewDisplay .top-section > .bookThumbnail {

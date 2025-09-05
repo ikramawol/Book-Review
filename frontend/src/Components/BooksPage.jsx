@@ -45,8 +45,8 @@ const BooksPage = () => {
         category: filter.genre,
         minRating: filter.rating[0],
         maxRating: filter.rating[1],
-        yearMin: `${filter.year[0]}-01-01`,
-        yearMax: `${filter.year[1]}-12-31`,
+        publishedFrom: `${filter.year[0]}-01-01`, // <-- change here
+        publishedTo: `${filter.year[1]}-12-31`,   // <-- change here
         search: filter.search,
 
       });

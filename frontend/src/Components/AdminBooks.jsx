@@ -152,24 +152,29 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
+                        // Note: No Content-Type header for FormData - browser sets it automatically
                     },
                     body: formData,
                 });
             } else {
-                console.log("adddbook",formData)
                 res = await fetch('/api/book', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`
+                        // Note: No Content-Type header for FormData - browser sets it automatically
                     },
                     body: formData,
                 });
             }
+            
             const data = await res.json();
-                         if (data.success) {
-                 console.log('Book submitted successfully!');
-                 setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' });
-             }
+            
+            if (data.success) {
+                console.log('Book submitted successfully!');
+                setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' });
+            } else {
+                console.error('Book submission failed:', data);
+            }
         } catch (error) {
             console.error('Submission failed:', error);
         }

@@ -29,6 +29,14 @@
     color: var(--clr-100);
 }
 
+
+.mission-section p,
+.community-section p {
+  font-family: 'Poppins', sans-serif;
+  
+
+}
+
 .hero-subtitle {
     font-size: 1.5rem;
     font-weight: 300;

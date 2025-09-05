@@ -1,14 +1,20 @@
+/* --- Restored sidebar related styles --- */
 :root{
     --clr-100: white;
     --clr-300: #C9AA71;
     --clr-900: #1a1a1a;
-
     --main-padding: 30px;
 }
 
+.adminContainer h2{
+    background-color: var(--clr-900);
+    margin: 40px var(--main-padding) 0 var(--main-padding);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .adminPage{
     display: flex;
-    padding: 100px var(--main-padding);
+    padding: 30px var(--main-padding);
     height: calc(100vh - 200px);
 }
 .sidebar{
@@ -38,6 +44,15 @@
     background-color: var(--clr-300);
     z-index: -1;
     transition: left 200ms;
+}
+
+.sidebar h2{
+    color: var(--clr-300);
+    font-size: 24px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 5px 0 0 5px;
+    margin-bottom: 20px;
 }
 .sidebar p{
     position: relative;
@@ -136,25 +151,26 @@
 
 
 /* dashboard */
-.dashboard{
+/* .dashboard{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     padding: 30px;
-    gap: 50px;
-}
+    gap: 50px; */
+/* } */
 
 .highlights {
     background: var(--clr-900);
     border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.763);
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: #C9AA71;
     font-family: Arial, sans-serif;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.3); */
     text-align: center;
   }
   
@@ -174,12 +190,13 @@
   .GenresPichart {
     background: var(--clr-900);
     border-radius: 10px;
-    padding: 20px;   /* ✅ more padding */
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+
   }
-  
+ 
   
 .GenresPichart, .ReviewsGraph {
     background: var(--clr-900);
@@ -188,6 +205,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ecdcbf;
+    color: black;
+
 }
 
 /* manage books */
@@ -332,7 +352,7 @@
 
 .manageGenres {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: ; */
     padding: 20px;
     background-color: #121212;
     color: #fff;
@@ -431,7 +451,7 @@
     cursor: pointer;
   }
   
-  .reviews-table tbody tr:nth-child(even) {
+  .reviews-table tbody tr:nth-child{
     background-color: #2b2b2b;
   }
   
@@ -446,7 +466,65 @@
     margin-top: 20px;
 }
 
-  
+.admin-totals {
+  display: grid;
+  padding: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.admin-total-box {
+  background: var(--clr-900);
+  border-radius: 12px;
+  padding: 24px 18px;
+  color: #ffffff;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(224, 224, 224, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-total-box p {
+  font-size: 16px;
+  color: var(--clr-300);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.admin-total-box h2 {
+  font-size: 32px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.admin-total-box span {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.admin-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 10px;
+}
+
+.admin-chart-box {
+  background: var(--clr-900);
+  border-radius: 12px;
+  padding: 24px;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.admin-chart-box h3 {
+  margin-bottom: 18px;
+  color: var(--clr-300);
+  font-size: 20px;
+  font-weight: 700;
+}
 
 /*  */
 
@@ -464,33 +542,38 @@
   
   .flag-card, .request-card {
     background: #1e1e1e;
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     border: 1px solid #333;
+    transition: border-color 0.3s ease;
   }
   
-  .flag-actions, .request-actions {
+  .flag-card:hover, .request-card:hover {
+    border-color: #555;
+  }
+  
+  .flag-info {
+    margin-bottom: 15px;
+  }
+  
+  .flag-info p {
+    margin: 8px 0;
+    line-height: 1.4;
+  }
+  
+  .flag-actions {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    flex-wrap: wrap;
   }
   
-  .remove-btn {
-    background: #ff4d4d;
-    border: none;
+  .error-message {
+    background: #ff4444;
     color: white;
-    padding: 8px 12px;
+    padding: 10px;
     border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .ignore-btn {
-    background: #444;
-    border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-bottom: 15px;
+    text-align: center;
   }
   
   .approve-btn {
@@ -500,15 +583,57 @@
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 8px;
+    transition: background-color 0.3s ease;
   }
   
-  .reject-btn {
+  .approve-btn:hover:not(:disabled) {
+    background: #45a049;
+  }
+  
+  .approve-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+  
+  .reject-btn, .ignore-btn {
     background: #ff4d4d;
     border: none;
     color: white;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .reject-btn:hover:not(:disabled), .ignore-btn:hover:not(:disabled) {
+    background: #e63939;
+  }
+  
+  .reject-btn:disabled, .ignore-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+  
+  .remove-btn {
+    background: #ff6b35;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .remove-btn:hover:not(:disabled) {
+    background: #e55a2b;
+  }
+  
+  .remove-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
   }
   
   h2 {
@@ -586,3 +711,21 @@
 .adminReviewControls p{
     font-weight: 800;
 }
+/* .sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0 18px 0;
+}
+
+.admin-logo {
+  font-size: 2rem;
+  color: #C9AA71; /* Use your accent color */
+/* } */
+
+/* .sidebar-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+} */

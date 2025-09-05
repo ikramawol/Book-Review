@@ -35,25 +35,63 @@ const AdminGenres = () => {
   }, []);
 
   const removeGenre = async (genreId) => {
-    res = await fetch(`/api/book/catagory?${genreId}`, {
-      method: 'DELETE',
-      headers: {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error("No access token found. Please log in.");
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/api/category/${genreId}`, {
+        method: 'DELETE',
+        headers: {
           'Authorization': `Bearer ${token}`
-      },
-    });
+        },
+      });
+      
+      if (res.ok) {
+        // Refresh the genre list
+        getGenres();
+      } else {
+        const errorData = await res.json();
+        console.error("Failed to delete genre:", errorData);
+      }
+    } catch (error) {
+      console.error("Error deleting genre:", error);
+    }
   };
 
-  const addGenre =  async () => {
-    res = await fetch(`/api/book/catagory`, {
-      method: 'POST',
-      headers: {
-          'Authorization': `Bearer ${token}`
-      },
-      body: {
-        name: newGenre,
-        id: genreList.length * 2
+  const addGenre = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error("No access token found. Please log in.");
+      return;
+    }
+    
+    if (!newGenre.trim()) {
+      console.error("Genre name is required");
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/api/category`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: newGenre.trim() })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setNewGenre("");
+        getGenres(); // Refresh the genre list
+      } else {
+        alert(data.error || "Failed to add genre");
       }
-    });
+    } catch (error) {
+      alert("Failed to add genre");
+    }
   };
 
   return (

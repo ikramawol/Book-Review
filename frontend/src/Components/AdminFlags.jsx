@@ -1,101 +1,124 @@
 import React, { useEffect, useState } from "react";
 import "../styles/admin.css";
-import { data } from "react-router-dom";
-
-const flaggedReviews = Array.from({ length: 48 }, (_, i) => ({
-  id: i + 1,
-  user: `User${i + 1}`,
-  book: `Book ${i + 1}`,
-  comment: `Comment example ${i + 1}`,
-  reason: i % 2 === 0 ? "Offensive language" : "Spam content",
-}));
+import { useNavigate } from "react-router-dom";
 
 const AdminFlags = () => {
+  const navigate = useNavigate();
 
-  // FIX THIS LATER
-  // get the list of requests from the backend
-  // handle the approve and reject functions
+  const [flagList, setFlagList] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [flagList,setFlagList] = useState([])
+  const getFlags = async () => {
+    const token = localStorage.getItem("accessToken");
+    
+    if (!token) {
+      console.error("No access token found. Please log in.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await fetch("/api/report", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.status === 401) {
+        navigate("/login");
+        return;
+      }
+      if (res.status === 403) {
+        setError("You must be an admin to view flags.");
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      
+      if (data && data.success && Array.isArray(data.data)) {
+        setFlagList(data.data);
+        setError(null);
+      } else {
+        setError("Failed to fetch flagged reviews.");
+      }
+    } catch (err) {
+      console.error("Error fetching flags:", err);
+      setError("Failed to fetch flagged reviews.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getFlags();
-  }, []);
+  }, [navigate]);
 
-  const getFlags = async () => {
+  const handleAdminAction = async (reportId, action) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error("No access token found. Please log in.");
+      navigate("/login");
+      return;
+    }
 
     try {
-      const token = localStorage.getItem('accessToken')
-      if (!token) {
-        console.error('No access token found. Please log in.')
-        return
-      }
-      const response = await fetch(`/api/report/`, {
-        method: 'GET',
+      const res = await fetch(`/api/report/${reportId}`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        // body: JSON.stringify({
-        //     content: message,
-        //     rating: myrating
-        // })
-      })
-      const result = await response.json();
-      setFlagList(result.data)
-      console.log("admin flag page review list", result);
-    } catch (error) {
+        body: JSON.stringify({ action }),
+      });
 
+      const data = await res.json();
+      
+      if (res.status === 401) {
+        navigate("/login");
+        return;
+      } else if (res.status === 403) {
+        setError("You must be an admin to perform this action.");
+        return;
+      } else if (res.ok) {
+        // Refresh reports after successful action
+        await getFlags();
+        setError(null);
+      } else {
+        setError(data.message || "Action failed.");
+      }
+    } catch (err) {
+      console.error("Action failed:", err);
+      setError("Action failed. Please try again.");
     }
-  }
-  
-  const removeFlag = async (review,action) => {
-    const token = localStorage.getItem('accessToken')
-    if (!token) {
-      console.error('No access token found. Please log in.')
-      return
-    }
-    
-    const res = await fetch(`/api/report?id=${review.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ action }),
-    });
-
-    const data = await res.json();
-    console.log(data)
-    
-  }
-
-  const ignoreFlag = async () => {
-    
-  }
+  };
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
-  
-  const handleRemove = (id,action) => {
-    const confirmRemove = window.confirm(`Are you sure you want to ${action.toLowerCase()} this review?`);
-    if (confirmRemove) {
-      console.log(`Removed review ID: ${id}`);
-      removeFlag(id,action)
+  const handleRemove = (report, action) => {
+    const actionText = action === "REMOVE" ? "remove this review" : "ignore this flag";
+    const confirmAction = window.confirm(
+      `Are you sure you want to ${actionText}?`
+    );
+    if (confirmAction) {
+      handleAdminAction(report.id, action);
     }
   };
 
-  const handleIgnore = (id) => {
+  const handleIgnore = (report) => {
     const confirmIgnore = window.confirm("Ignore this flag?");
     if (confirmIgnore) {
-      console.log(`Ignored flag for review ID: ${id}`);
+      handleAdminAction(report.id, "REJECT");
     }
   };
 
   const totalPages = Math.ceil(flagList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentFlags = flaggedReviews.slice(startIndex, startIndex + itemsPerPage);
+  const currentFlags = flagList.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const renderPagination = () => {
     const pages = [];
@@ -118,7 +141,12 @@ const AdminFlags = () => {
 
     return (
       <>
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
         {pages.map((page, index) =>
           page === "..." ? (
             <span key={index}>...</span>
@@ -133,29 +161,89 @@ const AdminFlags = () => {
             </span>
           )
         )}
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
       </>
     );
   };
 
+  // No frontend role checking - let the backend handle authentication
+
+  if (loading) {
+    return (
+      <div className="admin-flags">
+        <h2>Flagged Reviews</h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-flags">
       <h2>Flagged Reviews ({flagList.length})</h2>
-      <div className="flags-list">
-        {flagList.length > 0 && flagList.map((review) => (
-          <div className="flag-card" key={review.id}>
-            <p><strong>User:</strong> {review.user.name }</p>
-            {/* <p><strong>Book:</strong> {review.book}</p> */}
-            <p><strong>Comment:</strong> {review.review.content}</p>
-            <p><strong>Reason:</strong> {review.reason}</p>
-            <div className="flag-actions">
-              <button onClick={() => handleRemove(review,'REMOVE')} className="remove-btn">Remove Review</button>
-              <button onClick={() => handleRemove(review,'IGNORE')} className="ignore-btn">Ignore</button>
-            </div>
+      {error && <p className="error-message">{error}</p>}
+      
+      {flagList.length === 0 ? (
+        <p>No flagged reviews found.</p>
+      ) : (
+        <>
+          <div className="flags-list">
+            {currentFlags.map((report) => (
+              <div className="flag-card" key={report.id}>
+                <div className="flag-info">
+                  <p>
+                    <strong>Reported by:</strong> {report.user?.name || "Unknown User"}
+                  </p>
+                  <p>
+                    <strong>Review Content:</strong> {report.review?.content || "No content"}
+                  </p>
+                  <p>
+                    <strong>Reason:</strong> {report.reason}
+                  </p>
+                  <p>
+                    <strong>Reported on:</strong> {new Date(report.createdAt).toLocaleDateString()}
+                  </p>
+                  {report.status && (
+                    <p>
+                      <strong>Status:</strong> {report.status}
+                    </p>
+                  )}
+                </div>
+                <div className="flag-actions">
+                  <button
+                    onClick={() => handleRemove(report, "REMOVE")}
+                    className="remove-btn"
+                    disabled={report.status === "REMOVED"}
+                  >
+                    Remove Review
+                  </button>
+                  <button
+                    onClick={() => handleIgnore(report)}
+                    className="ignore-btn"
+                    disabled={report.status === "REJECTED"}
+                  >
+                    Ignore Flag
+                  </button>
+                  <button
+                    onClick={() => handleAdminAction(report.id, "APPROVE")}
+                    className="approve-btn"
+                    disabled={report.status === "APPROVED"}
+                  >
+                    Approve Report
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="pagination">{renderPagination()}</div>
+          {totalPages > 1 && (
+            <div className="pagination">{renderPagination()}</div>
+          )}
+        </>
+      )}
     </div>
   );
 };
