@@ -38,7 +38,7 @@ const Comment = ({ review }) => {
     }
 
     const handleFlag = () => {
-        const reason = prompt("Please enter your name:");
+        const reason = prompt("Please enter your resons:");
 
         if (reason !== null && reason !== "") {
             alert(`Thank you for your report it will be reviewed!`);
