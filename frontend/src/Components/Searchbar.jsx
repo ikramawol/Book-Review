@@ -22,7 +22,7 @@ const Searchbar = ({ onSearch }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       fetchSuggestions();
-      onSearch(query); // Call the onSearch prop with the current query
+      onSearch(query);
     }
   };
 
