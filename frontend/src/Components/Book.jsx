@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/book.css'
 import Navbar from './Navbar';
@@ -13,6 +13,8 @@ const Book = () => {
     const [myrating,setMyrating] = useState(1)
 
     const starsList = useRef(null)
+
+    const navigate = useNavigate()
 
     const location = useLocation();
     const { book } = location.state || {}; // Handle case if no state passed
@@ -89,6 +91,7 @@ const Book = () => {
             const token = localStorage.getItem('accessToken')
             if (!token) {
                 console.error('No access token found. Please log in.')
+                navigate('/login')
                 return
             }
 
