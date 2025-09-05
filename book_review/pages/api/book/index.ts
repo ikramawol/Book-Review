@@ -49,6 +49,16 @@ export async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12;
+    const sortby = String(req.query.sortby || "publishedDate");
+
+    let orderBy: any = { publishedDate: "desc" };
+    if (sortby === "alpha") {
+      orderBy = { title: "asc" };
+    } else if (sortby === "rating") {
+      orderBy = { averageRating: "desc" }; 
+    } else if (sortby === "date") {
+      orderBy = { publishedDate: "desc" };
+    }
 
     if (isNaN(page) || isNaN(limit)) {
       return res
@@ -58,6 +68,8 @@ export async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 
     req.query.page = String(page);
     req.query.limit = String(limit);
+    req.query.sortby = sortby;
+    req.query.orderBy = JSON.stringify(orderBy);
     return await getAllBooks(req, res);
   } catch (error) {
     console.error("Error fetching books:", error);
@@ -235,6 +247,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === "POST") {
+      const { title, author, ...rest } = req.body;
+
+      // Check if a book with the same title and author already exists
+      const existingBook = await prisma.book.findFirst({
+        where: {
+          title,
+          author,
+        },
+      });
+
+      if (existingBook) {
+        return res.status(400).json({
+          success: false,
+          error: "A book with the same title and author already exists",
+        });
+      }
+
       return authMiddleware(handlePOST)(req as AuthenticatedRequest, res);
     }
 
@@ -257,3 +286,4 @@ export const config = {
     bodyParser: false,
   },
 };
+

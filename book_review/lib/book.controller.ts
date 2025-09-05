@@ -36,8 +36,21 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
   const search = req.query.search as string;
   const category = req.query.category as string;
   const author = req.query.author as string;
-  const sortBy = req.query.sortBy as string || "publishedDate";
-  const sortOrder = (req.query.sortOrder as "asc" | "desc") || "desc";
+  const sortByRaw = req.query.sortby as string || "publishedDate";
+  let sortBy = sortByRaw;
+  let sortOrder = "desc";
+
+  // Map frontend values to Prisma fields
+  if (sortByRaw === "alpha") {
+    sortBy = "title";
+    sortOrder = "asc";
+  } else if (sortByRaw === "rating") {
+    sortBy = "averageRating";
+    sortOrder = "desc";
+  } else if (sortByRaw === "date") {
+    sortBy = "publishedDate";
+    sortOrder = "desc";
+  }
 
   const publishedFrom = req.query.publishedFrom
     ? new Date(req.query.publishedFrom as string)
@@ -73,19 +86,22 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
       if (publishedTo) where.publishedDate.lte = publishedTo;
     }
 
-    const orderBy: any = {};
-    if (["views", "title", "author", "publishedDate"].includes(sortBy)) {
-      orderBy[sortBy] = sortOrder;
+    // Build orderBy object
+    let orderBy: any = {};
+    if (sortBy === "averageRating") {
+      // Sort by computed averageRating after fetching (since it's not a DB field)
+      orderBy = undefined;
     } else {
-      orderBy.publishedDate = "desc";
+      orderBy[sortBy] = sortOrder;
     }
 
+    // Use orderBy in Prisma query (skip if sorting by averageRating)
     const [books, totalBooks] = await Promise.all([
       prisma.book.findMany({
         where,
         skip,
         take: limit,
-        orderBy,
+        ...(orderBy ? { orderBy } : {}),
         include: {
           categories: true,
           reviews: true,
@@ -95,13 +111,12 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
       prisma.book.count({ where }),
     ]);
 
-    // Add averageRating to each book
-    const minRating = req.query.minRating ? parseFloat(req.query.minRating as string) : null;
-    const maxRating = req.query.maxRating ? parseFloat(req.query.maxRating as string) : null;
-    let booksWithAvgRating = books.map(book => {
-      const avgRating = book.reviews.length > 0
-        ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / book.reviews.length
-        : 1;
+    // Compute averageRating and sort if needed
+    let booksWithAvgRating = books.map((book) => {
+      const avgRating =
+        book.reviews.length > 0
+          ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / book.reviews.length
+          : 1;
       return {
         ...book,
         averageRating: Math.round(avgRating * 10) / 10,
@@ -109,13 +124,8 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
       };
     });
 
-    // Filter by averageRating if minRating or maxRating is provided
-    if (minRating !== null || maxRating !== null) {
-      booksWithAvgRating = booksWithAvgRating.filter(book => {
-        if (minRating !== null && book.averageRating < minRating) return false;
-        if (maxRating !== null && book.averageRating > maxRating) return false;
-        return true;
-      });
+    if (sortBy === "averageRating") {
+      booksWithAvgRating = booksWithAvgRating.sort((a, b) => b.averageRating - a.averageRating);
     }
 
     return res.status(200).json({
@@ -128,7 +138,7 @@ export async function getAllBooks(req: NextApiRequest, res: NextApiResponse) {
         hasNextPage: page * limit < totalBooks,
         hasPrevPage: page > 1,
       },
-      filters: { search, category, author, publishedFrom, publishedTo, minRating, maxRating },
+      filters: { search, category, author, publishedFrom, publishedTo },
     });
   } catch (error) {
     console.error("Error fetching books:", error);

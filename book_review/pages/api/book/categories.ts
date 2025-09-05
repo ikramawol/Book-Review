@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    return getBookCategories(req, res); 
+    return getBookCategories(req, res);
   }
 
   if (req.method === "POST") {
