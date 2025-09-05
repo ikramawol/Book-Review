@@ -23,7 +23,7 @@ A modern full-stack web application for discovering, reviewing, and sharing opin
 ---
 
 ## Overview
-
+Demo Video: <a href= https://drive.google.com/uc?id=1QQDrb3kZvHHkubjlH_i6Sft1q-X1Wp_e&export=download>demo</a>
 The **Book Review Platform** allows users to:
 - Browse books and read community reviews.
 - Submit their own reviews and ratings.
