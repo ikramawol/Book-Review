@@ -91,7 +91,8 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             const res = await fetch(uri);
             const data = await res.json();
             if (data.success) {
-                // setSearchResults(data.data);
+                console.log("🗑️",data)
+                setSearchResults(data.data);
             }
         } catch (error) {
             console.error('Search failed:', error);
@@ -105,7 +106,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             title: book.title,
             author: book.author,
             genres: book.categories?.map(cat => cat.name) || [], // Map all categories to genres array
-            date: book.publishedDate.split('T')[0],
+            date: book.publishedDate ? book.publishedDate.split('T')[0] : '',
             image: book.image, // The selected book will have a URL here, not a File object
             description: book.description,
         });
@@ -122,8 +123,11 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
         formData.append('description', form.description);
         formData.append('publishedDate', form.date);
         
-        // Append genres as JSON string
-        formData.append('genres', JSON.stringify(form.genres));
+        // Append categories - backend expects 'category' not 'genres'
+        // Send as array of strings
+        form.genres.forEach(genre => {
+            formData.append('category', genre);
+        });
         
         // Append the image file if it exists
         if (form.image instanceof File) {
@@ -144,6 +148,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             
             let res;
             if (onUpdate) {
+                console.log("form",form,"formdata",formData)
                 res = await fetch(`/api/book?id=${form.id}`, {
                     method: 'PUT',
                     headers: {
@@ -155,6 +160,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
                     body: formData,
                 });
             } else {
+                console.log("adddbook",formData)
                 res = await fetch('/api/book', {
                     method: 'POST',
                     headers: {

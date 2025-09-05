@@ -144,9 +144,43 @@
     gap: 50px;
 }
 
-/* .highlights{
-    
-} */
+.highlights {
+    background: var(--clr-900);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+  
+  .highlights p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--clr-300);
+  }
+  
+  .highlights p:last-child {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+
+  .GenresPichart {
+    background: var(--clr-900);
+    border-radius: 10px;
+    padding: 20px;   /* ✅ more padding */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
 .GenresPichart, .ReviewsGraph {
     background: var(--clr-900);
     border-radius: 10px;
@@ -537,4 +571,18 @@
     background-color: transparent;
     border: none;
     font-size: 18px;
+}
+
+
+/* admin book view */
+.adminReviewControls{
+    display: flex;
+    gap: 20px;
+}
+.adminReviewControls p:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.adminReviewControls p{
+    font-weight: 800;
 }

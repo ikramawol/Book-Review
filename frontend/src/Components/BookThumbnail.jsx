@@ -4,16 +4,7 @@ import React, { useState } from 'react'
 const BookThumbnail = ({book , stopOnclick, goToAmazon}) => {
     const navigate = useNavigate();
 
-    console.log("😊",book)
     let rating  = book.averageRating || book.rating
-    // let sum = 0
-    // if(book.reviews){
-    //     book.reviews.forEach((review,indx) => {
-    //         sum += review.rating
-    //     });
-    //     rating = sum / book.reviews.length
-
-    // }
 
     const gotoBook =  () => {
         // alert('s')

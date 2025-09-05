@@ -1,52 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AdminReviews = ({pageswitch}) => {
+const AdminReviews = ({ pageswitch }) => {
   const navigate = useNavigate();
-  const itemsPerPage = 15; // Variable for how many books per page
+  const itemsPerPage = 5; // books per page
 
-  const [books, setBooks] = useState([]); // All books
-  const [filteredBooks, setFilteredBooks] = useState([]); // Filtered books for search
+  const [books, setBooks] = useState([]); // raw data
+  const [filteredBooks, setFilteredBooks] = useState([]); // filtered/search results
   const [currentPage, setCurrentPage] = useState(1);
   const [searchType, setSearchType] = useState('Book');
   const [query, setQuery] = useState('');
 
-  // Fetch books (Mock for now, replace with API)
-
-  // FIX THIS LATER
-  // get the list of boooks from the backend
-  // send the book info to the admin book view page
-
   useEffect(() => {
-    const fetchBooks = async () => {
-      const mockBooks = Array.from({ length: 120 }, (_, i) => ({
-        id: i + 1,
-        title: `Book Title ${i + 1}`,
-        author: `Author ${i + 1}`,
-        rating: (Math.random() * 2 + 3).toFixed(1),
-        reviews: Math.floor(Math.random() * 200),
-      }));
-      setBooks(mockBooks);
-      setFilteredBooks(mockBooks);
-    };
-    fetchBooks();
+    getBooks();
   }, []);
+
+  const getBooks = async (query) => {
+    try {
+      let uri;
+      if (query) {
+        let encodedQuery = encodeURIComponent(query);
+        uri = `/api/book/search?q=${encodedQuery}`;
+      } else {
+        uri = `/api/book`;
+      }
+
+      const response = await fetch(uri);
+      const result = await response.json();
+      console.log("admin review page books list", result);
+
+      if (result.data) {
+        setBooks(result.data);
+        setFilteredBooks(result.data); // keep filtered in sync
+      }
+    } catch (error) {
+      console.error("Failed to fetch books", error);
+    }
+  };
 
   // Handle search
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
 
-    if (value.trim() === '') {
-      setFilteredBooks(books);
-    } else {
-      const filtered = books.filter((book) =>
-        searchType === 'Book'
-          ? book.title.toLowerCase().includes(value.toLowerCase())
-          : book.author.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredBooks(filtered);
+    if (value.length > 2) {
+      console.log("search 🔍");
+      getBooks(value); // fetch filtered data from backend
       setCurrentPage(1);
+    } else if (value.length === 0) {
+      getBooks(); // reset when input is cleared
     }
   };
 
@@ -55,12 +57,14 @@ const AdminReviews = ({pageswitch}) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentBooks = filteredBooks.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleRowClick = (id) => {
-    navigate(`/admin/reviews/${id}`);
+  const handleRowClick = (book) => {
+    navigate(`/admin/reviews`, { state: { book } });
   };
 
   // Render pagination with ellipsis
   const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
     const pages = [];
 
     if (totalPages <= 7) {
@@ -105,7 +109,7 @@ const AdminReviews = ({pageswitch}) => {
               key={index}
               className={currentPage === page ? 'active-page' : ''}
               onClick={() => setCurrentPage(page)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', margin: '0 4px' }}
             >
               {page}
             </span>
@@ -155,10 +159,10 @@ const AdminReviews = ({pageswitch}) => {
         <tbody>
           {currentBooks.length > 0 ? (
             currentBooks.map((book) => (
-              <tr key={book.id} onClick={() => handleRowClick(book.id)}>
+              <tr key={book.id} onClick={() => handleRowClick(book)}>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
-                <td>{book.rating}</td>
+                <td>{book.averageRating}</td>
                 <td>{book.reviews}</td>
               </tr>
             ))
