@@ -66,53 +66,54 @@ const HomePage = () => {
 
   let latest = [
     {
-      title: "Just for the summer",
-      author: " Abby Jimenez",
-      rating: 4,
+      title: "title",
+      author: "author",
+      rating: 1,
       image: "/samplePoster.png"
     },
     {
-      name: "Atomic Habits",
-      author: " James Clear",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "ONYX Storm",
-      author: "Rebecca Yarros",
-      rating: 3,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
     {
-      name: "A Court of Thorns and Roses",
-      author: "Sarah J. Maas",
-      rating: 5,
-      poster: "/samplePoster.png"
+      title: "title",
+      author: "author",
+      rating: 1,
+      image: "/samplePoster.png"
     },
+
   ]
 
   const [books, setBooks] = useState([])

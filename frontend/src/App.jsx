@@ -11,21 +11,11 @@ import Admin from './Components/Admin';
 import AdminBookView from './Components/AdminBookView';
 import UserSettings from './Components/UserSettings';
 import Signup from './Components/Signup';
+import PrivateRoute from './Components/PrivateRoute'
 
 function App() {
   return (
     <Router>
-      {/* <nav className="navbar">
-      <li><Link to="/">Home</Link></li>
-        <ul>
-          <li><Link to="/books">Books</Link></li>
-          <li><Link to="/genres">Genres</Link></li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/login">Login</Link></li>
-        </ul>
-      </nav> */}
-      {/* <Admin/> */}
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/books" element={<BooksPage />} />
@@ -36,8 +26,10 @@ function App() {
         <Route path="/userSettings" element={<UserSettings/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/reviews" element={<AdminBookView />} />
+        <Route element={<PrivateRoute requiredRole="ADMIN" />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/reviews" element={<AdminBookView />} />
+        </Route>
       </Routes>
     </Router>
   );
