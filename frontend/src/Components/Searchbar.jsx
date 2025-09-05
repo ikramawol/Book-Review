@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Searchbar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [searchType, setSearchType] = useState('Book');
   const [suggestions, setSuggestions] = useState([]);
 
+  const navigate = useNavigate()
+
   const fetchSuggestions = async () => {
     if (query.length < 3) {
-      setSuggestions([]);
+      setSuggestions([{
+        name: 'searching ...'
+      }]);
       return;
     }
     try {
       const res = await fetch(`/api/book/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
-      setSuggestions(data.results.slice(0, 5));
+      setSuggestions(data.data.slice(0, 5));
+      let shortResult = []
+      console.log(data)
     } catch (err) {
-      setSuggestions([]);
+      console.log(err)
+      setSuggestions([{title: "hell",name: "there"}]);
     }
   };
 
   const handleKeyDown = (e) => {
+    fetchSuggestions();
     if (e.key === 'Enter') {
-      fetchSuggestions();
-      onSearch(query);
+      // onSearch(query);
     }
   };
+  const gotobook = (book) => {
+    // console.log(book)
+    navigate('/viewBook', { state: { book } });
+  }
 
   return (
     <section className="lookup">
@@ -51,9 +63,14 @@ const Searchbar = ({ onSearch }) => {
 
       {query && suggestions.length > 0 && (
         <ul className="suggestions">
-          {suggestions.map((item) => (
-            <li key={item.id}>
-              <a href={`/books/${item.id}`}>{item.title || item.name}</a>
+          {suggestions.map((item,ind,arr) => (
+            <li key={item.id} onClick={()=> gotobook(item)}>
+              <p>{item.title || item.name}</p>
+              {
+                arr.length === 1 
+                ? <p></p>
+                : <p>- by {item.author}</p>
+              }
             </li>
           ))}
         </ul>

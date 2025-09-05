@@ -50,11 +50,9 @@ const BooksPage = () => {
         search: filter.search,
 
       });
-      console.log(params)
+      console.log("query paraameters",params)
 
       const response = await fetch(`/api/book?${params}`);
-      // const text = await response.text();
-      // console.log('Raw response:', text);
       const result = await response.json();
 
       if (result.success) {
