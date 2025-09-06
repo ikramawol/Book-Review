@@ -23,7 +23,8 @@ A modern full-stack web application for discovering, reviewing, and sharing opin
 ---
 
 ## Overview
-Demo Video: https://drive.google.com/file/d/1QQDrb3kZvHHkubjlH_i6Sft1q-X1Wp_e/view?usp=drive_link
+Demo Video: https://drive.google.com/file/d/1ji3RCNP-7FV8scOX4H4HRxfNAk3sRkgG/view?usp=sharing
+figma: https://www.figma.com/design/r0fsEhU5hmumbdbjYV081a/book-review-websiste?node-id=0-1&t=htMMwjRWNER0tCn7-1
 The **Book Review Platform** allows users to:
 - Browse books and read community reviews.
 - Submit their own reviews and ratings.
