@@ -52,10 +52,15 @@ async function handleAdminAction(
     return res.status(403).json({ message: "Forbidden: Admins only" });
   }
 
-  const { reportId } = req.query;
+  const reportId = req.query.id as string;
   const { action } = req.body;
+  
+  if (!reportId) {
+    return res.status(400).json({ message: "Report ID is required" });
+  }
+
   const report = await prisma.report.findUnique({
-    where: { id: reportId as string },
+    where: { id: reportId },
   });
 
   if (!report) return res.status(404).json({ message: "Report not found" });
@@ -111,7 +116,7 @@ async function handleAdminAction(
   }
 
   await prisma.report.update({
-    where: { id: reportId as string },
+    where: { id: reportId },
     data: { status, actionTaken },
   });
 
@@ -208,7 +213,7 @@ async function handleDeleteReportById(
   return res.status(200).json({ success: true, message: "Report deleted" });
 }
 
-// Main route handler
+// Main route handler for POST requests
 export const report = authMiddleware(async function (
   req: AuthenticatedRequest,
   res: NextApiResponse
@@ -220,10 +225,12 @@ export const report = authMiddleware(async function (
 
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  if (!req.query.reportId) {
-    return limitedReportReview(req, res);
-  } else {
+  // If there's an action in the body, it's an admin action
+  if (req.body.action) {
     return handleAdminAction(req, res);
+  } else {
+    // Otherwise, it's a new report submission
+    return limitedReportReview(req, res);
   }
 });
 

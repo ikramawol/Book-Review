@@ -19,37 +19,31 @@ export function authMiddleware(
     try {
       let user: any = null;
 
-      // Try NextAuth token first
-      const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-      if (nextAuthToken) {
-        user = {
-          id: nextAuthToken.sub as string,
-          email: nextAuthToken.email as string,
-          role: "USER",
-          provider: "oauth",
-        };
+      // Check if request has Authorization header (custom JWT)
+      const authHeader = req.headers.authorization;
+      if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.substring(7);
+        const payload = verifyJwt(token);
+        if (payload) {
+          user = {
+            id: payload.id,
+            email: payload.email,
+            role: payload.role ?? "USER",
+            provider: "custom",
+          };
+        }
       }
 
-      // If no NextAuth token, fall back to custom JWT
+      // If no custom JWT token, check for OAuth session
       if (!user) {
-        let token: string | null = null;
-        const authHeader = req.headers.authorization;
-        if (authHeader?.startsWith("Bearer ")) {
-          token = authHeader.substring(7);
-        } else {
-          token = parseAuthCookie(req.headers.cookie);
-        }
-
-        if (token) {
-          const payload = verifyJwt(token);
-          if (payload) {
-            user = {
-              id: payload.id,
-              email: payload.email,
-              role: payload.role ?? "USER",
-              provider: "custom",
-            };
-          }
+        const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        if (nextAuthToken) {
+          user = {
+            id: nextAuthToken.sub as string,
+            email: nextAuthToken.email as string,
+            role: "USER", // OAuth users are always USER role
+            provider: "oauth",
+          };
         }
       }
 

@@ -26,11 +26,10 @@ export const login = rateLimiter({ windowMs: 15 * 60 * 1000, max: 5 }, "login")(
         select: { id: true, email: true, name: true, hash: true , role: true }
       });
 
-      if (!user) {
-        return res.status(404).json({ success: false, error: 'User does not exist' });
+      if (!user || !user.hash) {
+        return res.status(404).json({ success: false, error: 'User does not exist or password not set' });
       }
 
-      // Verify password
       const isPasswordValid = await comparePassword(hash, user.hash);
       if (!isPasswordValid) {
         return res.status(401).json({ success: false, error: 'Incorrect password' });

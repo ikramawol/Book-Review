@@ -23,6 +23,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const limitNum = parseInt(limit as string, 10);
   const skip = (pageNum - 1) * limitNum;
 
+  
   try {
     const book = await prisma.book.findUnique({
       where: { id: bookId as string }
