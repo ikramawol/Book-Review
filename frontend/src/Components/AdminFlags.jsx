@@ -20,7 +20,7 @@ const AdminFlags = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("/api/report", {
+      const res = await fetch(`${API_BASE_URL}/api/report`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -63,7 +63,7 @@ const AdminFlags = () => {
     }
 
     try {
-      const res = await fetch(`/api/report/${reportId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/report/${reportId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

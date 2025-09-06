@@ -189,7 +189,7 @@ const HomePage = () => {
   const getGenres = async () => {
     try {
       // const response = await fetch(`http://localhost:3000/api/book/categories`)
-      const response = await fetch('/api/book/categories?page=1&limit=8');
+      const response = await fetch(`${API_BASE_URL}/api/book/categories?page=1&limit=8`);
       const data = await response.json();
       const categories = data.data.slice(0,8);
 
@@ -205,7 +205,7 @@ const HomePage = () => {
       // STEP 2: Fetch the actual posters and update the state
       const updatedGenres = await Promise.all(
         categories.map(async (category, index) => {
-          const bookResponse = await fetch(`/api/book?category=${category.name}&page=1&limit=4`);
+          const bookResponse = await fetch(`${API_BASE_URL}/api/book?category=${category.name}&page=1&limit=4`);
           const bookData = await bookResponse.json();
           const posters = bookData.data.map(book => book.image);
           // console.log(bookData)
@@ -231,13 +231,13 @@ const HomePage = () => {
     try {
       // works but only one book here
       // const response = await fetch(`/api/book/trending?page=1&limit=8`)
-      const response = await fetch(`/api/book?page=1&limit=8`)
+      const response = await fetch(`${API_BASE_URL}/api/book?page=1&limit=8`)
       response.json().then(data => {
         console.log(data.data)
         setBooks(data.data)
       })
 
-      const reviewR = await fetch(`/api/review?bookId=cmf5c0wnv0000f1d4rglqqbs7`)
+      const reviewR = await fetch(`${API_BASE_URL}/api/review?bookId=cmf5c0wnv0000f1d4rglqqbs7`)
       reviewR.json().then(data=>{
         console.log(data)
       })

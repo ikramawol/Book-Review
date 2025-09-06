@@ -73,7 +73,7 @@ const Book = () => {
 
     const getReivews = async () => {
         try {
-            const reviewR = await fetch(`/api/review?bookId=${book.id}`)
+            const reviewR = await fetch(`${API_BASE_URL}/api/review?bookId=${book.id}`)
             const data = await reviewR.json()
             console.log(data)
             if (data.success) {
@@ -95,7 +95,7 @@ const Book = () => {
                 return
             }
 
-            const reviewR = await fetch(`/api/review?bookId=${book.id}`,{
+            const reviewR = await fetch(`${API_BASE_URL}/api/review?bookId=${book.id}`,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

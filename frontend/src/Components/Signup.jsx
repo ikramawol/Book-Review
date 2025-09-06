@@ -36,7 +36,7 @@ const Signup = () => {
       return
     }
     try {
-      const response = await fetch(`/api/auth/signup`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ const Signup = () => {
 
   const handleSignin = async () => {
     try {
-      const response = await fetch(`/api/auth/signin`)
+      const response = await fetch(`${API_BASE_URL}/api/auth/signin`)
       console.log(response)
     } catch (error) {
       console.error(error)
@@ -71,7 +71,7 @@ const Signup = () => {
 
   const googleAuth = () => {
     // Simple redirect to NextAuth Google OAuth
-    window.location.href = '/api/auth/signin'
+    window.location.href = `${API_BASE_URL}/api/auth/signin`
   }
 
   return (

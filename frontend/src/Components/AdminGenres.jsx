@@ -20,7 +20,7 @@ const AdminGenres = () => {
   const getGenres = async  () => {
     try {
       // const response = await fetch(`http://localhost:3000/api/book/categories`)
-      const response = await fetch(`/api/book/categories`)
+      const response = await fetch(`${API_BASE_URL}/api/book/categories`)
       response.json().then(data=>{
         console.log(data.data)
         setGenreList(data.data)
@@ -74,7 +74,7 @@ const AdminGenres = () => {
     }
     
     try {
-      const res = await fetch(`/api/category`, {
+      const res = await fetch(`${API_BASE_URL}/api/category`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

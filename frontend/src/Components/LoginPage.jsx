@@ -17,7 +17,7 @@ const LoginPage = () => {
     localStorage.removeItem("user");
     
     // Clear any OAuth cookies by calling logout
-    fetch("/api/auth/signout", { method: "POST" }).catch(() => {});
+    fetch(`${API_BASE_URL}/api/auth/signout`, { method: "POST" }).catch(() => {});
   };
 
   // --- Custom JWT login ---
@@ -28,7 +28,7 @@ const LoginPage = () => {
     clearExistingSessions();
     
     try {
-      const response = await fetch(`/api/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email, hash: password }),
@@ -73,7 +73,7 @@ const LoginPage = () => {
     localStorage.setItem("loginMethod", "oauth");
     
     // Redirect to OAuth provider
-    window.location.href = `/api/auth/signin/${provider}`;
+    window.location.href = `${API_BASE_URL}/api/auth/signin/${provider}`;
   };
 
   // --- Check for existing OAuth session on page load ---
@@ -84,7 +84,7 @@ const LoginPage = () => {
       // Only check OAuth session if we're supposed to be using OAuth
       if (loginMethod === "oauth") {
         try {
-          const res = await fetch("/api/auth/session");
+          const res = await fetch(`${API_BASE_URL}/api/auth/session`);
           if (!res.ok) return; 
           const session = await res.json();
 

@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   // ✅ Fetch genres/categories
   const getGenres = async () => {
     try {
-      const response = await fetch(`/api/book/categories`);
+      const response = await fetch(`${API_BASE_URL}/api/book/categories`);
       const data = await response.json();
 
       // Assuming your API returns categories like:
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
   // ✅ Fetch stats
   const getStats = async () => {
     try {
-      const booksRes = await fetch("/api/book");
+      const booksRes = await fetch(`${API_BASE_URL}/api/book`);
       const booksData = await booksRes.json();
       setTotalBooks(booksData.pagination.totalBooks);
 
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
     // Fetch total reviews directly from DB
     const fetchReviewsCount = async () => {
       try {
-        const res = await fetch("/api/review/count");
+        const res = await fetch(`${API_BASE_URL}/api/review/count`);
         const data = await res.json();
         setTotalReviews(data.totalReviews || 0);
       } catch (error) {
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
     // Fetch total users
     const fetchUsers = async () => {
       try {
-        const res = await fetch("/api/user");
+        const res = await fetch(`${API_BASE_URL}/api/user`);
         const data = await res.json();
         setTotalUsers(data.pagination?.totalUsers || data.data?.length || 0);
       } catch (error) {

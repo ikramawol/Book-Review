@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/admin.css';
+import { API_BASE_URL } from '../config';
 
 const AdminBooks = ({ genres = ["horror", "romance"] }) => {
 
@@ -38,7 +39,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
 
     const fetchGenres = async () => {
         try {
-            const res = await fetch('/api/book/categories');
+            const res = await fetch(`${API_BASE_URL}/api/book/categories`);
             const data = await res.json();
             if (data.success) {
                 setGenresList(data.data.map(g => g.name));
@@ -86,7 +87,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
         try {
             
             let encodedQuery = encodeURIComponent(searchQuery)
-            let uri = `/api/book/search?q=${encodedQuery}`
+            let uri = `${API_BASE_URL}/api/book/search?q=${encodedQuery}`
             console.log(uri)
             const res = await fetch(uri);
             const data = await res.json();
@@ -148,7 +149,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
             
             let res;
             if (onUpdate) {
-                res = await fetch(`/api/book/${form.id}`, {
+                res = await fetch(`${API_BASE_URL}/api/book/${form.id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -157,7 +158,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
                     body: formData,
                 });
             } else {
-                res = await fetch('/api/book', {
+                res = await fetch(`${API_BASE_URL}/api/book`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`

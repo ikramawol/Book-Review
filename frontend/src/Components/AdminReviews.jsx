@@ -20,9 +20,9 @@ const AdminReviews = ({ pageswitch }) => {
       let uri;
       if (query) {
         let encodedQuery = encodeURIComponent(query);
-        uri = `/api/book/search?q=${encodedQuery}`;
+        uri = `${API_BASE_URL}/api/book/search?q=${encodedQuery}`;
       } else {
-        uri = `/api/book`;
+        uri = `${API_BASE_URL}/api/book`;
       }
 
       const response = await fetch(uri);

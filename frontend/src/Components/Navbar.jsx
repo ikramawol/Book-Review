@@ -68,7 +68,7 @@ const Navbar = () => {
             // Call logout API to clear server-side refresh token
             const token = localStorage.getItem('accessToken')
             if (token) {
-                await fetch('/api/auth/logout', {
+                await fetch(`${API_BASE_URL}/api/auth/logout`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,

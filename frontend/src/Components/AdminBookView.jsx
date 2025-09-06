@@ -70,7 +70,7 @@ const AdminBookView = () => {
 
   const getReivews = async () => {
     try {
-      const reviewR = await fetch(`/api/review?bookId=${book.id}`)
+      const reviewR = await fetch(`${API_BASE_URL}/api/review?bookId=${book.id}`)
       const data = await reviewR.json()
 
       if (data.success) {
@@ -95,7 +95,7 @@ const AdminBookView = () => {
         return
       }
 
-      const reviewR = await fetch(`/api/review/${review.id}`, {
+      const reviewR = await fetch(`${API_BASE_URL}/api/review/${review.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
