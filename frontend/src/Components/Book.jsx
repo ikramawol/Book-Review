@@ -4,6 +4,7 @@ import '../styles/book.css'
 import Navbar from './Navbar';
 import BookThumbnail from './BookThumbnail';
 import Comment from './Comment'
+import { API_BASE_URL } from '../config';
 
 const Book = () => {
 
