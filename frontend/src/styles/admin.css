@@ -26,6 +26,7 @@
     flex-direction: column;
     gap: var(--main-padding);
     padding: var(--main-padding) 0;
+    border-radius: 5px;
     background: var(--clr-900);
 }
 .sidebar p:hover{
