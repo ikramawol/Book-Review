@@ -247,6 +247,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Apply multer middleware
     await runMiddleware(req, res, upload.single("image"));
     
+    if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  
     if (req.method === "GET") {
       return handleGET(req, res);
     }

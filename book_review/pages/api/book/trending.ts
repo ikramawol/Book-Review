@@ -13,6 +13,7 @@ export default async function handler(
     res.status(200).end();
     return;
   }
+  
   if (req.method === "GET") {
     return getTrendingBooks(req, res);
   }
