@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "../styles/login.css";
+import { API_BASE_URL } from '../config';
+
 
 const LoginPage = () => {
   const [password, setPassword] = useState("");

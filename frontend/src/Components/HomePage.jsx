@@ -7,6 +7,7 @@ import BookThumbnail from './BookThumbnail';
 import GenreThumbnail from './GenreThumbnail';
 import Footer from './Footer';
 import Searchbar from './Searchbar';
+import { API_BASE_URL } from '../config';
 
 const HomePage = () => {
 

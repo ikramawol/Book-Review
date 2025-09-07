@@ -12,6 +12,8 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import { API_BASE_URL } from '../config';
+
 
 const AdminDashboard = () => {
   const [genreList, setGenreList] = useState([]);

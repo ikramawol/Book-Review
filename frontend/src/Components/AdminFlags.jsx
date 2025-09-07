@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../styles/admin.css";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from '../config';
+
 
 const AdminFlags = () => {
   const navigate = useNavigate();

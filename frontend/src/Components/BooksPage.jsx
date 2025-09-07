@@ -6,6 +6,8 @@ import Searchbar from './Searchbar';
 import BookThumbnail from './BookThumbnail';
 import Footer from './Footer';
 import { useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
+
 
 const BooksPage = () => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/login.css'
+import { API_BASE_URL } from '../config';
+
 
 const Signup = () => {
   const [name, setName] = useState("")

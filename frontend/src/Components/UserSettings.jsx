@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import "../styles/userSetting.css";
+import { API_BASE_URL } from '../config';
+
 
 const UserSettings = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);

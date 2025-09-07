@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/admin.css';
+import { API_BASE_URL } from '../config';
 
 const AdminGenres = () => {
 

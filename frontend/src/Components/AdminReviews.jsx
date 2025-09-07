@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
+
 
 const AdminReviews = ({ pageswitch }) => {
   const navigate = useNavigate();
