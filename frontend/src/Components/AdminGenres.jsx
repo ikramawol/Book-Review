@@ -43,7 +43,7 @@ const AdminGenres = () => {
     }
     
     try {
-      const res = await fetch(`/api/category/${genreId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/category/${genreId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
