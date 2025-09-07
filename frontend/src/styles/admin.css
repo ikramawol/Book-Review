@@ -45,6 +45,7 @@
     left: 100%;
     background-color: var(--clr-300);
     z-index: -1;
+    border-radius: 5px 0 0 5px;
     transition: left 200ms;
 }
 
@@ -53,19 +54,20 @@
     font-size: 24px;
     font-weight: 700;
     padding: 10px;
-    border-radius: 5px 0 0 5px;
-    margin-bottom: 20px;
+    /* border-radius: 5px 0 0 5px; */
+    margin-bottom: 30px;
 }
 .sidebar p{
     position: relative;
     padding: 10px 10px;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px 5px 5px 5px;
     overflow: visible; /* was hidden */
     font-weight: 600;
     font-size: 18px;
     color: #fff;
     background: none;
     z-index: 1;
+    border-color: #ffffff;
 }
 
 .logoutBtn{
