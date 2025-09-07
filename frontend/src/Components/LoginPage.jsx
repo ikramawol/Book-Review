@@ -58,7 +58,7 @@ const LoginPage = () => {
         if (decodedToken.role === "USER") {
           navigate("/");
         } else if (decodedToken.role === "ADMIN") {
-          navigate("/admin/");
+          navigate("/admin");
         }
       } catch (err) {
         console.error("Token decode error:", err);
