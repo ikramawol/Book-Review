@@ -39,6 +39,7 @@ export default async function handler(
     ? (verifyJwt(token) as JwtPayload & { role?: string })
     : null;
 
+  
   if (req.method === "GET") {
     return authMiddleware(handleGetReports)(req as AuthenticatedRequest, res);
   } else {
