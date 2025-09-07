@@ -192,7 +192,7 @@ const AdminDashboard = () => {
             marginBottom: "10px"
           }}>
             <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 700 }}>
-              {totalReviews.reduce((acc, cur) => acc + cur.no, 0)} Reviews
+              {sampleData.reviews.reduce((acc, cur) => acc + cur.no, 0)} Reviews
             </div>
             <div style={{ color: "#68d391", fontWeight: 600, background: "#e6f9f0", borderRadius: "20px", padding: "2px 12px" }}>
               ↑ 20%
