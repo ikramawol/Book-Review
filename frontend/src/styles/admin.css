@@ -19,12 +19,12 @@
     gap: 32px; /* Add gap between sidebar and mainDisplay */
 }
 .sidebar{
-    width: 220px; /* was 15vw, now fixed width for clarity */
+    width: 190px; /* was 15vw, now fixed width for clarity */
     min-width: 200px;
     border-right: 2px solid white;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     background: var(--clr-900);
 }
 .sidebar p:hover{
@@ -516,7 +516,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .admin-chart-box {
