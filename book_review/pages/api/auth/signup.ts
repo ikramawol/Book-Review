@@ -79,7 +79,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  res.setHeader('Access-Control-Allow-Origin', 'https://book-review-cyan.vercel.app'); // or '*' for testing
+  res.setHeader('Access-Control-Allow-Origin', 'https://book-review-six-cyan.vercel.app'); // or '*' for testing
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
