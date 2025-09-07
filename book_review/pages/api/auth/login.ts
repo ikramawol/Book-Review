@@ -66,6 +66,11 @@ export const login = rateLimiter({ windowMs: 15 * 60 * 1000, max: 5 }, "login")(
 );
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', 'https://book-review-cyan.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   if (req.method === "POST") {
     return login(req, res);
   }
