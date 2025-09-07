@@ -16,14 +16,17 @@
     display: flex;
     padding: 30px var(--main-padding);
     height: calc(100vh - 200px);
+    gap: 32px; /* Add gap between sidebar and mainDisplay */
 }
 .sidebar{
-    width: 15vw;
-    border-right: 1px solid white;
+    width: 220px; /* was 15vw, now fixed width for clarity */
+    min-width: 200px;
+    border-right: 2px solid white;
     display: flex;
     flex-direction: column;
     gap: var(--main-padding);
     padding: var(--main-padding) 0 ;
+    background: var(--clr-900);
 }
 .sidebar p:hover{
     cursor: pointer;
@@ -56,10 +59,14 @@
 }
 .sidebar p{
     position: relative;
-    padding: 10px;
+    padding: 12px 18px;
     border-radius: 5px 0 0 5px;
-    overflow: hidden;
+    overflow: visible; /* was hidden */
     font-weight: 600;
+    font-size: 18px;
+    color: #fff;
+    background: none;
+    z-index: 1;
 }
 
 .logoutBtn{
