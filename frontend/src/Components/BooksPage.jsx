@@ -79,7 +79,7 @@ const BooksPage = () => {
     // Fetch categories from backend
     const fetchCategories = async () => {
       try {
-        const res = await fetch('${API_BASE_URL}/api/category');
+        const res = await fetch(`${API_BASE_URL}/api/category`);
         const data = await res.json();
         if (data.success) {
           setCategories(data.categories); // Adjust if your response shape is different

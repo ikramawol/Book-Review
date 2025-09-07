@@ -58,7 +58,7 @@ const AdminReviews = ({ pageswitch }) => {
   const currentBooks = filteredBooks.slice(startIndex, startIndex + itemsPerPage);
 
   const handleRowClick = (book) => {
-    navigate(`/admin/reviews`, { state: { book } });
+    navigate(`${API_BASE_URL}/admin/reviews`, { state: { book } });
   };
 
   // Render pagination with ellipsis

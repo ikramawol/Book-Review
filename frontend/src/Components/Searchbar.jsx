@@ -16,7 +16,7 @@ const Searchbar = ({ onSearch }) => {
       return;
     }
     try {
-      const res = await fetch(`/api/book/search?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`${API_BASE_URL}/api/book/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       setSuggestions(data.data.slice(0, 5));
       let shortResult = []

@@ -181,7 +181,27 @@ const AdminDashboard = () => {
           </div>
         </div>
         <div className="admin-chart-box">
-          <h3>Reviews Over Time</h3>
+          <h3>Reviews Overview</h3>
+          {/* Summary stats above the chart */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "30px",
+            marginBottom: "10px"
+          }}>
+            <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 700 }}>
+              {sampleData.reviews.reduce((acc, cur) => acc + cur.no, 0)} Reviews
+            </div>
+            <div style={{ color: "#68d391", fontWeight: 600, background: "#e6f9f0", borderRadius: "20px", padding: "2px 12px" }}>
+              ↑ 20%
+            </div>
+            <div style={{ color: "#e53e3e", fontWeight: 600, background: "#fde8e8", borderRadius: "20px", padding: "2px 12px" }}>
+              ↓ 3.9%
+            </div>
+            <div style={{ color: "#3182ce", fontWeight: 600, fontSize: "1.2rem" }}>
+              26%
+            </div>
+          </div>
           <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
               <LineChart
@@ -190,20 +210,23 @@ const AdminDashboard = () => {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis yAxisId="left" />
+                <YAxis yAxisId="right" orientation="right" />
                 <Tooltip
                   contentStyle={{
-                    background: "#222",
-                    color: "#fff",
+                    background: "#fff",
+                    color: "#222",
                     borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
                   }}
-                  labelStyle={{ color: "#C9AA71" }}
+                  labelStyle={{ color: "#C9AA71", fontWeight: 600 }}
+                  formatter={(value, name) => {
+                    if (name === "no") return [`${value} reviews`, "Reviews"];
+                    if (name === "percent") return [`${value}%`, "Change"];
+                    return [value, name];
+                  }}
                 />
-                <Legend
-                  verticalAlign="top"
-                  iconType="circle"
-                  wrapperStyle={{ top: 0, left: 0 }}
-                />
+                <Legend verticalAlign="top" iconType="circle" />
                 <Line
                   type="monotone"
                   dataKey="no"
@@ -211,7 +234,17 @@ const AdminDashboard = () => {
                   strokeWidth={3}
                   dot={{ r: 5, stroke: "#C9AA71", strokeWidth: 2, fill: "#fff" }}
                   activeDot={{ r: 8, fill: "#C9AA71" }}
+                  yAxisId="left"
                 />
+                {/* Example second line for percentage change, if you have that data */}
+                {/* <Line
+                  type="monotone"
+                  dataKey="percent"
+                  stroke="#3182ce"
+                  strokeWidth={3}
+                  dot={false}
+                  yAxisId="right"
+                /> */}
               </LineChart>
             </ResponsiveContainer>
           </div>

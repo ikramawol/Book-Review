@@ -15,7 +15,7 @@ const Comment = ({ review }) => {
                 return
             }
 
-            const reviewR = await fetch(`/api/report/${review.id}`, {
+            const reviewR = await fetch(`${API_BASE_URL}/api/report/${review.id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
