@@ -6,11 +6,11 @@
     --main-padding: 30px;
 }
 
-.adminContainer h2{
+.adminContainer h3{
     background-color: var(--clr-900);
     margin: 40px var(--main-padding) 0 var(--main-padding);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--clr-300);
+    font-family: Arial, sans-serif;
 }
 .adminPage{
     display: flex;

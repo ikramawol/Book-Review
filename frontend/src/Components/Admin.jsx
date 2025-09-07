@@ -89,7 +89,12 @@ const Admin = () => {
 
     return (
         <div className='adminContainer'>
-            <h2>Admin Manager</h2>
+            <h3>
+                <span style={{ marginRight: "8px", verticalAlign: "middle" }}>
+                    <FaUserShield size={28} color="#C9AA71" />
+                </span>
+                Admin Manager
+            </h3>
             <div className='adminPage'>
                 <div className="sidebar" ref={sidebarContainer}>
                     <p className="active" onClick={(e) => handlePage(e, 1)}>Dashboard</p>
