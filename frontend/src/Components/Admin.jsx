@@ -90,9 +90,6 @@ const Admin = () => {
     return (
         <div className='adminContainer'>
             <h3>
-                <span style={{ marginRight: "8px", verticalAlign: "middle" }}>
-                    <FaUserShield size={28} color="#C9AA71" />
-                </span>
                 Admin Manager
             </h3>
             <div className='adminPage'>
