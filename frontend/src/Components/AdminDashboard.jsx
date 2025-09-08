@@ -14,36 +14,22 @@ import {
 } from "recharts";
 import { API_BASE_URL } from '../config';
 
-
 const AdminDashboard = () => {
   const [genreList, setGenreList] = useState([]);
   const [colors, setColors] = useState([]);
   const [totalBooks, setTotalBooks] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [reviewTimeline, setReviewTimeline] = useState([]); // <-- new state
 
-  const sampleData = {
-    reviews: [
-      { date: "Oct W1", no: 25 },
-      { date: "Oct W2", no: 55 },
-      { date: "Oct W3", no: 40 },
-      { date: "Oct W4", no: 88 },
-      { date: "Nov W1", no: 15 },
-    ],
-  };
-
-  // ✅ Fetch genres/categories
+  // Fetch genres/categories
   const getGenres = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/book/categories`);
       const data = await response.json();
-
-      // Assuming your API returns categories like:
-      // [{ name: "Romance", _count: { books: 5 } }]
       let structuredGenre = data.data.map((gen) => {
         return { name: gen.name, count: gen._count.books };
       });
-
       setColors(createRandomColors(structuredGenre.length));
       setGenreList(structuredGenre);
     } catch (error) {
@@ -51,23 +37,26 @@ const AdminDashboard = () => {
     }
   };
 
-  // ✅ Fetch stats
+  // Fetch stats
   const getStats = async () => {
     try {
       const booksRes = await fetch(`${API_BASE_URL}/api/book`);
       const booksData = await booksRes.json();
       setTotalBooks(booksData.pagination.totalBooks);
-
-      // Example if you add later:
-      // const reviewsRes = await fetch("/api/review");
-      // const reviewsData = await reviewsRes.json();
-      // setTotalReviews(reviewsData.data?.length || 0);
-
-      // const usersRes = await fetch("/api/user");
-      // const usersData = await usersRes.json();
-      // setTotalUsers(usersData.data?.length || 0);
     } catch (error) {
       console.error("Error fetching stats:", error);
+    }
+  };
+
+  // Fetch review timeline for line graph
+  const getReviewTimeline = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/review/timeline`);
+      const data = await res.json();
+      setReviewTimeline(data.data || []);
+    } catch (error) {
+      setReviewTimeline([]);
+      console.error("Error fetching review timeline:", error);
     }
   };
 
@@ -99,9 +88,10 @@ const AdminDashboard = () => {
 
     fetchReviewsCount();
     fetchUsers();
+    getReviewTimeline(); // <-- fetch real review timeline
   }, []);
 
-  // ✅ Generate unlimited distinct colors
+  // Generate unlimited distinct colors
   function createRandomColors(numColors) {
     let newColors = [];
     for (let i = 0; i < numColors; i++) {
@@ -117,8 +107,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard">
-     
-
       {/* Admin Totals */}
       <div className="admin-totals">
         <div className="admin-total-box">
@@ -183,8 +171,7 @@ const AdminDashboard = () => {
           </div>
         </div>
         <div className="admin-chart-box">
-          <h3>Reviews Overview</h3>
-          {/* Summary stats above the chart */}
+          <h3>Review Timeline</h3>
           <div style={{
             display: "flex",
             alignItems: "center",
@@ -192,28 +179,18 @@ const AdminDashboard = () => {
             marginBottom: "10px"
           }}>
             <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 700 }}>
-              {sampleData.reviews.reduce((acc, cur) => acc + cur.no, 0)} Reviews
-            </div>
-            <div style={{ color: "#68d391", fontWeight: 600, background: "#e6f9f0", borderRadius: "20px", padding: "2px 12px" }}>
-              ↑ 20%
-            </div>
-            <div style={{ color: "#e53e3e", fontWeight: 600, background: "#fde8e8", borderRadius: "20px", padding: "2px 12px" }}>
-              ↓ 3.9%
-            </div>
-            <div style={{ color: "#3182ce", fontWeight: 600, fontSize: "1.2rem" }}>
-              26%
+              {reviewTimeline.reduce((acc, cur) => acc + cur.count, 0)} Reviews
             </div>
           </div>
           <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
               <LineChart
-                data={sampleData.reviews}
+                data={reviewTimeline}
                 margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
+                <XAxis dataKey="week" />
+                <YAxis />
                 <Tooltip
                   contentStyle={{
                     background: "#fff",
@@ -222,31 +199,17 @@ const AdminDashboard = () => {
                     boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
                   }}
                   labelStyle={{ color: "#C9AA71", fontWeight: 600 }}
-                  formatter={(value, name) => {
-                    if (name === "no") return [`${value} reviews`, "Reviews"];
-                    if (name === "percent") return [`${value}%`, "Change"];
-                    return [value, name];
-                  }}
+                  formatter={(value, name) => [`${value} reviews`, "Done"]}
                 />
                 <Legend verticalAlign="top" iconType="circle" />
                 <Line
                   type="monotone"
-                  dataKey="no"
+                  dataKey="count"
                   stroke="#C9AA71"
                   strokeWidth={3}
                   dot={{ r: 5, stroke: "#C9AA71", strokeWidth: 2, fill: "#fff" }}
                   activeDot={{ r: 8, fill: "#C9AA71" }}
-                  yAxisId="left"
                 />
-                {/* Example second line for percentage change, if you have that data */}
-                {/* <Line
-                  type="monotone"
-                  dataKey="percent"
-                  stroke="#3182ce"
-                  strokeWidth={3}
-                  dot={false}
-                  yAxisId="right"
-                /> */}
               </LineChart>
             </ResponsiveContainer>
           </div>

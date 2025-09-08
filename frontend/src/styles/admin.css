@@ -19,8 +19,8 @@
     gap: 32px; /* Add gap between sidebar and mainDisplay */
 }
 .sidebar{
-    width: 190px; /* was 15vw, now fixed width for clarity */
-    min-width: 200px;
+    width: 160px; /* was 15vw, now fixed width for clarity */
+    min-width: 170px;
     border-right: 2px solid white;
     display: flex;
     flex-direction: column;
