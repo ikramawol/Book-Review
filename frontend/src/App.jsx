@@ -12,6 +12,7 @@ import AdminBookView from './Components/AdminBookView';
 import UserSettings from './Components/UserSettings';
 import Signup from './Components/Signup';
 import PrivateRoute from './Components/PrivateRoute'
+import FlagView from './Components/FlagView';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/reviews" element={<AdminBookView />} />
+            <Route path="/admin/flags/:id" element={<FlagView />} />
         </Route>
       </Routes>
     </Router>
