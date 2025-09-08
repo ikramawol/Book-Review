@@ -49,8 +49,8 @@ const FlagView = () => {
       return;
     }
     try {
-      const res = await fetch(`${API_BASE_URL}/api/report/${id}`, {
-        method: "POST",
+      const res = await fetch(`${API_BASE_URL}/api/report/id?reportId=${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

@@ -30,7 +30,7 @@ function App() {
         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/reviews" element={<AdminBookView />} />
-            <Route path="/admin/flags/:id" element={<FlagView />} />
+            {/* <Route path="/admin/flags/:id" element={<FlagView />} /> */}
         </Route>
       </Routes>
     </Router>
