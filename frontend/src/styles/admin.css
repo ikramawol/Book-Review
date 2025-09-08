@@ -738,3 +738,135 @@
   color: #fff;
   letter-spacing: 1px;
 } */
+
+/* --- Admin Flags Page Styles --- */
+.admin-flags {
+  padding: 32px;
+  background: var(--clr-900, #181818);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.admin-flags h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #C9AA71;
+}
+
+.flags-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.flag-card {
+  background: #232323;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-left: 4px solid #C9AA71;
+}
+
+.flag-info p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #e2e2e2;
+}
+
+.flag-info strong {
+  color: #C9AA71;
+}
+
+.flag-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 140px;
+}
+
+.flag-actions button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.remove-btn {
+  background: #e53e3e;
+  color: #fff;
+}
+
+.remove-btn:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+}
+
+.ignore-btn {
+  background: #718096;
+  color: #fff;
+}
+
+.ignore-btn:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+}
+
+.approve-btn {
+  background: #68d391;
+  color: #181818;
+}
+
+.approve-btn:disabled {
+  background: #a0aec0;
+  color: #232323;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e53e3e;
+  background: #fde8e8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.pagination {
+  margin-top: 32px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination button,
+.pagination span {
+  background: #232323;
+  color: #C9AA71;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination button:disabled {
+  background: #a0aec0;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.pagination .active-page {
+  background: #C9AA71;
+  color: #1f1f1f;
+  font-weight: bold;
+}

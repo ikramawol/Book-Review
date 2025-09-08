@@ -108,6 +108,7 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard">
       {/* Admin Totals */}
+      <h3>Dashboard</h3>
       <div className="admin-totals">
         <div className="admin-total-box">
           <p>Total Users</p>
@@ -131,7 +132,7 @@ const AdminDashboard = () => {
       <div className="admin-charts">
         <div className="admin-chart-box">
           <h3>Genre Distribution</h3>
-          <div className="GenresPichart" style={{ width: "100%", height: 300 }}>
+          <div className="GenresPichart" style={{ width: "80%", height: 250 }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -178,7 +179,7 @@ const AdminDashboard = () => {
             gap: "30px",
             marginBottom: "10px"
           }}>
-            <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 700 }}>
+            <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 400 }}>
               {reviewTimeline.reduce((acc, cur) => acc + cur.count, 0)} Reviews
             </div>
           </div>

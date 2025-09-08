@@ -8,6 +8,7 @@ import AdminFlags from './AdminFlags'
 import { useRef } from 'react'
 import AdminRequests from './AdminRequests'
 import { useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../config'
 
 const Admin = () => {
     const [page, setPage] = useState(<AdminDashboard />)
@@ -62,7 +63,7 @@ const Admin = () => {
             if (loginMethod === 'custom') {
                 const token = localStorage.getItem('accessToken')
                 if (token) {
-                    await fetch('/api/auth/logout', {
+                    await fetch(`${API_BASE_URL}/api/auth/logout`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -88,23 +89,19 @@ const Admin = () => {
     }
 
     return (
-        <div className='adminContainer'>
-            <h3>
-                Admin Manager
-            </h3>
-            <div className='adminPage'>
-                <div className="sidebar" ref={sidebarContainer}>
-                    <p className="active" onClick={(e) => handlePage(e, 1)}>Dashboard</p>
-                    <p onClick={(e) => handlePage(e, 2)}>Books</p>
-                    <p onClick={(e) => handlePage(e, 3)}>Genres</p>
-                    <p onClick={(e) => handlePage(e, 4)} pageswitch={pageSwitch}>Reviews</p>
-                    <p onClick={(e) => handlePage(e, 5)}>Flags</p>
-                    {/* <p onClick={(e)=> handlePage(e,6)}>Requests</p> */}
-                    <button className="logoutBtn" onClick={handleLogout}>Logout</button>
-                </div>
-                <div className="mainDisplay">
-                    {page}
-                </div>
+        <div className="adminContainer" style={{ display: "flex", height: "100vh" }}>
+            <div className="sidebar" ref={sidebarContainer}>
+                <p className="active" onClick={(e) => handlePage(e, 1)}>Dashboard</p>
+                <p onClick={(e) => handlePage(e, 2)}>Books</p>
+                <p onClick={(e) => handlePage(e, 3)}>Genres</p>
+                <p onClick={(e) => handlePage(e, 4)} pageswitch={pageSwitch}>Reviews</p>
+                <p onClick={(e) => handlePage(e, 5)}>Flags</p>
+                {/* <p onClick={(e)=> handlePage(e,6)}>Requests</p> */}
+                <button className="logoutBtn" onClick={handleLogout}>Logout</button>
+            </div>
+            <div className="sidebar-separator" />
+            <div className="adminPage">
+                {page}
             </div>
         </div>
     )
