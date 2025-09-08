@@ -870,3 +870,63 @@
   color: #1f1f1f;
   font-weight: bold;
 }
+
+.sidebar-separator {
+  width: 2px;
+  background: #fff;
+  height: 100vh;
+  margin-right: 32px; /* space between line and content */
+}
+
+/* ...existing styles... */
+
+.flags-table-container {
+  margin-top: 24px;
+  background: #232323;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 24px;
+}
+
+.flags-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #fff;
+}
+
+.flags-table th, .flags-table td {
+  padding: 14px 12px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.flags-table th {
+  background: #181818;
+  color: #C9AA71;
+  font-weight: 700;
+  border-bottom: 2px solid #C9AA71;
+}
+
+.flags-table tr.flag-row:hover {
+  background: #282828;
+  transition: background 0.2s;
+}
+
+.flag-profile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #C9AA71;
+}
+
+.flag-status {
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 14px;
+  display: inline-block;
+}
+
+/* ...rest of your admin styles... */
