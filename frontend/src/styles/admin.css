@@ -24,9 +24,12 @@
     /* border-right: 2px solid white; */
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 24px; /* space between buttons */
     background: var(--clr-900);
+    padding: 32px 0 0 0; /* top padding for heading */
+    align-items: flex-start;
 }
+
 .sidebar p:hover{
     cursor: pointer;
 }
@@ -935,9 +938,8 @@
   width: 2px;
   background: #fff;
   height: 100vh;
-  margin-right: 32px;
-  
-  /* Add margin-left if needed */
+  margin-left: 32px; /* space between sidebar and line */
+  margin-right: 0;
 }
 
 /* --- Responsive Styles --- */
