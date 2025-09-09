@@ -501,8 +501,8 @@
 .admin-total-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  padding: 32px 28px 24px 28px;
+  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
+  padding: 12px 20px 12px 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -543,7 +543,7 @@
 .admin-chart-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
   padding: 32px 28px 24px 28px;
   min-height: 340px;
   display: flex;
