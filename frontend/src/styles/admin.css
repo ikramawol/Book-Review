@@ -493,7 +493,7 @@
 .admin-totals {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
+  gap: 12px;
   margin-bottom: 24px;
   padding: 0;
 }
@@ -502,7 +502,7 @@
   background: #181818;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
-  padding: 12px 20px 12px 20px;
+  padding: 20px 12px 20px 12px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
