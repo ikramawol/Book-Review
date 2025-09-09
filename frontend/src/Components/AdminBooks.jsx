@@ -193,6 +193,7 @@ const AdminBooks = ({ genres = ["horror", "romance"] }) => {
 
     return (
         <div className="bookManage">
+            <h3>Manage Books</h3>
             <div className="bookoption">
                 <button className={!onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(false); setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' }); }}>ADD</button>
                 <button className={onUpdate ? 'active' : ''} onClick={() => { setOnUpdate(true); setForm({ id: null, title: '', author: '', genres: [], date: '', image: null, description: '' }); }}>UPDATE</button>

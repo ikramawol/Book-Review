@@ -16,7 +16,7 @@
     display: flex;
     padding: 30px var(--main-padding);
     height: calc(100vh - 200px);
-    gap: 32px; /* Add gap between sidebar and mainDisplay */
+    gap: 20px; /* Add gap between sidebar and mainDisplay */
 }
 .sidebar{
     width: 170px; /* was 15vw, now fixed width for clarity */
@@ -67,7 +67,8 @@
     color: #fff;
     background: none;
     z-index: 1;
-    border-color: #ffffff;
+    gap: 10px;
+    /* border-color: #ffffff; */
     
 }
 
@@ -207,18 +208,27 @@
   }
  
   
-.GenresPichart, .ReviewsGraph {
+.GenresPichart {
     background: var(--clr-900);
     border-radius: 10px;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ecdcbf;
+    /* background-color: #ecdcbf; */
     color: black;
 
 }
-
+.ReviewsGraph{
+    background: var(--clr-900);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #ecdcbf; */
+    color: black;
+}
 /* manage books */
 .bookManage {
     display: flex;
@@ -477,9 +487,9 @@
 
 .admin-totals {
   display: grid;
-  padding: 30px;
+  padding: 10px;
   grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  gap: 20px;
   margin-bottom: 10px;
 }
 

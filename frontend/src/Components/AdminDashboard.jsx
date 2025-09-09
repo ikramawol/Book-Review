@@ -130,7 +130,7 @@ const AdminDashboard = () => {
 
       {/* Admin Charts */}
       <div className="admin-charts">
-        <div className="admin-chart-box">
+        {/* <div className="admin-chart-box">
           <h3>Genre Distribution</h3>
           <div className="GenresPichart" style={{ width: "80%", height: 250 }}>
             <ResponsiveContainer>
@@ -170,13 +170,13 @@ const AdminDashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </div> */}
         <div className="admin-chart-box">
           <h3>Review Timeline</h3>
           <div style={{
             display: "flex",
             alignItems: "center",
-            gap: "30px",
+            gap: "20px",
             marginBottom: "10px"
           }}>
             <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 400 }}>
@@ -194,7 +194,7 @@ const AdminDashboard = () => {
                 <YAxis />
                 <Tooltip
                   contentStyle={{
-                    background: "#fff",
+                    background: "#C9AA71",
                     color: "#222",
                     borderRadius: "8px",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
@@ -212,6 +212,47 @@ const AdminDashboard = () => {
                   activeDot={{ r: 8, fill: "#C9AA71" }}
                 />
               </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="admin-chart-box">
+          <h3>Genre Distribution</h3>
+          <div className="GenresPichart" style={{ width: "0%", height: 250 }}>
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={genreList}
+                  dataKey="count"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="60%"
+                  outerRadius="80%"
+                  labelLine={false}
+                  // Custom label in the center
+                  label={() => (
+                    <text
+                      x="50%"
+                      y="50%"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fontSize={48}
+                      fontWeight={600}
+                      fill="#C9AA71"
+                    >
+                      {genreList.length}
+                    </text>
+                  )}
+                >
+                  {genreList.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
