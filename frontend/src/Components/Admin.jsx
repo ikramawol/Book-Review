@@ -9,6 +9,7 @@ import { useRef } from "react"
 import AdminRequests from "./AdminRequests"
 import { useNavigate } from "react-router-dom"
 import { API_BASE_URL } from "../config"
+import { FaUserShield, FaTachometerAlt, FaBook, FaTags, FaCommentDots, FaFlag } from "react-icons/fa";
 
 const Admin = () => {
   const [page, setPage] = useState(<AdminDashboard />)
@@ -90,23 +91,35 @@ const Admin = () => {
   return (
     <div className="adminContainer" style={{ display: "flex", height: "100vh" }}>
       <div className="sidebar" ref={sidebarContainer}>
-        {/* Uncommented and styled the Admin Panel header */}
-        <h3 style={{ color: "#fff", padding: "10px", backgroundColor: "#333" }}>Admin Panel</h3>
-        <p className="active" onClick={(e) => handlePage(e, 1)}>
+        <h2 style={{ display: "flex", alignItems: "center", gap: "10px", color: "#C9AA71", marginBottom: "24px" }}>
+          <FaUserShield size={28} style={{ verticalAlign: "middle" }} />
+          Admin Panel
+        </h2>
+        <p className="active" onClick={(e) => handlePage(e, 1)} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <FaTachometerAlt size={20} style={{ verticalAlign: "middle" }} />
           Dashboard
         </p>
-        <p onClick={(e) => handlePage(e, 2)}>Books</p>
-        <p onClick={(e) => handlePage(e, 3)}>Genres</p>
-        <p onClick={(e) => handlePage(e, 4)} pageswitch={pageSwitch}>
+        <p onClick={(e) => handlePage(e, 2)} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <FaBook size={20} style={{ verticalAlign: "middle" }} />
+          Books
+        </p>
+        <p onClick={(e) => handlePage(e, 3)} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <FaTags size={20} style={{ verticalAlign: "middle" }} />
+          Genres
+        </p>
+        <p onClick={(e) => handlePage(e, 4)} pageswitch={pageSwitch} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <FaCommentDots size={20} style={{ verticalAlign: "middle" }} />
           Reviews
         </p>
-        <p onClick={(e) => handlePage(e, 5)}>Flags</p>
+        <p onClick={(e) => handlePage(e, 5)} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <FaFlag size={20} style={{ verticalAlign: "middle" }} />
+          Flags
+        </p>
         {/* <p onClick={(e)=> handlePage(e,6)}>Requests</p> */}
         <button className="logoutBtn" onClick={handleLogout}>
           Logout
         </button>
       </div>
-      {/* Move separator OUTSIDE sidebar */}
       <div className="sidebar-separator" />
       <div className="adminPage">{page}</div>
     </div>

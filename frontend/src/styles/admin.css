@@ -28,6 +28,7 @@
     background: var(--clr-900);
     padding: 32px 20px 0 0; /* top padding for heading */
     align-items: flex-start;
+    margin-left: 30px;
 }
 
 .sidebar p:hover{
@@ -71,6 +72,7 @@
     background: none;
     z-index: 1;
     gap: 10px;
+
     /* border-color: #ffffff; */
     
 }
@@ -981,6 +983,176 @@
   .logoutBtn {
     margin-top: 0;
     margin-left: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-totals {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .admin-charts {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .admin-chart-box,
+  .GenresPichart,
+  .ReviewsGraph,
+  .flags-table-container,
+  .flag-card {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+  .flags-table th, .flags-table td {
+    padding: 10px 6px;
+    font-size: 0.95rem;
+  }
+  .flag-profile {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 500px) {
+  .sidebar {
+    flex-direction: column;
+    height: auto;
+    padding: 8px 0;
+    font-size: 0.95rem;
+  }
+  .adminPage {
+    padding: 8px 2vw;
+  }
+  .admin-totals {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .admin-chart-box,
+  .GenresPichart,
+  .ReviewsGraph,
+  .flags-table-container,
+  .flag-card {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+  .flags-table th, .flags-table td {
+    padding: 6px 2px;
+    font-size: 0.9rem;
+  }
+  .flag-profile {
+    width: 24px;
+    height: 24px;
+  }
+  .logoutBtn {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+}
+
+/* --- Dashboard Layout --- */
+.dashboard {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.admin-totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.admin-total-box {
+  background: #181818;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 32px 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 120px;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.admin-total-box:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+}
+
+.admin-total-box p {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #C9AA71;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-total-box h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FFD77A;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.admin-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 32px;
+}
+
+.admin-chart-box {
+  background: #181818;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 32px 28px 24px 28px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-chart-box h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #C9AA71;
+  margin-bottom: 16px;
+}
+
+.GenresPichart, .ReviewsGraph {
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .dashboard {
+    padding: 16px 8px;
+    gap: 18px;
+  }
+  .admin-totals {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .admin-charts {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .admin-total-box, .admin-chart-box {
+    padding: 24px 20px;
+  }
+  .admin-total-box h2 {
+    font-size: 2rem;
+  }
+  .admin-chart-box h3 {
+    font-size: 1.125rem;
   }
 }
 

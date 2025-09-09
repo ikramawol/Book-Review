@@ -13,6 +13,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { API_BASE_URL } from '../config';
+import { FaUser, FaBook, FaCommentDots, FaTags } from "react-icons/fa";
 
 const AdminDashboard = () => {
   const [genreList, setGenreList] = useState([]);
@@ -111,19 +112,31 @@ const AdminDashboard = () => {
       <h3>Dashboard</h3>
       <div className="admin-totals">
         <div className="admin-total-box">
-          <p>Total Users</p>
+          <p>
+            <FaUser style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Total Users
+          </p>
           <h2>{totalUsers}</h2>
         </div>
         <div className="admin-total-box">
-          <p>Total Books</p>
+          <p>
+            <FaBook style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Total Books
+          </p>
           <h2>{totalBooks}</h2>
         </div>
         <div className="admin-total-box">
-          <p>Total Reviews</p>
+          <p>
+            <FaCommentDots style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Total Reviews
+          </p>
           <h2>{totalReviews}</h2>
         </div>
         <div className="admin-total-box">
-          <p>Total Genres</p>
+          <p>
+            <FaTags style={{ marginRight: 8, verticalAlign: "middle" }} />
+            Total Genres
+          </p>
           <h2>{genreList.length}</h2>
         </div>
       </div>
@@ -179,9 +192,7 @@ const AdminDashboard = () => {
             gap: "20px",
             marginBottom: "10px"
           }}>
-            <div style={{ color: "#68d391", fontSize: "1rem", fontWeight: 400 }}>
-              {reviewTimeline.reduce((acc, cur) => acc + cur.count, 0)} Reviews
-            </div>
+            
           </div>
           <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
@@ -218,7 +229,7 @@ const AdminDashboard = () => {
         
         <div className="admin-chart-box">
           <h3>Genre Distribution</h3>
-          <div className="GenresPichart" style={{ width: "80%", height: 250 }}>
+          <div className="GenresPichart" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -252,7 +263,16 @@ const AdminDashboard = () => {
                     />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  formatter={(value, entry) => [`${value} books`, entry.name]}
+                  contentStyle={{
+                    background: "#fff",
+                    color: "#222",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                  }}
+                  labelStyle={{ color: "#C9AA71", fontWeight: 600 }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
