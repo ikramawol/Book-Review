@@ -19,9 +19,9 @@
     gap: 32px; /* Add gap between sidebar and mainDisplay */
 }
 .sidebar{
-    width: 160px; /* was 15vw, now fixed width for clarity */
+    width: 170px; /* was 15vw, now fixed width for clarity */
     min-width: 170px;
-    border-right: 2px solid white;
+    /* border-right: 2px solid white; */
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -68,6 +68,7 @@
     background: none;
     z-index: 1;
     border-color: #ffffff;
+    
 }
 
 .logoutBtn{
@@ -871,14 +872,7 @@
   font-weight: bold;
 }
 
-/* .sidebar-separator {
-  width: 2px;
-  background: #fff;
-  height: 100vh;
-  margin-right: 32px;
-} */ 
 
-/* ...existing styles... */
 
 .flags-table-container {
   margin-top: 24px;
@@ -927,4 +921,10 @@
   border: 2px solid #C9AA71;
 }
 
-/* ...rest of your admin styles... */
+.sidebar-separator {
+  width: 2px;
+  background: #fff;
+  height: 100vh;
+  margin-right: 32px;
+  /* Add margin-left if needed */
+}

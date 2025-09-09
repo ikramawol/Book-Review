@@ -99,7 +99,7 @@ const Admin = () => {
                 {/* <p onClick={(e)=> handlePage(e,6)}>Requests</p> */}
                 <button className="logoutBtn" onClick={handleLogout}>Logout</button>
             </div>
-            {/* <div className="sidebar-separator" /> */}
+            <div className="sidebar-separator"></div>
             <div className="adminPage">
                 {page}
             </div>
