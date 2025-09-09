@@ -217,7 +217,7 @@ const AdminDashboard = () => {
         </div>
         <div className="admin-chart-box">
           <h3>Genre Distribution</h3>
-          <div className="GenresPichart" style={{ width: "0%", height: 250 }}>
+          <div className="GenresPichart" style={{ width: "80%", height: 250 }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie

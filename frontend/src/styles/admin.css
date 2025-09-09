@@ -209,13 +209,13 @@
  
   
 .GenresPichart {
-    background: var(--clr-900);
+    /* background: var(--clr-900); */
     border-radius: 10px;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #ecdcbf; */
+    background-color: #ecdcbf;
     color: black;
 
 }
@@ -226,7 +226,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #ecdcbf; */
+    background-color: #ecdcbf;
     color: black;
 }
 /* manage books */

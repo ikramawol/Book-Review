@@ -90,7 +90,7 @@ const Admin = () => {
 
     return (
         <div className="adminContainer" style={{ display: "flex", height: "100vh" }}>
-            <h3>Admin Panel</h3>
+            <div><h3>Admin Panel</h3></div>
             <div className="sidebar" ref={sidebarContainer}>
                 <p className="active" onClick={(e) => handlePage(e, 1)}>Dashboard</p>
                 <p onClick={(e) => handlePage(e, 2)}>Books</p>
