@@ -179,7 +179,7 @@ const AdminDashboard = () => {
             gap: "20px",
             marginBottom: "10px"
           }}>
-            <div style={{ color: "#68d391", fontSize: "1.5rem", fontWeight: 400 }}>
+            <div style={{ color: "#68d391", fontSize: "1rem", fontWeight: 400 }}>
               {reviewTimeline.reduce((acc, cur) => acc + cur.count, 0)} Reviews
             </div>
           </div>
