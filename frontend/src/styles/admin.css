@@ -499,7 +499,7 @@
 }
 
 .admin-total-box {
-  background: #181818;
+  background: #20212C;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
   padding: 20px 12px 20px 12px;
@@ -541,7 +541,7 @@
 }
 
 .admin-chart-box {
-  background: #181818;
+  background: #20212C;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
   padding: 32px 28px 24px 28px;
@@ -1041,10 +1041,10 @@
 
 /* --- Dashboard Layout --- */
 .dashboard {
-  padding: 32px 40px;
+  padding: 32px 20px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 20px;
 }
 
 .admin-totals {
@@ -1057,7 +1057,6 @@
 .admin-total-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px #c9aa71d2;
   padding: 32px 28px 24px 28px;
   display: flex;
   flex-direction: column;
@@ -1098,7 +1097,6 @@
 .admin-chart-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px #c9aa71d2;
   padding: 32px 28px 24px 28px;
   min-height: 340px;
   display: flex;

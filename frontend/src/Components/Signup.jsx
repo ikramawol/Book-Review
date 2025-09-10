@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/login.css'
 import { API_BASE_URL } from '../config';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const Signup = () => {
@@ -10,6 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [passwordError, setPasswordError] = useState("")
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -107,16 +109,31 @@ const Signup = () => {
 
           <div className="input-group">
             <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value)
-                if (passwordError) setPasswordError("")
-              }}
-              placeholder="Create a password"
-              required
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  if (passwordError) setPasswordError("")
+                }}
+                placeholder="Create a password"
+                required
+              />
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  color: "#C9AA71"
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
             {(() => {
               const rules = getPasswordRules(password)
               return (

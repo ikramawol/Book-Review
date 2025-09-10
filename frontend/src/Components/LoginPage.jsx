@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "../styles/login.css";
 import { API_BASE_URL } from '../config';
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
   const [loginMethod, setLoginMethod] = useState("custom"); // "custom" or "oauth"
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   // Clear any existing sessions before login
@@ -128,19 +129,32 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className="input-group">
+          <div className="input-group" style={{ position: "relative" }}>
             <label>Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
             />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: 12,
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                color: "#C9AA71"
+              }}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
           </div>
 
           <button type="submit" className="update-btn">
-            Login with Email & Password
+            Login
           </button>
         </form>
 

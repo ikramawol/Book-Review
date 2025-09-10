@@ -109,10 +109,29 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard">
       {/* Admin Totals */}
-      <h3 style={{ fontSize: "2rem", fontWeight: 700, color: "#C9AA71", marginBottom: "8px" }}>Dashboard</h3>
-      <p style={{ color: "#aaa", fontSize: "1.1rem", marginBottom: "24px" }}>
-        Here is today's report and performances
-      </p>
+      <div style={{
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "6px",
+  marginBottom: "24px"
+}}>
+  <h3 style={{
+    fontSize: "2.4rem",
+    fontWeight: 600,
+    color: "#C9AA71",
+    margin: 0
+  }}>
+    Dashboard
+  </h3>
+  <p style={{
+    color: "#aaa",
+    fontSize: "1.15rem",
+    margin: 0
+  }}>
+    Here is today's report and performances
+  </p>
+</div>
       <div className="admin-totals">
         <div className="admin-total-box">
           <p>
