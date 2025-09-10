@@ -11,6 +11,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  BarChart,
+  Bar,
 } from "recharts";
 import { API_BASE_URL } from '../config';
 import { FaUser, FaBook, FaCommentDots, FaTags } from "react-icons/fa";
@@ -218,7 +220,7 @@ const AdminDashboard = () => {
           </div>
           <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
-              <LineChart
+              <BarChart
                 data={reviewTimeline}
                 margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
               >
@@ -236,15 +238,13 @@ const AdminDashboard = () => {
                   formatter={(value, name) => [`${value} reviews`, "Done"]}
                 />
                 <Legend verticalAlign="top" iconType="circle" />
-                <Line
-                  type="monotone"
+                <Bar
                   dataKey="count"
-                  stroke="#C9AA71"
-                  strokeWidth={3}
-                  dot={{ r: 5, stroke: "#C9AA71", strokeWidth: 2, fill: "#fff" }}
-                  activeDot={{ r: 8, fill: "#C9AA71" }}
+                  fill="#C9AA71"
+                  barSize={32}
+                  radius={[8, 8, 0, 0]}
                 />
-              </LineChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
           </div>

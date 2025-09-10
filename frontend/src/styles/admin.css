@@ -944,10 +944,10 @@
 }
 
 .sidebar-separator {
-  width: 2px;
+  width: 1px;
   background: #fff;
-  height: 100vh;
-  margin-left: 32px; /* space between sidebar and line */
+  height: auto;
+  margin-left: 20px; /* space between sidebar and line */
   margin-right: 0;
 }
 
