@@ -1051,13 +1051,13 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .admin-total-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 24px #c9aa71d2;
   padding: 32px 28px 24px 28px;
   display: flex;
   flex-direction: column;
@@ -1098,7 +1098,7 @@
 .admin-chart-box {
   background: #181818;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 24px #c9aa71d2;
   padding: 32px 28px 24px 28px;
   min-height: 340px;
   display: flex;

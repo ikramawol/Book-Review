@@ -109,7 +109,10 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard">
       {/* Admin Totals */}
-      <h3>Dashboard</h3>
+      <h3 style={{ fontSize: "2rem", fontWeight: 700, color: "#C9AA71", marginBottom: "8px" }}>Dashboard</h3>
+      <p style={{ color: "#aaa", fontSize: "1.1rem", marginBottom: "24px" }}>
+        Here is today's report and performances
+      </p>
       <div className="admin-totals">
         <div className="admin-total-box">
           <p>
