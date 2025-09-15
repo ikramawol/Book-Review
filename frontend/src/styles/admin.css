@@ -78,7 +78,7 @@
 }
 
 .logoutBtn{
-    margin-bottom: auto;
+    margin-top: auto;
     padding: 10px;
     background-color: #dc3545;
     color: white;
@@ -202,7 +202,7 @@
   }
 
 
-  /* .GenresPichart {
+  .GenresPichart {
     background: var(--clr-900);
     border-radius: 10px;
     padding: 10px;
@@ -210,7 +210,7 @@
     justify-content: center;
     align-items: center;
 
-  } */
+  }
  
   
 .GenresPichart {

@@ -218,11 +218,11 @@ const AdminDashboard = () => {
           }}>
             
           </div>
-          <div className="ReviewsGraph" style={{ width: "100%", height: auto }}>
+          <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
               <BarChart
                 data={reviewTimeline}
-                // margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="week" />
