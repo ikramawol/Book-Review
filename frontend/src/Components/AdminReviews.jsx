@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../config';
 
 const AdminReviews = ({ pageswitch }) => {
   const navigate = useNavigate();
-  const itemsPerPage = 5; // books per page
+  const itemsPerPage = 10; // books per page
 
   const [books, setBooks] = useState([]); // raw data
   const [filteredBooks, setFilteredBooks] = useState([]); // filtered/search results

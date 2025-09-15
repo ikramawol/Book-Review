@@ -98,19 +98,20 @@ const AdminGenres = () => {
   return (
     <div className="manageGenres">
       <div className="currentGenreList">
-        <p className="title">Current Genres</p>
-        <div className="list">
-          {genreList.map((str, idx) => (
-            <div className="genreItem" key={idx}>
-              <p>{str.name}</p>
-              <span onClick={() => removeGenre(str.id)}>❌</span>
-            </div>
-          ))}
+        <div className="title">Current Genres</div>
+        <div className="genreListScroll">
+          <div className="list">
+            {genreList.map((str, idx) => (
+              <div className="genreItem" key={idx}>
+                {str.name}
+                <span onClick={() => removeGenre(str.id)}>✕</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
       <div className="addGenre">
-        <p className="title">Add Genres</p>
+        <div className="title">Add Genres</div>
         <input
           type="text"
           placeholder="Enter genre"
