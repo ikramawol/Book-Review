@@ -137,7 +137,7 @@ const AdminBookView = () => {
         <div className="top-section">
           <BookThumbnail book={book} stopOnclick={true} />
           <div className="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo corrupti iure accusamus dolore excepturi dolorum, quibusdam molestiae sunt, omnis fugiat ex delectus tempora unde quasi soluta? Dignissimos autem possimus ullam.
+            {book.description}
           </div>
         </div>
 
