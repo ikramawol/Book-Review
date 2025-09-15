@@ -208,23 +208,16 @@ const AdminDashboard = () => {
             </ResponsiveContainer>
           </div>
         </div> */}
-        <div className="admin-chart-box">
-          <h3>Review Timeline</h3>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-            marginBottom: "10px"
-          }}>
-            
-          </div>
-          <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
+        <div className="admin-chart-box" style={{ paddingTop: "18px", paddingBottom: "18px" }}>
+          <h3 style={{ marginBottom: "8px", marginTop: "0" }}>Review Timeline</h3>
+          <div className="ReviewsGraph" style={{ width: "100%", height: "340px", marginTop: "0" }}>
             <ResponsiveContainer>
               <BarChart
                 data={reviewTimeline}
-                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                {/* Remove vertical grid lines */}
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="week" />
                 <YAxis />
                 <Tooltip
@@ -241,13 +234,13 @@ const AdminDashboard = () => {
                 <Bar
                   dataKey="count"
                   fill="#C9AA71"
-                  barSize={32}
+                  barSize={48}
                   radius={[8, 8, 0, 0]}
                 />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          </div>
+        </div>
         
         <div className="admin-chart-box1">
           <h3>Genre Distribution</h3>
