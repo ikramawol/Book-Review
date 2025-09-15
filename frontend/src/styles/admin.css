@@ -501,7 +501,7 @@
 .admin-total-box {
   background: #20212C;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.18);
   padding: 20px 12px 20px 12px;
   display: flex;
   flex-direction: column;
@@ -543,9 +543,9 @@
 .admin-chart-box {
   background: #20212C;
   border-radius: 18px;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.18);
   padding: 12px 20px 12px 20px;
-  min-height: 340px;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -554,23 +554,23 @@
 .admin-chart-box1 {
   background: #20212C;
   border-radius: 18px;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.18);
   padding: 12px 20px 12px 20px;
-  min-height: auto;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .admin-chart-box h3 {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   color: var(--clr-300);
   font-size: 20px;
   font-weight: 700;
 }
 
 .admin-chart-box1 h3 {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   color: var(--clr-300);
   font-size: 20px;
   font-weight: 700;
