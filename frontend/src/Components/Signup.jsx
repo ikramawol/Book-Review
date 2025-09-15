@@ -12,6 +12,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -112,23 +113,30 @@ const Signup = () => {
             <div style={{ position: "relative" }}>
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Create a password"
+                style={{ width: "100%", paddingRight: "40px" }}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
                   if (passwordError) setPasswordError("")
                 }}
-                placeholder="Create a password"
                 required
               />
               <span
                 onClick={() => setShowPassword((prev) => !prev)}
                 style={{
                   position: "absolute",
-                  right: 12,
+                  right: "14px",
                   top: "50%",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
-                  color: "#C9AA71"
+                  color: "#C9AA71",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "24px",
+                  width: "24px"
                 }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -161,16 +169,38 @@ const Signup = () => {
 
           <div className="input-group">
             <label>Confirm Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value)
-                if (passwordError) setPasswordError("")
-              }}
-              placeholder="Re-enter your password"
-              required
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Re-enter your password"
+                style={{ width: "100%", paddingRight: "40px" }}
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value)
+                  if (passwordError) setPasswordError("")
+                }}
+                required
+              />
+              <span
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  right: "14px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  color: "#C9AA71",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "24px",
+                  width: "24px"
+                }}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
             {passwordError && (
               <p className="helperText errorText">{passwordError}</p>
             )}

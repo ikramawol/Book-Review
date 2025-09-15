@@ -137,16 +137,22 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              style={{ width: "100%", paddingRight: "40px" }} // add space for icon
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
               style={{
                 position: "absolute",
-                right: 12,
+                right: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
                 cursor: "pointer",
-                color: "#C9AA71"
+                color: "#C9AA71",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "24px",
+                width: "24px"
               }}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
