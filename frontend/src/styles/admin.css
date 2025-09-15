@@ -78,7 +78,7 @@
 }
 
 .logoutBtn{
-    margin-top: auto;
+    margin-bottom: auto;
     padding: 10px;
     background-color: #dc3545;
     color: white;
@@ -202,7 +202,7 @@
   }
 
 
-  .GenresPichart {
+  /* .GenresPichart {
     background: var(--clr-900);
     border-radius: 10px;
     padding: 10px;
@@ -210,7 +210,7 @@
     justify-content: center;
     align-items: center;
 
-  }
+  } */
  
   
 .GenresPichart {
@@ -544,8 +544,19 @@
   background: #20212C;
   border-radius: 18px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.18);
-  padding: 32px 20px 24px 20px;
+  padding: 12px 20px 12px 20px;
   min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-chart-box1 {
+  background: #20212C;
+  border-radius: 18px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.18);
+  padding: 12px 20px 12px 20px;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -558,6 +569,12 @@
   font-weight: 700;
 }
 
+.admin-chart-box1 h3 {
+  margin-bottom: 10px;
+  color: var(--clr-300);
+  font-size: 20px;
+  font-weight: 700;
+}
 /*  */
 
 .admin-flags, .admin-requests {

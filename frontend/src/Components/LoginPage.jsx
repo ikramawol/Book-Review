@@ -78,7 +78,7 @@ const LoginPage = () => {
     localStorage.setItem("loginMethod", "oauth");
     
     // Redirect to OAuth provider
-    window.location.href = `${API_BASE_URL}/api/auth/signin/${provider}`;
+    window.location.href = `${API_BASE_URL}/api/auth/signin/google`;
   };
 
   // --- Check for existing OAuth session on page load ---
@@ -137,13 +137,17 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
-              style={{ width: "100%", paddingRight: "40px" }} // add space for icon
+              style={{
+                width: "100%",
+                paddingRight: "40px", // space for icon
+                boxSizing: "border-box"
+              }}
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
               style={{
                 position: "absolute",
-                right: "14px",
+                right: "18px",
                 top: "50%",
                 transform: "translateY(-50%)",
                 cursor: "pointer",
@@ -152,7 +156,8 @@ const LoginPage = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 height: "24px",
-                width: "24px"
+                width: "24px",
+                zIndex: 2
               }}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}

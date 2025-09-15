@@ -110,12 +110,12 @@ const Signup = () => {
 
           <div className="input-group">
             <label>Password</label>
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", width: "100%" }}>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Create a password"
-                style={{ width: "100%", paddingRight: "40px" }}
+                style={{ width: "100%", paddingRight: "40px", boxSizing: "border-box" }}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
@@ -127,7 +127,7 @@ const Signup = () => {
                 onClick={() => setShowPassword((prev) => !prev)}
                 style={{
                   position: "absolute",
-                  right: "14px",
+                  right: "18px",
                   top: "50%",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
@@ -136,7 +136,8 @@ const Signup = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   height: "24px",
-                  width: "24px"
+                  width: "24px",
+                  zIndex: 2
                 }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -169,12 +170,12 @@ const Signup = () => {
 
           <div className="input-group">
             <label>Confirm Password</label>
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", width: "100%" }}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Re-enter your password"
-                style={{ width: "100%", paddingRight: "40px" }}
+                style={{ width: "100%", paddingRight: "40px", boxSizing: "border-box" }}
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value)
@@ -186,7 +187,7 @@ const Signup = () => {
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 style={{
                   position: "absolute",
-                  right: "14px",
+                  right: "18px",
                   top: "50%",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
@@ -195,7 +196,8 @@ const Signup = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   height: "24px",
-                  width: "24px"
+                  width: "24px",
+                  zIndex: 2
                 }}
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}

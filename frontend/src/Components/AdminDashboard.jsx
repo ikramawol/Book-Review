@@ -218,11 +218,11 @@ const AdminDashboard = () => {
           }}>
             
           </div>
-          <div className="ReviewsGraph" style={{ width: "100%", height: 250 }}>
+          <div className="ReviewsGraph" style={{ width: "100%", height: auto }}>
             <ResponsiveContainer>
               <BarChart
                 data={reviewTimeline}
-                margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                // margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="week" />
@@ -249,7 +249,7 @@ const AdminDashboard = () => {
           </div>
           </div>
         
-        <div className="admin-chart-box">
+        <div className="admin-chart-box1">
           <h3>Genre Distribution</h3>
           <div className="GenresPichart" style={{ width: "100%", height: 250 }}>
             <ResponsiveContainer>
