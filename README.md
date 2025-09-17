@@ -48,6 +48,8 @@ The **Book Review Platform** allows users to:
 - 🛠️ **Role-Based Access Control:** Admin/moderator features.
 - 🧩 **Responsive Design:** Works across devices (planned).
 - 🌐 **Internationalization:** Multi-language support (planned).
+  
+  <b> Note:  to login and see the admin side, use this credential email: admin@gmail.com, password: Admin123@</b>
 
 ---
 
